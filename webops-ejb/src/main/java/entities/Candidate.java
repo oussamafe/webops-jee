@@ -24,8 +24,7 @@ public class Candidate extends User implements Serializable{
 	private String Certifications ;
 	private String Experiences;
 	
-	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
-			fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	private List<Course> Courses = new ArrayList<>();
 	
 	
