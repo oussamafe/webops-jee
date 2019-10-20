@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -32,6 +33,9 @@ public class Candidate extends User implements Serializable{
 	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
+	
+	@ManyToMany (mappedBy="candidates", cascade = CascadeType.ALL)
+	private Set<JobOffer> jobOffer ;
 	
 	public String getStudyLevel() {
 		return StudyLevel;
@@ -114,5 +118,15 @@ public class Candidate extends User implements Serializable{
 	public Candidate(String first_Name, String last_Name, String email, String password) {
 		super(first_Name, last_Name, email, password);
 	}
+
+	public Set<JobOffer> getJobOffer() {
+		return jobOffer;
+	}
+
+	public void setJobOffer(Set<JobOffer> jobOffer) {
+		this.jobOffer = jobOffer;
+	}
+	
+	
 
 }

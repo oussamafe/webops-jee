@@ -30,6 +30,8 @@ public class User implements Serializable{
 	
 	private String password;
 	
+	private boolean active;
+	
 	public int getId() {
 		return id;
 	}
@@ -72,6 +74,16 @@ public class User implements Serializable{
 	public User() {
 		super();
 	}
+	
+	
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	
 	
 	
 
