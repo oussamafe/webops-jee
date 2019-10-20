@@ -2,6 +2,7 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
@@ -25,12 +26,12 @@ public class Candidate extends User implements Serializable{
 	private String Experiences;
 	
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
-	private List<Course> Courses = new ArrayList<>();
+	private Set<Course> Courses;
 	
 	
 	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
-	private List<ProfessionalExperience> ProfessionalExperiences = new ArrayList<>();
+	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
 	public String getStudyLevel() {
 		return StudyLevel;
@@ -40,19 +41,21 @@ public class Candidate extends User implements Serializable{
 		StudyLevel = studyLevel;
 	}
 
-	public List<Course> getCourses() {
+	public Set<Course> getCourses() {
 		return Courses;
 	}
 
-	public void setCourses(List<Course> courses) {
+	public void setCourses(Set<Course> courses) {
 		Courses = courses;
 	}
+	
+	
 
-	public List<ProfessionalExperience> getProfessionalExperiences() {
+	public Set<ProfessionalExperience> getProfessionalExperiences() {
 		return ProfessionalExperiences;
 	}
 
-	public void setProfessionalExperiences(List<ProfessionalExperience> professionalExperiences) {
+	public void setProfessionalExperiences(Set<ProfessionalExperience> professionalExperiences) {
 		ProfessionalExperiences = professionalExperiences;
 	}
 
