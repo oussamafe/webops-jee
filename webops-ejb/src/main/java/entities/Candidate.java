@@ -34,12 +34,23 @@ public class Candidate extends User implements Serializable{
 			fetch=FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
-	@ManyToMany (mappedBy="candidates", cascade = CascadeType.ALL)
-	private Set<JobOffer> jobOffer ;
+	@OneToMany (mappedBy = "candidate")
+	private List<Application> job_candidate;
+	
+	public List<Application> getJob_candidate() {
+		return job_candidate;
+	}
+
+	public void setJob_candidate(List<Application> job_candidate) {
+		this.job_candidate = job_candidate;
+	}
+	
 	
 	public String getStudyLevel() {
 		return StudyLevel;
 	}
+
+	
 
 	public void setStudyLevel(String studyLevel) {
 		StudyLevel = studyLevel;
@@ -117,14 +128,6 @@ public class Candidate extends User implements Serializable{
 
 	public Candidate(String first_Name, String last_Name, String email, String password) {
 		super(first_Name, last_Name, email, password);
-	}
-
-	public Set<JobOffer> getJobOffer() {
-		return jobOffer;
-	}
-
-	public void setJobOffer(Set<JobOffer> jobOffer) {
-		this.jobOffer = jobOffer;
 	}
 	
 	

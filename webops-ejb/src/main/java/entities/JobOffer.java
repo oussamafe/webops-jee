@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class JobOffer implements Serializable{
@@ -38,8 +39,17 @@ public class JobOffer implements Serializable{
 	@ManyToOne
 	private Company company_offers;
 	
-	@ManyToMany (cascade = CascadeType.ALL)
-	private Set<Candidate> candidates;
+	@OneToMany (mappedBy = "offer")
+	private List<Application> job_offer;
+	
+	
+	public List<Application> getJob_offer() {
+		return job_offer;
+	}
+
+	public void setJob_offer(List<Application> job_offer) {
+		this.job_offer = job_offer;
+	}
 
 	public int getId() {
 		return id;
@@ -105,13 +115,7 @@ public class JobOffer implements Serializable{
 		this.company_offers = company_offers;
 	}
 
-	public Set<Candidate> getCandidates() {
-		return candidates;
-	}
-
-	public void setCandidates(Set<Candidate> candidates) {
-		this.candidates = candidates;
-	}
+	
 
 	public JobOffer() {
 		super();

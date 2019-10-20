@@ -1,34 +1,51 @@
 package entities;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-@Entity
-public class Application implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+@Entity
+@IdClass(ApplicationId.class)
+public class Application implements Serializable {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id ;
+	private JobOffer offer;
 	
-	@Temporal (TemporalType.DATE)
+	@Id
+	private Candidate candidate;
+	
+	@Temporal(TemporalType.DATE)
 	private Date depositDate;
-	
-	private String Status ;
 
-	public int getId() {
-		return id;
+	@Temporal(TemporalType.DATE)
+	private Date answerDate;
+
+	private boolean result;
+
+	public boolean isResult() {
+		return result;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setResult(boolean result) {
+		this.result = result;
+	}
+
+	public Date getAnswerDate() {
+		return answerDate;
+	}
+
+	public void setAnswerDate(Date answerDate) {
+		this.answerDate = answerDate;
 	}
 
 	public Date getDepositDate() {
@@ -39,12 +56,4 @@ public class Application implements Serializable{
 		this.depositDate = depositDate;
 	}
 
-	public String getStatus() {
-		return Status;
-	}
-
-	public void setStatus(String status) {
-		Status = status;
-	}
-	
 }
