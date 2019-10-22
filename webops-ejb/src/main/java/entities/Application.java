@@ -31,7 +31,7 @@ public class Application implements Serializable {
 	@ManyToOne
 	@MapsId("idCandiate")
 	@JoinColumn(name="idCandiate")
-	Candidate candidate;
+	Candidate job_candidate;
 	
 	@Temporal(TemporalType.DATE)
 	private Date depositDate;
@@ -65,11 +65,11 @@ public class Application implements Serializable {
 	}
 
 	public Candidate getCandidate() {
-		return candidate;
+		return job_candidate;
 	}
 
 	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
+		this.job_candidate = candidate;
 	}
 
 	public boolean isResult() {
