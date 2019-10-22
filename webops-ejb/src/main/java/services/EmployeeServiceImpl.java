@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import entities.Company;
 import entities.Employe;
 import entities.User;
 import interfaces.EmployeeServiceRemote;
@@ -63,7 +64,10 @@ public class EmployeeServiceImpl implements EmployeeServiceRemote{
 
 	@Override
 	public void addEmployeeToCompany(int idEmp, int idCompany) {
-		// TODO Auto-generated method stub
+		
+		Employe emp = em.find(Employe.class, idEmp);
+		Company company = em.find(Company.class, idCompany);
+		emp.setCompany(company);
 		
 	}
 
@@ -81,6 +85,24 @@ public class EmployeeServiceImpl implements EmployeeServiceRemote{
 			return users;
 		}
 		return null;
+	}
+
+	@Override
+	public int addCompany(Company company) {
+		em.persist(company);
+		return company.getId();
+	}
+
+	@Override
+	public Set<Employe> showCompanyEmployees(int idC) {
+		Company company = em.find(Company.class, idC);
+		return company.getEmployes();
+	}
+
+	@Override
+	public List<Company> showCompanies() {
+		List<Company> companies = 	em.createQuery("from Company", Company.class).getResultList();
+		return companies;
 	}
 
 }

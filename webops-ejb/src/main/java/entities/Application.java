@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import java.util.Date;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,18 +12,26 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@IdClass(ApplicationId.class)
+
 public class Application implements Serializable {
 	
-	@Id
-	private JobOffer offer;
+	@EmbeddedId
+	ApplicationId id;
 	
-	@Id
-	private Candidate candidate;
+	@ManyToOne
+	@MapsId("idJobOffer")
+	@JoinColumn(name="idJobOffer")
+	JobOffer jobOffer;
+	
+	@ManyToOne
+	@MapsId("idCandiate")
+	@JoinColumn(name="idCandiate")
+	Candidate candidate;
 	
 	@Temporal(TemporalType.DATE)
 	private Date depositDate;
@@ -31,6 +40,37 @@ public class Application implements Serializable {
 	private Date answerDate;
 
 	private boolean result;
+	
+
+	public Application() {
+		super();
+	}
+	
+	
+
+	public ApplicationId getId() {
+		return id;
+	}
+
+	public void setId(ApplicationId id) {
+		this.id = id;
+	}
+
+	public JobOffer getJobOffer() {
+		return jobOffer;
+	}
+
+	public void setJobOffer(JobOffer jobOffer) {
+		this.jobOffer = jobOffer;
+	}
+
+	public Candidate getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
+	}
 
 	public boolean isResult() {
 		return result;
