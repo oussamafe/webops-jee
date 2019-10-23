@@ -1,5 +1,6 @@
 package entities;
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
 
 
 
@@ -24,12 +27,15 @@ public class Candidate extends User implements Serializable{
 	private String Certifications ;
 	private String Experiences;
 	
+	@ManyToOne
+	private Post post;
+	
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	private List<Course> Courses = new ArrayList<>();
 	
 	
 	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
-			fetch=FetchType.EAGER)
+			fetch=FetchType.LAZY)
 	private List<ProfessionalExperience> ProfessionalExperiences = new ArrayList<>();
 	
 	public String getStudyLevel() {
