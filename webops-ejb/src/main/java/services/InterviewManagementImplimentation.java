@@ -9,6 +9,6 @@ import interfaces.InterviewManagementRemote;
 @Stateless
 @LocalBean
 public class InterviewManagementImplimentation implements InterviewManagementRemote{
-	@PersistenceContext(unitName = "pitest-ejb")
+	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
 }

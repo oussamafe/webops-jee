@@ -14,7 +14,7 @@ import interfaces.ApplicationCandidateManagementRemote;
 @LocalBean
 public class ApplicationCandidateManagementImplementation implements ApplicationCandidateManagementRemote{
 
-	@PersistenceContext(unitName = "pitest-ejb")
+	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
 
 	public ApplicationCandidateManagementImplementation() {
