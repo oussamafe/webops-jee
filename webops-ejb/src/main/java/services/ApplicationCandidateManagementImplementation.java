@@ -8,16 +8,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entities.Application;
-import interfaces.CandidateManagementRemote;
+import interfaces.ApplicationCandidateManagementRemote;
 
 @Stateless
 @LocalBean
-public class CandidateManagementImplementation implements CandidateManagementRemote{
+public class ApplicationCandidateManagementImplementation implements ApplicationCandidateManagementRemote{
 
 	@PersistenceContext(unitName = "pitest-ejb")
 	EntityManager em;
 
-	
+	public ApplicationCandidateManagementImplementation() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public List<Application> ViewAllApplicationStillWait() {

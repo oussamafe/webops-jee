@@ -6,7 +6,7 @@ import javax.ejb.Remote;
 
 import entities.Application;
 @Remote
-public interface CandidateManagementRemote {
+public interface ApplicationCandidateManagementRemote {
 	public List<Application> ViewAllApplicationStillWait();
 	public List<Application> ViewAllApplicationAccepted();
 	public List<Application> ViewAllApplicationRejected();
