@@ -4,6 +4,8 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 //import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -31,9 +34,9 @@ public class Company  implements Serializable{
 	private int nbEmployees;
 	
 
-	//@JsonManagedReference
+	@JsonManagedReference
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
-	private List<Employe> employes = new ArrayList<Employe>();
+	private Set<Employe> employes;
 	
 	public Company(String name, String field, int nbEmployees) {
 		super();
@@ -78,13 +81,17 @@ public class Company  implements Serializable{
 		this.nbEmployees = nbEmployees;
 	}
 
-	public List<Employe> getEmployees() {
+	public Set<Employe> getEmployes() {
 		return employes;
 	}
 
-	public void setEmployees(List<Employe> employees) {
-		this.employes = employees;
-	}}
+	public void setEmployes(Set<Employe> employes) {
+		this.employes = employes;
+	}
+
+
+
+}
 
 
 	
