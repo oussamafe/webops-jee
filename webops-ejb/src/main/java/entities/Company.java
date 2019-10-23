@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 //import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -33,7 +34,7 @@ public class Company  implements Serializable{
 	private int nbEmployees;
 	
 
-	//@JsonManagedReference
+	@JsonManagedReference
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
 	private Set<Employe> employes;
 	
@@ -89,7 +90,6 @@ public class Company  implements Serializable{
 	}
 
 
-	
 
 }
 

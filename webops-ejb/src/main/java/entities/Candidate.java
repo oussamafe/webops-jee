@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,6 +42,46 @@ public class Candidate extends User implements Serializable{
 	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
 	private Set<Application> job_candidate;
+	
+
+	
+	//---------------------  add by oussema mahjoub ---------------------//
+	@OneToOne(mappedBy = "candidate")
+	private AvailabilityCandidate avalibilityCandidate;
+	
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
+	private List<Interview> interviews = new ArrayList<>();
+
+	@OneToOne(mappedBy = "candidatTest")	
+	private OnlineTest onlineTest;		
+	
+	public AvailabilityCandidate getAvalibilityCandidate() {
+		return avalibilityCandidate;
+	}
+
+	public void setAvalibilityCandidate(AvailabilityCandidate avalibilityCandidate) {
+		this.avalibilityCandidate = avalibilityCandidate;
+	}
+
+	public List<Interview> getInterviews() {
+		return interviews;
+	}
+
+	public void setInterviews(List<Interview> interviews) {
+		this.interviews = interviews;
+	}
+
+	public OnlineTest getOnlineTest() {
+		return onlineTest;
+	}
+
+	public void setOnlineTest(OnlineTest onlineTest) {
+		this.onlineTest = onlineTest;
+	}
+
+	//-------------------------------------------------------------------//
+	
+	
 	
 	public Set<Application> getJob_candidate() {
 		return job_candidate;

@@ -9,8 +9,8 @@ import entities.Reclamation;
 @Remote
 public interface ReclamtionImplimentation {
 	//CRUD
-		public int CreatePack(Reclamation R);
-		public List<Reclamation> ReadPack(Reclamation R);
-		public void UpdatePack(Reclamation R);
-		public void DeletePack(Reclamation R);
+		public int CreateClaim(Reclamation R);
+		public List<Reclamation> ReadClaim();
+		public void UpdateClaim(Reclamation R);
+		public void DeleteClaim(int id);
 }

@@ -39,7 +39,7 @@ public class JobOffer implements Serializable{
 	@ManyToOne
 	private Company company_offers;
 	
-	@OneToMany (mappedBy = "offer")
+	@OneToMany (mappedBy = "jobOffer")
 	private List<Application> job_offer;
 	
 	

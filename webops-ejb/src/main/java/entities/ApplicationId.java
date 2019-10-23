@@ -2,33 +2,66 @@ package entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Embeddable
 public class ApplicationId implements Serializable{
 
-	@ManyToOne
-	@JoinColumn(name = "idJobOffer", referencedColumnName = "id", insertable = false, updatable = false)
-	private JobOffer offer;
 
-	@ManyToOne
-	@JoinColumn(name = "idCandidate", referencedColumnName = "id", insertable = false, updatable = false)
-	private Candidate candidate;
+	@Column(name="idJobOffer")
+	private int idJobOffer;
 	
-	public JobOffer getOffer() {
-		return offer;
+	@Column(name="idCandiate")
+	private int idCandiate;
+
+	public ApplicationId() {
+		super();
 	}
 
-	public void setOffer(JobOffer offer) {
-		this.offer = offer;
+	public int getIdJobOffer() {
+		return idJobOffer;
 	}
 
+	public void setIdJobOffer(int idJobOffer) {
+		this.idJobOffer = idJobOffer;
+	}
+
+	public int getIdCandiate() {
+		return idCandiate;
+	}
+
+	public void setIdCandiate(int idCandiate) {
+		this.idCandiate = idCandiate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idCandiate;
+		result = prime * result + idJobOffer;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ApplicationId other = (ApplicationId) obj;
+		if (idCandiate != other.idCandiate)
+			return false;
+		if (idJobOffer != other.idJobOffer)
+			return false;
+		return true;
+	}
 	
-	public Candidate getCandidate() {
-		return candidate;
-	}
-
-	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
-	}
+	
+	
 }
