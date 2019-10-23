@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 @Entity
@@ -27,6 +29,7 @@ public class Candidate extends User implements Serializable{
 	private String Experiences;
 	
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
+	//@JsonIgnoreProperties("Courses")
 	private Set<Course> Courses;
 	
 	
@@ -34,14 +37,15 @@ public class Candidate extends User implements Serializable{
 			fetch=FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
-	@OneToMany (mappedBy = "candidate")
-	private List<Application> job_candidate;
+	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
+			fetch=FetchType.EAGER)
+	private Set<Application> job_candidate;
 	
-	public List<Application> getJob_candidate() {
+	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}
 
-	public void setJob_candidate(List<Application> job_candidate) {
+	public void setJob_candidate(Set<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
 	
