@@ -16,7 +16,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -60,8 +63,9 @@ public class Employe extends User implements Serializable{
 	
 	
 
-	@JsonBackReference
+	//@JsonBackReference
 	@ManyToOne
+	@JsonIgnoreProperties("employes")
 	Company company;
 	
 	public Employe(Role role) {
@@ -90,6 +94,7 @@ public class Employe extends User implements Serializable{
 		this.role = role;
 	}
 
+	@JsonGetter
 	public Company getCompany() {
 		return company;
 	}
