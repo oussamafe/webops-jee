@@ -1,5 +1,6 @@
 package entities;
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,9 +9,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
 
 
 
@@ -27,13 +29,14 @@ public class Candidate extends User implements Serializable{
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
-	
+
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	private Set<Course> Courses;
 	
-	
-	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
-			fetch=FetchType.EAGER)
+
+	@ManyToOne
+	private Post post;
+
 	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
 	@OneToMany (mappedBy = "candidate")
@@ -86,6 +89,7 @@ public class Candidate extends User implements Serializable{
 		this.job_candidate = job_candidate;
 	}
 	
+
 	
 	public String getStudyLevel() {
 		return StudyLevel;
