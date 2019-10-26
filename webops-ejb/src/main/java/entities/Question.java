@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -28,14 +29,26 @@ public class Question implements Serializable {
 	 */
 	private String Module;
 	
-	@JsonManagedReference(value="questions-movement")
+	
+	
+	
+	
+	
+	
+	//@JsonManagedReference(value="questions-movement")
 	@ManyToMany(mappedBy = "questions", cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
 	private Set<OnlineTest> onlineTests;
 	
 	
+	
+	
+	
+	
+	
+	
 	@JsonManagedReference(value="questionReponce-movement")
 	@OneToMany(mappedBy = "questionReponce", cascade = { CascadeType.ALL },fetch = FetchType.EAGER)	
-	private Set<Responce> reponces;
+	private Set<Responce> reponces= new HashSet<Responce>();
 
 	public Question() {
 		super();

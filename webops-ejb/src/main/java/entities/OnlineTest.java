@@ -2,6 +2,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,9 +38,37 @@ public class OnlineTest implements Serializable {
 	@OneToOne
 	private Candidate candidatTest;	
 	
+	private int note;
+	
+	
+
 	@JsonBackReference(value="questions-movement")
 	@ManyToMany
-	private Set<Question> questions;
+	private Set<Question> questions ;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	public int getNote() {
+		return note;
+	}
+
+	public void setNote(int note) {
+		this.note = note;
+	}
+	
+	
 	
 	public OnlineTest() {
 		super();

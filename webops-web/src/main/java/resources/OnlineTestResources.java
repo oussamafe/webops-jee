@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import entities.OnlineTest;
 import entities.Question;
 import entities.Responce;
+import entities.StateTestOnline;
 import services.OnlineTestImplementation;
 
 @RequestScoped
@@ -119,5 +120,63 @@ public class OnlineTestResources {
 	public Response ListResponceByQuestion(@PathParam(value = "QuestionID") int QuestionID) {
 		Set<Responce> list = OTI.ListResponceByQuestion(QuestionID);
 		return Response.status(Status.OK).entity(list).build();
+	}
+
+	@PUT
+	@Path("/updateResponce/{ResponceID}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateResponce(@PathParam(value = "ResponceID") int ResponceID, Responce responce) {
+		OTI.updateResponce(ResponceID, responce);
+		return Response.status(Status.OK).build();
+	}
+
+	@PUT
+	@Path("/updateQuestion/{QuestionID}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateQuestion(@PathParam(value = "QuestionID") int QuestionID, Question question) {
+		OTI.updateQuestion(QuestionID, question);
+		return Response.status(Status.OK).build();
+
+	}
+	
+	@PUT
+	@Path("/affectAutoQuestionToTestByModule/{module}/{NbQuestion}/{testID}")
+	public Response affectAutoQuestionToTestByModule(@PathParam(value = "module")String module, @PathParam(value = "NbQuestion")int NbQuestion, @PathParam(value = "testID")int testID)
+	{
+		OTI.affectAutoQuestionToTestByModule(module, NbQuestion, testID);
+		return Response.status(Status.OK).build();
+	}
+	
+	@GET
+	@Path("/EstimatedTimeForTest/{TestID}")
+	public Response EstimatedTimeForTest(@PathParam(value = "TestID")int TestID)
+	{
+		int x=OTI.EstimatedTimeForTest(TestID);
+		return Response.status(Status.OK).entity("EstimatedTimeForTest : "+x).build();
+	}
+	
+	@GET
+	@Path("/GetOnlinetestResult/{TestID}")
+	public Response GetOnlinetestResult(@PathParam(value = "TestID")int TestID)
+	{
+		StateTestOnline x=OTI.GetOnlinetestResult(TestID);
+		return Response.status(Status.OK).entity("OnlinetestResult : "+x).build();		
+	}
+	
+	@PUT
+	@Path("/setTestResult/{TestID}")
+	public Response setTestResult(@PathParam(value = "TestID")int TestID)
+	{
+		OTI.setTestResult(TestID);
+		return Response.status(Status.OK).build();
+	}
+	//// need to test it XD 
+	@PUT
+	@Path("/setTestNoteByQuestion/{TestID}/{QuestionID}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setTestNoteByQuestion(@PathParam(value = "TestID")int TestID, @PathParam(value = "QuestionID")int QuestionID, Set<Integer> ResponcesID)
+	{
+		OTI.setTestNoteByQuestion(TestID, QuestionID, ResponcesID);
+		return Response.status(Status.OK).build();
 	}
 }

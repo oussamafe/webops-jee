@@ -38,7 +38,7 @@ public class Responce implements Serializable {
 		this.reponce = reponce;
 	}
 
-	public boolean isIsValid() {
+	public boolean IsValid() {
 		return IsValid;
 	}
 
