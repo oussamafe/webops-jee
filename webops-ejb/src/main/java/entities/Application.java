@@ -16,23 +16,31 @@ import javax.persistence.MapsId;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 
 public class Application implements Serializable {
-	
+
 	@EmbeddedId
 	ApplicationId id;
-	
+
+	// --
+	@JsonBackReference(value = "jobOffer-movement")
+	// --
 	@ManyToOne
-	@MapsId("idJobOffer")
-	@JoinColumn(name="idJobOffer")
+	@MapsId("id")
+	@JoinColumn(name = "idJobOffer")
 	JobOffer jobOffer;
-	
+
+	// --
+	@JsonBackReference(value = "candidate-movement")
+	// --
 	@ManyToOne
-	@MapsId("idCandiate")
-	@JoinColumn(name="idCandiate")
+	@MapsId("id")
+	@JoinColumn(name = "idCandiate")
 	Candidate candidate;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date depositDate;
 
@@ -40,13 +48,10 @@ public class Application implements Serializable {
 	private Date answerDate;
 
 	private boolean result;
-	
 
 	public Application() {
 		super();
 	}
-	
-	
 
 	public ApplicationId getId() {
 		return id;

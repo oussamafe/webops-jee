@@ -2,8 +2,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 
@@ -32,11 +33,13 @@ public class OnlineTest implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StateTestOnline state;
 	
+	@JsonBackReference(value="candidatTest-movement")
 	@OneToOne
 	private Candidate candidatTest;	
 	
+	@JsonBackReference(value="questions-movement")
 	@ManyToMany
-	private List<Question> questions;
+	private Set<Question> questions;
 	
 	public OnlineTest() {
 		super();
@@ -68,11 +71,11 @@ public class OnlineTest implements Serializable {
 
 	
 
-	public List<Question> getQuestions() {
+	public Set<Question> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(List<Question> questions) {
+	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
 	}
 

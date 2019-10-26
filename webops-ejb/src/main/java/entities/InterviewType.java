@@ -1,8 +1,8 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ public class InterviewType implements Serializable {
 	private int hours_number;
 
 	@OneToMany(mappedBy = "interviewType", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-	private List<Interview> interviews = new ArrayList<>();
+	private Set<Interview> interviews = new HashSet<Interview>();
 
 	public String getType() {
 		return type;
@@ -42,11 +42,11 @@ public class InterviewType implements Serializable {
 		this.hours_number = hours_number;
 	}
 
-	public List<Interview> getInterviews() {
+	public Set<Interview> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(List<Interview> interviews) {
+	public void setInterviews(Set<Interview> interviews) {
 		this.interviews = interviews;
 	}
 

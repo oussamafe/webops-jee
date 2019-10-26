@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 
@@ -37,10 +39,17 @@ public class Candidate extends User implements Serializable{
 	@ManyToOne
 	private Post post;
 
+	// add bby oussema mahjoub
+	@OneToMany(mappedBy = "Candidate", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	//--
 	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
+	
+	// add bby oussema mahjoub
+	@JsonManagedReference(value="candidate-movement")
+	//--
 	@OneToMany (mappedBy = "candidate")
-	private List<Application> job_candidate;
+	private Set<Application> job_candidate;
 	
 	
 	//---------------------  add by oussema mahjoub ---------------------//
@@ -81,11 +90,11 @@ public class Candidate extends User implements Serializable{
 	
 	
 	
-	public List<Application> getJob_candidate() {
+	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}
 
-	public void setJob_candidate(List<Application> job_candidate) {
+	public void setJob_candidate(Set<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
 	

@@ -6,12 +6,15 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class JobOffer implements Serializable{
@@ -39,18 +42,20 @@ public class JobOffer implements Serializable{
 	@ManyToOne
 	private Company company_offers;
 	
-	@OneToMany (mappedBy = "jobOffer")
-	private List<Application> job_offer;
+	//-- changed by oussema mahjoub-----------------------------------------------------------------------------------------
+	@JsonManagedReference(value="jobOffer-movement")
+	@OneToMany (mappedBy = "jobOffer",fetch=FetchType.EAGER)
+	private Set<Application> job_offer;
 	
 	
-	public List<Application> getJob_offer() {
+	public Set<Application> getJob_offer() {
 		return job_offer;
 	}
 
-	public void setJob_offer(List<Application> job_offer) {
+	public void setJob_offer(Set<Application> job_offer) {
 		this.job_offer = job_offer;
 	}
-
+	//-- end change by oussema mahjoub-----------------------------------------------------------------------------------------
 	public int getId() {
 		return id;
 	}

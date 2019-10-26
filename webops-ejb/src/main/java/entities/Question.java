@@ -1,14 +1,16 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
-
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
@@ -25,12 +27,15 @@ public class Question implements Serializable {
 	 * module of question exemple : javaee , python,c++... . it help on research
 	 */
 	private String Module;
-
-	@ManyToMany(mappedBy = "questions")
-	private List<OnlineTest> onlineTests;
-
-	@OneToMany(mappedBy = "questionReponce")
-	private List<Responce> reponces;
+	
+	@JsonManagedReference(value="questions-movement")
+	@ManyToMany(mappedBy = "questions", cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
+	private Set<OnlineTest> onlineTests;
+	
+	
+	@JsonManagedReference(value="questionReponce-movement")
+	@OneToMany(mappedBy = "questionReponce", cascade = { CascadeType.ALL },fetch = FetchType.EAGER)	
+	private Set<Responce> reponces;
 
 	public Question() {
 		super();
@@ -60,19 +65,19 @@ public class Question implements Serializable {
 		Module = module;
 	}
 
-	public List<OnlineTest> getOnlineTests() {
+	public Set<OnlineTest> getOnlineTests() {
 		return onlineTests;
 	}
 
-	public void setOnlineTests(List<OnlineTest> onlineTests) {
+	public void setOnlineTests(Set<OnlineTest> onlineTests) {
 		this.onlineTests = onlineTests;
 	}
 
-	public List<Responce> getReponces() {
+	public Set<Responce> getReponces() {
 		return reponces;
 	}
 
-	public void setReponces(List<Responce> reponces) {
+	public void setReponces(Set<Responce> reponces) {
 		this.reponces = reponces;
 	}
 
