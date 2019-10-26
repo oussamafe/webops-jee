@@ -1,7 +1,6 @@
 package services;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.ejb.LocalBean;
@@ -17,7 +16,7 @@ import interfaces.ApplicationCandidateManagementRemote;
 
 @Stateless
 @LocalBean
-public class ApplicationCandidateManagementImplementation implements ApplicationCandidateManagementRemote{
+public class ApplicationCandidateManagementImplementation implements ApplicationCandidateManagementRemote {
 
 	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
@@ -26,6 +25,31 @@ public class ApplicationCandidateManagementImplementation implements Application
 		// TODO Auto-generated constructor stub
 	}
 
+	/*
+	 * public void ajouterApplication(int idJobOffer, int idCandiate, Date
+	 * depositDate, Date answerDate) { ApplicationId ai=new ApplicationId();
+	 * ai.setIdCandiate(idCandiate); ai.setIdJobOffer(idJobOffer);
+	 * System.out.println("ai.getIdCandiate()    "+ai.getIdCandiate());
+	 * System.out.println("problem here 10000000"); Candidate
+	 * can=em.find(Candidate.class, idCandiate);
+	 * System.out.println("problem here 1222222222"); JobOffer
+	 * job=em.find(JobOffer.class, idJobOffer);
+	 * System.out.println("problem here 1333333333");
+	 * System.out.println("problem here 14444444");
+	 * 
+	 * Application a= new Application(); a.setId(ai); //a.setCandidate(can);
+	 * //a.setJobOffer(job); a.setDepositDate(depositDate);
+	 * a.setAnswerDate(answerDate); a.setResult(false);
+	 * 
+	 * System.out.println("problem here 1");
+	 * System.out.println("a.getCandidate().getId()     "+a.getId().getIdCandiate()
+	 * +"a.getAnswerDate()    " +a.getAnswerDate());
+	 * System.out.println("problem here 2"); 
+	 * em.persist(a);
+	 * 
+	 * 
+	 * }
+	 */
 	@Override
 	public Set<Application> ViewAllApplicationStillWait() {
 		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a ", Application.class);

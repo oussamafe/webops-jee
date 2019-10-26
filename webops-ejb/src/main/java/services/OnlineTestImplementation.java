@@ -108,5 +108,5 @@ public class OnlineTestImplementation implements OnlineTestRemote{
 		Set<Responce> results = new HashSet<Responce>();
 		results.addAll(query.getResultList());
 		return results;
-	}
+	} 
 }

@@ -27,6 +27,5 @@ public interface OnlineTestRemote {
 	public Set<String> ListModuleOfQuestion();
 	public Set<Responce> ListResponceByQuestion(int QuestionID);
 	
-	
 
 }
