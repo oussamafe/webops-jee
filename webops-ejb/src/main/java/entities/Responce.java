@@ -8,8 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-public class Reponce implements Serializable {
+public class Responce implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +22,11 @@ public class Reponce implements Serializable {
 	 */
 	private boolean IsValid;
 
+	@JsonBackReference(value="questionReponce-movement")
 	@ManyToOne
 	private Question questionReponce;
 
-	public Reponce() {
+	public Responce() {
 		super();
 	}
 

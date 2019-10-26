@@ -30,7 +30,7 @@ public class Question implements Serializable {
 	private List<OnlineTest> onlineTests;
 
 	@OneToMany(mappedBy = "questionReponce")
-	private List<Reponce> reponces;
+	private List<Responce> reponces;
 
 	public Question() {
 		super();
@@ -68,11 +68,11 @@ public class Question implements Serializable {
 		this.onlineTests = onlineTests;
 	}
 
-	public List<Reponce> getReponces() {
+	public List<Responce> getReponces() {
 		return reponces;
 	}
 
-	public void setReponces(List<Reponce> reponces) {
+	public void setReponces(List<Responce> reponces) {
 		this.reponces = reponces;
 	}
 
