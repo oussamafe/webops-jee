@@ -1,13 +1,18 @@
 package services;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import entities.Application;
+import entities.ApplicationId;
 import interfaces.ApplicationCandidateManagementRemote;
 
 @Stateless
@@ -22,32 +27,44 @@ public class ApplicationCandidateManagementImplementation implements Application
 	}
 
 	@Override
-	public List<Application> ViewAllApplicationStillWait() {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Application> ViewAllApplicationStillWait() {
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a ", Application.class);
+		Set<Application> results = new HashSet<Application>();
+		results.addAll(query.getResultList());
+		return results;
 	}
 
 	@Override
-	public List<Application> ViewAllApplicationAccepted() {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Application> ViewAllApplicationAccepted() {
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a where a.result=1",
+				Application.class);
+		Set<Application> results = new HashSet<Application>();
+		results.addAll(query.getResultList());
+		return results;
 	}
 
 	@Override
-	public List<Application> ViewAllApplicationRejected() {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Application> ViewAllApplicationRejected() {
+		TypedQuery<Application> query = em.createQuery("SELECT a FROM Application a where a.result=0",
+				Application.class);
+		Set<Application> results = new HashSet<Application>();
+		results.addAll(query.getResultList());
+		return results;
 	}
 
 	@Override
-	public Boolean AcceptApplication() {
-		// TODO Auto-generated method stub
-		return null;
+	public int AcceptApplication(ApplicationId id) {
+		Query query = em.createQuery("update Application e set e.result=:r where e.id=:i");
+		query.setParameter("r", true);
+		query.setParameter("i", id);
+		return query.executeUpdate();
 	}
 
 	@Override
-	public boolean RejectApplication() {
-		// TODO Auto-generated method stub
-		return false;
+	public int RejectApplication(ApplicationId id) {
+		Query query = em.createQuery("update Application e set e.result=:r where e.id=:i");
+		query.setParameter("r", false);
+		query.setParameter("i", id);
+		return query.executeUpdate();
 	}
 }
