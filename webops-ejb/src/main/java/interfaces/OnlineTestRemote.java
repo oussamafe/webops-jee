@@ -11,33 +11,34 @@ import entities.StateTestOnline;
 @Remote
 public interface OnlineTestRemote {
 	
-	public int AddOnlineTest(OnlineTest ot);
-	public void addQuestion(Question q);
-	public void addResponce(Responce r);
+	public int AddOnlineTest(OnlineTest ot);//tested OK
+	public void addQuestion(Question q);//tested OK
+	public void addResponce(Responce r);//tested OK
 	
-	public void affectTestToAnCandidate(int CandidateID,int TestID);
-	public void AffectQuestionToAnOnlineTest(int TestID ,int QuestionID);
-	public void AffectResponceToQuestion(int ResponceID,int QuestionID);
+	public void affectTestToAnCandidate(int CandidateID,int TestID);//tested OK
+	public void AffectQuestionToAnOnlineTest(int TestID ,int QuestionID);//tested OK
+	public void AffectResponceToQuestion(int ResponceID,int QuestionID);//tested OK
 	
+	public void UnAffectTestQuestion(int testID,int questionID);//tested OK
 	
-	public  void updateQuestion(int QuestionID,Question question);
-	public  void updateResponce(int ResponceID,Responce responce);
+	public  void updateQuestion(int QuestionID,Question question);//tested OK
+	public  void updateResponce(int ResponceID,Responce responce);//tested OK
 	
-	public void affectAutoQuestionToTestByModule(String module,int NbQuestion, int testID);
+	public void affectAutoQuestionToTestByModule(String module,int NbQuestion, int testID);//tested OK
 	
-	public int EstimatedTimeForTest(int TestID);
-	public StateTestOnline GetOnlinetestResult(int TestID);
-	public void setTestResult(int TestID);//70% accepted :D
-	public void setTestNoteByQuestion(int TestID,int QuestionID,Set<Integer>ResponcesID);
-	
-	
-	public int AutoRefuseOnlineTest(int TestID);
+	public int EstimatedTimeForTest(int TestID);//tested OK
+	public StateTestOnline GetOnlinetestResult(int TestID);//tested OK
+	public void setTestResult(int TestID);//75% accepted :D  tested OK
+	public void setTestNoteByQuestion(int TestID,int QuestionID,Set<Integer>ResponcesID);// tested OK
 	
 	
-	public Set<Question> ListQuestion();
-	public Set<Question> ListQuestionByModule(String module);
-	public Set<String> ListModuleOfQuestion();
-	public Set<Responce> ListResponceByQuestion(int QuestionID);
+	public int AutoRefuseOnlineTest(int TestID);//tested OK
+	
+	
+	public Set<Question> ListQuestion();//tested OK
+	public Set<Question> ListQuestionByModule(String module);//tested OK
+	public Set<String> ListModuleOfQuestion();//tested OK
+	public Set<Responce> ListResponceByQuestion(int QuestionID);//tested OK
 	
 
 }

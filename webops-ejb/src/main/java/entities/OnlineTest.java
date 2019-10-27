@@ -38,7 +38,7 @@ public class OnlineTest implements Serializable {
 	@OneToOne
 	private Candidate candidatTest;	
 	
-	private int note;
+	private double note;
 	
 	
 
@@ -49,22 +49,11 @@ public class OnlineTest implements Serializable {
 	
 	
 	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	public int getNote() {
+	public double getNote() {
 		return note;
 	}
 
-	public void setNote(int note) {
+	public void setNote(double note) {
 		this.note = note;
 	}
 	

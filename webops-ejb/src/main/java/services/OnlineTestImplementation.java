@@ -75,7 +75,7 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 
 	@Override
 	public int AutoRefuseOnlineTest(int TestID) {
-		Query query = em.createQuery("UPDATE onlinetest o SET o.state=:s WHERE o.date +5 < NOW()");
+		Query query = em.createQuery("UPDATE OnlineTest o SET o.state=:s WHERE o.date +5 < NOW()");
 		query.setParameter("s", StateTestOnline.InValid);
 		return query.executeUpdate();
 	}
@@ -117,13 +117,12 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 	}
 
 	@Override
-	public void updateQuestion(int QuestionID, Question question) {
+	public void updateQuestion(int QuestionID, Question question) {	
 		Question q = em.find(Question.class, QuestionID);
 		q.setEstimated_Time(question.getEstimated_Time());
 		q.setModule(question.getModule());
 		q.setQuestion(question.getQuestion());
-
-	}
+	}	
 
 	@Override
 	public void updateResponce(int ResponceID, Responce responce) {
@@ -132,8 +131,6 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 		q.setReponce(responce.getReponce());
 	}
 
-	
-	
 	@Override
 	public void affectAutoQuestionToTestByModule(String module, int NbQuestion, int testID) {
 		List<Question> questions = new ArrayList<Question>();
@@ -173,7 +170,7 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 	}
 
 	@Override
-	public void setTestResult(int TestID) {// 70% accepted
+	public void setTestResult(int TestID) {// 75% accepted
 		OnlineTest ot = em.find(OnlineTest.class, TestID);
 		if (ot.getNote() < 15)
 			ot.setState(StateTestOnline.InValid);
@@ -188,17 +185,32 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 	public void setTestNoteByQuestion(int TestID, int QuestionID, Set<Integer> ResponcesID) {
 		OnlineTest ot = em.find(OnlineTest.class, TestID);
 		Question q = em.find(Question.class, QuestionID);
-		int nbT = 0;
+		double nbTrueOwned = 0;
+		int nbTrueResp = 0;
 		for (Integer id : ResponcesID) {
 			Responce r = em.find(Responce.class, id);
-			nbT = (r.IsValid() ? nbT + 1 : nbT - 1);
+			nbTrueOwned = (r.IsValid() ? nbTrueOwned + 1 : nbTrueOwned - 1);
 		}
-
-		int noteTotQuestion = 20 / ot.getQuestions().size();
-		int noteTotResponce = noteTotQuestion / q.getReponces().size();
-		int note = nbT > 0 ? ot.getNote() + (nbT * noteTotResponce) : ot.getNote();
+		for (Responce r : q.getReponces()) {
+			if (r.IsValid()) {
+				nbTrueResp++;
+			}
+		}
+		double noteTotQuestion = 20 / ot.getQuestions().size();
+		double noteTotResponce = noteTotQuestion / nbTrueResp;
+		double note = nbTrueOwned > 0 ? ot.getNote() + (nbTrueOwned * noteTotResponce) : ot.getNote();
 
 		ot.setNote(note);
+
+	}
+
+	@Override
+	public void UnAffectTestQuestion(int testID, int questionID) {
+		OnlineTest ot = em.find(OnlineTest.class, testID);
+		Question q = em.find(Question.class, questionID);
+		
+		ot.getQuestions().remove(q);
+		q.getOnlineTests().remove(ot);
 
 	}
 }

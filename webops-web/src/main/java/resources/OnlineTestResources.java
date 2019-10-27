@@ -1,9 +1,14 @@
 package resources;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+import javax.persistence.Entity;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 
 import entities.OnlineTest;
 import entities.Question;
@@ -140,6 +146,15 @@ public class OnlineTestResources {
 	}
 	
 	@PUT
+	@Path("/UnAffectTestQuestion/{testID}/{QuestionID}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response UnAffectTestQuestion( @PathParam(value = "testID")int testID,@PathParam(value = "QuestionID") int QuestionID) {
+		OTI.UnAffectTestQuestion(testID, QuestionID);
+		return Response.status(Status.OK).build();
+
+	}
+	
+	@PUT
 	@Path("/affectAutoQuestionToTestByModule/{module}/{NbQuestion}/{testID}")
 	public Response affectAutoQuestionToTestByModule(@PathParam(value = "module")String module, @PathParam(value = "NbQuestion")int NbQuestion, @PathParam(value = "testID")int testID)
 	{
@@ -173,10 +188,17 @@ public class OnlineTestResources {
 	//// need to test it XD 
 	@PUT
 	@Path("/setTestNoteByQuestion/{TestID}/{QuestionID}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response setTestNoteByQuestion(@PathParam(value = "TestID")int TestID, @PathParam(value = "QuestionID")int QuestionID, Set<Integer> ResponcesID)
+	@Consumes(MediaType.APPLICATION_JSON)	
+	public Response setTestNoteByQuestion(@PathParam(value = "TestID")int TestID, @PathParam(value = "QuestionID")int QuestionID, JsonArray jo)
 	{
+		Set<Integer> ResponcesID=new HashSet<Integer>();
+					
+		for(JsonValue j:jo)
+		{			
+			ResponcesID.add(Integer.valueOf(j.toString()));
+		}
 		OTI.setTestNoteByQuestion(TestID, QuestionID, ResponcesID);
+		
 		return Response.status(Status.OK).build();
 	}
 }
