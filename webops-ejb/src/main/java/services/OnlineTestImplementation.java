@@ -130,7 +130,6 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 		Responce q = em.find(Responce.class, ResponceID);
 		q.setIsValid(responce.IsValid());
 		q.setReponce(responce.getReponce());
-
 	}
 
 	
