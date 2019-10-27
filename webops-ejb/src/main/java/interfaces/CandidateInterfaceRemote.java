@@ -11,7 +11,7 @@ import entities.ProfessionalExperience;
 public interface CandidateInterfaceRemote {
 
 	public int addCandidate(Candidate C);
-	public void UpdateCandidate(Candidate C);
+	public void UpdateCandidate(Candidate C	);
 	public int UpdateEmailCandidate(int idC,String Email);
 	public void RemoveCandidate(int idC);
 	public Candidate displayCandidateDetails(int idC)	;

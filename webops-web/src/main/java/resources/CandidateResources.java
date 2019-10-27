@@ -36,9 +36,8 @@ public class CandidateResources {
 		}
 		return Response.status(Status.NOT_ACCEPTABLE).entity("Registration Failed :( Email already exists ").build();
 	}
-	
+
 	@PUT
-	
 	public Response UpdateEmailCandidate(@QueryParam("Email")String Email,@QueryParam("id") int idCandidate)
 	{	
 		int idC=candidateservice.UpdateEmailCandidate(idCandidate,Email);
@@ -49,7 +48,7 @@ public class CandidateResources {
 		return Response.status(Status.NOT_ACCEPTABLE).entity("Email Failed :( Email already exists ").build();
 	}
 
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response DisplayCandidateDetails(@QueryParam("id") int idCandidate)
@@ -62,36 +61,9 @@ public class CandidateResources {
 	@Path("updateCandidate")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCourse(Candidate	 C) {
+	public Response updateCandidate(Candidate	C) {
 		candidateservice.UpdateCandidate(C);
-	return Response.status(Status.ACCEPTED).entity("Successful Update").build();
-	}
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("AffectCourseCandidate")
-	public Response affectCourseCandidat(@QueryParam("idC") int idCourse , @QueryParam("idCand") int idCandidate)
-	{
-		candidateservice.affectCourseCandidate(idCourse, idCandidate);
-		return Response.status(Status.ACCEPTED).entity("Add Successful").build();
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("AffectProfExpCandidate")
-	public Response affectProfExpCandidat(@QueryParam("idProf") int idProfExp , @QueryParam("idCan") int idCandidate)
-	{
-		candidateservice.affectProExpCandidate(idProfExp, idCandidate);
-		return Response.status(Status.ACCEPTED).entity("Add Successful").build();
-	}
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("AllCourses")
-	public Response getAllCourseBycandidate( @QueryParam("idCan") int idCandidate)
-	{
-		Set<Course> E =candidateservice.getAllCourseBycandidate(idCandidate);
-		
-		return Response.status(Status.ACCEPTED).entity(E).build();
+		return Response.status(Status.ACCEPTED).entity("Successful Update").build();
 	}
 
 }

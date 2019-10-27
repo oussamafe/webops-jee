@@ -13,7 +13,9 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 @Entity
+
 public class Course  implements Serializable{
 	private static final long serialVersionUID = 1L;
 

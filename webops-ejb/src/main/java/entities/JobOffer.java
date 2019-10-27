@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,15 +40,16 @@ public class JobOffer implements Serializable{
 	@ManyToOne
 	private Company company_offers;
 	
-	@OneToMany (mappedBy = "jobOffer")
-	private List<Application> job_offer;
+	@OneToMany (mappedBy = "jobOffer" ,cascade = {CascadeType.ALL}, 
+			fetch=FetchType.EAGER)
+	private Set<Application> job_offer;
 	
 	
-	public List<Application> getJob_offer() {
+	public Set<Application> getJob_offer() {
 		return job_offer;
 	}
 
-	public void setJob_offer(List<Application> job_offer) {
+	public void setJob_offer(Set<Application> job_offer) {
 		this.job_offer = job_offer;
 	}
 

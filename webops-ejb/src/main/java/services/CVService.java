@@ -20,6 +20,7 @@ public class CVService implements CurriculumVitaeInterface {
 	@Override
 	public int addCourse(Course C) {
 		em.persist(C);
+		
 		return C.getId();
 
 	}
@@ -31,14 +32,18 @@ public class CVService implements CurriculumVitaeInterface {
 	}
 
 	@Override
-	public  void RemoveCourse(int CourseId) {
-		em.remove(em.find(Course.class, CourseId));
+	public  void RemoveCourse(int CourseId,int idCandidate) {
+		int query=
+				em.createQuery("Delete from Course C where C.Candidate="+idCandidate+" and C.id="+CourseId )
+				  .executeUpdate();
 
 	}
 
 	@Override
-	public void RemoveExpPro(int ProExpId) {
-		em.remove(em.find(ProfessionalExperience.class, ProExpId));
+	public void RemoveExpPro(int ProExpId,int idCandidate) {
+		int query=
+				em.createQuery("Delete from  ProfessionalExperience P where P.Candidate="+idCandidate+" and P.id="+ProExpId )
+				  .executeUpdate();
 	}
 
 	@Override
@@ -48,7 +53,7 @@ public class CVService implements CurriculumVitaeInterface {
 		course.setInstitution(C.getInstitution());
 		course.setStartDate(C.getStartDate());
 		course.setEndDate(C.getEndDate());
-		
+
 
 	}
 
@@ -62,12 +67,7 @@ public class CVService implements CurriculumVitaeInterface {
 
 	}
 
-	@Override
-	public int addCurriculumVitae(Candidate Candidate, int idC, Course C, ProfessionalExperience PE) {
-			Candidate candidate=em.find(Candidate.class, Candidate.getId());
-			
-		
-		
-		return 0;
-	}
+	
+
+	
 }

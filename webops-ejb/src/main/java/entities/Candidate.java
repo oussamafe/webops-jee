@@ -14,11 +14,12 @@ import javax.persistence.OneToOne;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 
 @Entity
 @DiscriminatorValue(value="Candidate")
+
 public class Candidate extends User implements Serializable{
 
 	private static final long serialVersionUID = 1L;

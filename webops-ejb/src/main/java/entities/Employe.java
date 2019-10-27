@@ -31,7 +31,7 @@ public class Employe extends User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Role role ;
 	
-	
+	/*
 	//------------------------add by oussema mahjoub--------------//
 	@OneToOne(mappedBy = "employe")
 	private AvailabilityEmploye availabilityEmploye;	
@@ -57,7 +57,7 @@ public class Employe extends User implements Serializable{
 	//-----------------------------------------------------------//
 	
 	
-	
+	*/
 	
 
 	@JsonBackReference
