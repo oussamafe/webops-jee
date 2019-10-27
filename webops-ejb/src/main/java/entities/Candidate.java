@@ -30,7 +30,17 @@ public class Candidate extends User implements Serializable{
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
+	private String SubCand;
+	private String SubCompany;
 	
+	public String getSubCand() {
+		return SubCand;
+	}
+
+	public void setSubCand(String subCand) {
+		SubCand = subCand;
+	}
+
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	//@JsonIgnoreProperties("Courses")
 	private Set<Course> Courses;

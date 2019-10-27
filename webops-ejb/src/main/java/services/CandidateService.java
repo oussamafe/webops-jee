@@ -26,6 +26,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
 	
+	
 	@Override
 	public int addCandidate(Candidate C) {
 		
@@ -135,6 +136,26 @@ public class CandidateService implements CandidateInterfaceRemote {
 		
 		return ExpProf;
 
+	}
+
+
+	@Override
+	public void ToSubScribetoCandidate(int idCandidate, int idSub) {
+		Query query2 = em.createQuery("update Candidate C set C.SubCand=:id where C.id=:Candidateid");
+		query2.setParameter("id", idSub+"|");
+		query2.setParameter("Candidateid", idCandidate);
+		query2.executeUpdate();
+		
+	}
+
+
+	@Override
+	public void ToSubScribetoCompany(int idCandidate, int idSubComp) {
+		Query query2 = em.createQuery("update Candidate C set C.SubCompany=:id where C.id=:Candidateid");
+		query2.setParameter("id", idSubComp+"|");
+		query2.setParameter("Candidateid", idCandidate);
+		query2.executeUpdate();
+		
 	}
 
 }

@@ -19,6 +19,7 @@ public interface CandidateInterfaceRemote {
 	Set<Course> getAllCourseBycandidate(int CandidateId);
 	public void affectProExpCandidate(int ProfExpId, int CandidateId);
 	Set<ProfessionalExperience> getAllExpProdBycandidate(int CandidateId);
-	
+	public void ToSubScribetoCandidate(int idCandidate,int idSubCan);
+	public void ToSubScribetoCompany(int idCandidate,int idSubComp);
 	
 }
