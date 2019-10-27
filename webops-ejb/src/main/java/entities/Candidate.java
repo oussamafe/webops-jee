@@ -58,6 +58,7 @@ public class Candidate extends User implements Serializable{
 	@OneToMany(mappedBy = "candidate", cascade = { CascadeType.ALL })
 	private Set<AvailabilityCandidate> avalibilityCandidate = new HashSet<AvailabilityCandidate>();
 	
+	@JsonManagedReference(value="candidatInterview-movement")
 	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
 	private Set<Interview> interviews = new HashSet<Interview>();
 
@@ -66,7 +67,7 @@ public class Candidate extends User implements Serializable{
 	
 	
 
-	public void setAvalibilityCandidate(Set<AvailabilityCandidate> interviews) {
+	public void setAvalibilityCandidate(Set<AvailabilityCandidate> avalibilityCandidate) {
 		this.avalibilityCandidate = avalibilityCandidate;
 	}
 

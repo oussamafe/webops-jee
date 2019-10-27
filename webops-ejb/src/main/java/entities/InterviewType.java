@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 public class InterviewType implements Serializable {
@@ -23,6 +25,7 @@ public class InterviewType implements Serializable {
 	private String type;
 	private int hours_number;
 
+	@JsonManagedReference(value="interviewType-movement")
 	@OneToMany(mappedBy = "interviewType", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Set<Interview> interviews = new HashSet<Interview>();
 

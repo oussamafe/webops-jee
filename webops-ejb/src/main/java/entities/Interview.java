@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 public class Interview implements Serializable{
@@ -24,10 +26,16 @@ public class Interview implements Serializable{
 	@Temporal (TemporalType.DATE)
 	private Date date;
 	
+	
+	@JsonBackReference(value="employeInterview-movement")
 	@ManyToOne
 	private Employe employeInterview;
+	
+	@JsonBackReference(value="candidatInterview-movement")
 	@ManyToOne
 	private Candidate candidatInterview;
+	
+	@JsonBackReference(value="interviewType-movement")
 	@ManyToOne
 	private InterviewType interviewType;
 	

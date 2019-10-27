@@ -41,7 +41,7 @@ public class Employe extends User implements Serializable{
 	@OneToMany(mappedBy = "employe", cascade = { CascadeType.ALL })
 	private Set<AvailabilityEmploye> availabilityEmploye;
 		
-	
+	@JsonManagedReference(value="employeInterview-movement")
 	@OneToMany(fetch = FetchType.EAGER , mappedBy="employeInterview", cascade = {CascadeType.ALL})
 	private Set<Interview> interviews;
 	
