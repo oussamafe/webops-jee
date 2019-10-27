@@ -2,6 +2,7 @@ package entities;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,28 +54,33 @@ public class Candidate extends User implements Serializable{
 	
 	
 	//---------------------  add by oussema mahjoub ---------------------//
-	@OneToOne(mappedBy = "candidate")
-	private AvailabilityCandidate avalibilityCandidate;
+	@JsonManagedReference(value="avalibilityCandidate-movement")
+	@OneToMany(mappedBy = "candidate", cascade = { CascadeType.ALL })
+	private Set<AvailabilityCandidate> avalibilityCandidate = new HashSet<AvailabilityCandidate>();
 	
 	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
-	private List<Interview> interviews = new ArrayList<>();
+	private Set<Interview> interviews = new HashSet<Interview>();
 
 	@OneToOne(mappedBy = "candidatTest")	
 	private OnlineTest onlineTest;		
 	
-	public AvailabilityCandidate getAvalibilityCandidate() {
-		return avalibilityCandidate;
-	}
+	
 
-	public void setAvalibilityCandidate(AvailabilityCandidate avalibilityCandidate) {
+	public void setAvalibilityCandidate(Set<AvailabilityCandidate> interviews) {
 		this.avalibilityCandidate = avalibilityCandidate;
 	}
 
-	public List<Interview> getInterviews() {
+	public Set<AvailabilityCandidate> getAvailabilityCandidate() {
+		return avalibilityCandidate;
+	}
+	
+	
+
+	public Set<Interview> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(List<Interview> interviews) {
+	public void setInterviews(Set<Interview> interviews) {
 		this.interviews = interviews;
 	}
 

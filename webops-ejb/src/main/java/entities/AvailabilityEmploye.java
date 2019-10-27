@@ -1,7 +1,9 @@
 package entities;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 
@@ -10,7 +12,8 @@ public class AvailabilityEmploye extends Availability {
 
 	private static final long serialVersionUID =1L;
 	
-	@OneToOne
+	@JsonBackReference(value="availabilityEmploye-movement")
+	@ManyToOne
 	private Employe employe;
 	
 	public AvailabilityEmploye() {
