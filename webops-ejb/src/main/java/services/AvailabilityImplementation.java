@@ -46,7 +46,7 @@ public class AvailabilityImplementation implements AvailabilityRemote {
 
 	@Override
 	public Set<AvailabilityCandidate> ListAvailabilityCandidate(int candidateID) {
-		AvailabilityCandidate avaCan = em.find(AvailabilityCandidate.class, candidateID);
+		Candidate avaCan = em.find(Candidate.class, candidateID);
 		TypedQuery<AvailabilityCandidate> query = em
 				.createQuery("SELECT a FROM AvailabilityCandidate a where a.candidate=:m", AvailabilityCandidate.class);
 		query.setParameter("m", avaCan);
@@ -57,7 +57,7 @@ public class AvailabilityImplementation implements AvailabilityRemote {
 
 	@Override
 	public Set<AvailabilityEmploye> ListAvailabilityEmploye(int employeID) {
-		AvailabilityEmploye avaEmp = em.find(AvailabilityEmploye.class, employeID);
+		Employe avaEmp = em.find(Employe.class, employeID);
 		TypedQuery<AvailabilityEmploye> query = em.createQuery("SELECT a FROM AvailabilityEmploye a where a.employe=:m",
 				AvailabilityEmploye.class);
 		query.setParameter("m", avaEmp);

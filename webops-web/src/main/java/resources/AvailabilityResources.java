@@ -29,7 +29,7 @@ public class AvailabilityResources {
 	@POST
 	@Path("/AddAvailabilityCandidate/{candidateID}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response AddAvailabilityCandidate(@PathParam(value = "CandidateID")int candidateID,AvailabilityCandidate ac) {
+	public Response AddAvailabilityCandidate(@PathParam(value = "candidateID")int candidateID,AvailabilityCandidate ac) {
 		 AI.AddAvailabilityCandidate(candidateID,ac);
 		return Response.status(Status.CREATED).build();
 	}
@@ -53,7 +53,7 @@ public class AvailabilityResources {
 	@GET
 	@Path("/ListAvailabilityCandidate/{candidateID}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ListAvailabilityCandidate(@PathParam(value = "CandidateID")int candidateID) {
+	public Response ListAvailabilityCandidate(@PathParam(value = "candidateID")int candidateID) {
 		Set<AvailabilityCandidate> list = AI.ListAvailabilityCandidate(candidateID);
 		return Response.status(Status.OK).entity(list).build();
 	}

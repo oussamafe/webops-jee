@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 
@@ -23,8 +26,8 @@ public class Availability implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	@Enumerated(EnumType.STRING)
-	private Days day;
+	@Temporal(TemporalType.DATE)
+	private Date date;
 	private int start_hour;
 	private int end_hour;
 	
@@ -32,13 +35,16 @@ public class Availability implements Serializable{
 		super();
 	}
 
-	public Days getDay() {
-		return day;
+	
+	public Date getDate() {
+		return date;
 	}
 
-	public void setDay(Days day) {
-		this.day = day;
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
+
 
 	public int getStart_hour() {
 		return start_hour;

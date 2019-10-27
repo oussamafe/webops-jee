@@ -6,12 +6,17 @@ import javax.ejb.Remote;
 
 import entities.Application;
 import entities.ApplicationId;
+
 @Remote
 public interface ApplicationCandidateManagementRemote {
-	public Set<Application> ViewAllApplicationStillWait();
-	public Set<Application> ViewAllApplicationAccepted();
-	public Set<Application> ViewAllApplicationRejected();
-	public int AcceptApplication(ApplicationId id);
-	public int RejectApplication(ApplicationId id);
-	
+	public Set<Application> ViewAllApplicationStillWait();// tested ok
+
+	public Set<Application> ViewAllApplicationAccepted();// tested ok
+
+	public Set<Application> ViewAllApplicationRejected();// tested ok
+
+	public int AcceptApplication(ApplicationId id);// tested ok
+
+	public int RejectApplication(ApplicationId id);// tested ok
+
 }
