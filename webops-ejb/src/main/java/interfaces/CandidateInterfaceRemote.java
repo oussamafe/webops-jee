@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Remote;
 import entities.Candidate;
@@ -21,5 +22,6 @@ public interface CandidateInterfaceRemote {
 	Set<ProfessionalExperience> getAllExpProdBycandidate(int CandidateId);
 	public void ToSubScribetoCandidate(int idCandidate,int idSubCan);
 	public void ToSubScribetoCompany(int idCandidate,int idSubComp);
-	
+	List<String > getAllMyCandidateSub(int idCandidate);
+	List<String > getAllMyCompanySub(int idCandidate);
 }

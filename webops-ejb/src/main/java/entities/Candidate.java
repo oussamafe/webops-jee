@@ -33,13 +33,7 @@ public class Candidate extends User implements Serializable{
 	private String SubCand;
 	private String SubCompany;
 	
-	public String getSubCand() {
-		return SubCand;
-	}
-
-	public void setSubCand(String subCand) {
-		SubCand = subCand;
-	}
+	
 
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	//@JsonIgnoreProperties("Courses")
@@ -92,8 +86,22 @@ public class Candidate extends User implements Serializable{
 
 	//-------------------------------------------------------------------//
 	
+	public String getSubCand() {
+		return SubCand;
+	}
+
+	public void setSubCand(String subCand) {
+		SubCand = subCand;
+	}
 	
-	
+	public String getSubCompany() {
+		return SubCompany;
+	}
+
+	public void setSubCompany(String subCompany) {
+		SubCompany = subCompany;
+	}
+
 	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}

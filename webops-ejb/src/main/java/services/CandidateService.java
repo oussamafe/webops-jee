@@ -1,23 +1,24 @@
 package services;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import entities.Candidate;
+import entities.Company;
 import entities.Course;
-
 import entities.ProfessionalExperience;
 import interfaces.CandidateInterfaceRemote;
 @Stateless
@@ -25,33 +26,33 @@ import interfaces.CandidateInterfaceRemote;
 public class CandidateService implements CandidateInterfaceRemote {
 	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
-	
-	
+
+
 	@Override
 	public int addCandidate(Candidate C) {
-		
+
 		if(ValidateMail(C.getEmail())==0) {
-		em.persist(C);
-		String pass = BCrypt.hashpw(C.getPassword(), BCrypt.gensalt());
-		C.setPassword(pass);
-		return C.getId();
+			em.persist(C);
+			String pass = BCrypt.hashpw(C.getPassword(), BCrypt.gensalt());
+			C.setPassword(pass);
+			return C.getId();
 		}
 		return 0 ;
 	}
 
-	
-	 public Long ValidateMail(String Email) {
-		 TypedQuery<Long> query = em.createQuery("select count(*) from Candidate e where e.email=:Cemail", Long.class);
-			query.setParameter("Cemail",Email);
-			Long nbr=query.getSingleResult();
-			return nbr;
-			
-	 }
-   // à verifier avec email unique
+
+	public Long ValidateMail(String Email) {
+		TypedQuery<Long> query = em.createQuery("select count(*) from Candidate e where e.email=:Cemail", Long.class);
+		query.setParameter("Cemail",Email);
+		Long nbr=query.getSingleResult();
+		return nbr;
+
+	}
+	// à verifier avec email unique
 	@Override
 	public int UpdateEmailCandidate(int idC,String Email) {
-		
-	
+
+
 		if(ValidateMail(Email)==0) {
 			Query query2 = em.createQuery("update Candidate C set C.email=:Email where C.id=:Candidateid");
 			query2.setParameter("Email", Email);
@@ -60,7 +61,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 			return modified;
 
 		} return 0;
-		
+
 	}
 
 
@@ -75,7 +76,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 		candidate.setProfilIntro(C.getProfilIntro());
 		candidate.setPhoneNumber(C.getPhoneNumber());
 		candidate.setCertifications(C.getCertifications());
-		
+
 	}
 	//methode facultative
 	@Override
@@ -103,7 +104,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	}
 
-	
+
 
 	@Override
 	public Set<Course> getAllCourseBycandidate(int CandidateId) {
@@ -111,9 +112,9 @@ public class CandidateService implements CandidateInterfaceRemote {
 		Set<Course> Courses = new HashSet<Course>();
 		for(Course C : candidateManagedEntity.getCourses()){
 			Courses.add(C);
-			
+
 		}
-		
+
 		return Courses;
 	}
 
@@ -133,7 +134,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 		for(ProfessionalExperience e : candidateManagedEntity.getProfessionalExperiences()){
 			ExpProf.add(e);
 		}
-		
+
 		return ExpProf;
 
 	}
@@ -141,21 +142,85 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	@Override
 	public void ToSubScribetoCandidate(int idCandidate, int idSub) {
-		Query query2 = em.createQuery("update Candidate C set C.SubCand=:id where C.id=:Candidateid");
-		query2.setParameter("id", idSub+"|");
-		query2.setParameter("Candidateid", idCandidate);
-		query2.executeUpdate();
-		
+		Query query = em.createQuery("update Candidate C set C.SubCand=:id where C.id=:Candidateid");
+		query.setParameter("id", idSub+"|");
+		query.setParameter("Candidateid", idCandidate);
+		query.executeUpdate();
+
 	}
 
 
 	@Override
 	public void ToSubScribetoCompany(int idCandidate, int idSubComp) {
-		Query query2 = em.createQuery("update Candidate C set C.SubCompany=:id where C.id=:Candidateid");
-		query2.setParameter("id", idSubComp+"|");
-		query2.setParameter("Candidateid", idCandidate);
-		query2.executeUpdate();
-		
+		Query query = em.createQuery("update Candidate C set C.SubCompany=:id where C.id=:Candidateid");
+		query.setParameter("id", idSubComp+"|");
+		query.setParameter("Candidateid", idCandidate);
+		query.executeUpdate();
+
 	}
+	//pas encore tester le webservice correspondant
+	@Override
+	public List<String> getAllMyCandidateSub(int idCandidate) {
+		Query query = em.createQuery("Select C.SubCand from Candidate C where id="+idCandidate);
+		String AllIdSub = (String) query.getSingleResult();
+		String[] array =AllIdSub.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		List<String> ALLSubNames =new ArrayList<String>();
+		for (int i = 0; i < listOfInteger.size(); i++) {
+			
+			Query query2 = em.createQuery("Select C from Candidate C where C.id="+listOfInteger.get(i));
+			Candidate A=(Candidate) query2.getSingleResult();
+			ALLSubNames.add(A.getFirst_Name()+" " +A.getLast_Name());
+			System.out.println(ALLSubNames);
+			}
+		return ALLSubNames;
+		}
+//pas encore tester le webservice correspondant
+
+	@Override
+	public List<String> getAllMyCompanySub(int idCompany) {
+		Query query = em.createQuery("Select C.SubCompany from Candidate C where id="+idCompany);
+		String AllIdSub = (String) query.getSingleResult();
+		String[] array =AllIdSub.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		List<String> ALLSubNames =new ArrayList<String>();
+		for (int i = 0; i < listOfInteger.size(); i++) {
+			
+			Query query2 = em.createQuery("Select C from Company C where C.id="+listOfInteger.get(i));
+			Company A=(Company) query2.getSingleResult();
+			ALLSubNames.add(A.getName());
+			System.out.println(ALLSubNames);
+			}
+		return ALLSubNames;
+		}
+	
+	
+	//Useful methode 
+	 public static <T> List<T> convertArrayToList(T array[]) 
+	    { 
+	  
+	        // Create an empty List 
+	        List<T> list = new ArrayList<>(); 
+	  
+	        // Iterate through the array 
+	        for (T t : array) { 
+	            // Add each element into the list 
+	            list.add(t); 
+	        } 
+	  
+	        // Return the converted List 
+	        return list; 
+	    }
+	//Useful methode
+	 public static <T, U> List<U> 
+	    convertStringListToIntList(List<T> listOfString, 
+	                               Function<T, U> function) 
+	    { 
+	        return listOfString.stream() 
+	            .map(function) 
+	            .collect(Collectors.toList()); 
+	    } 
 
 }
