@@ -159,7 +159,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	@Override
 	public void ToSubScribetoCompany(int idCandidate, int idSubComp) {
-		Query query = em.createQuery("update Candidate C set C.SubCompany=:id where C.id=:Candidateid");
+		Query query = em.createQuery("update Candidate C set C.SubCompany=(C.SubCompany,:id) where C.id=:Candidateid");
 		query.setParameter("id", idSubComp+"|");
 		query.setParameter("Candidateid", idCandidate);
 		query.executeUpdate();
@@ -185,6 +185,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 			}
 		return ALLSubNames;
 	} 
+	
 //pas encore tester le webservice correspondant
 
 	@Override
@@ -231,7 +232,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 	            .map(function) 
 	            .collect(Collectors.toList()); 
 	    }
-//not tested as web service
+	 //not tested as web service
 	@Override
 	public List<String> gelAllMysubscribers(int idCandidate) {
 		Query query = em.createQuery("Select C.SubbedCand from Candidate C where id="+idCandidate);
@@ -265,29 +266,119 @@ public class CandidateService implements CandidateInterfaceRemote {
 		query1.executeUpdate();
 	}
 
-
+	//Still not tested as a web service
 	@Override
 	public void TreatFriendRequest(int idSender, int idReciever, int state) {
+		Date date = new Date();
+		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		Query query = em.createQuery("Select C.Friendsrequests from Candidate C where id="+idReciever);
+		Query query2 = em.createQuery("Select C.Friendsrequests from Candidate C where id="+idSender);
+		String AllResquets = (String) query.getSingleResult();
+		String AllResquets2 = (String) query2.getSingleResult();
+		String[] array =AllResquets.split("\\|");
+		String[] array2 =AllResquets2.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<String> list2 = convertArrayToList(array2);
+		String str="";
+		String str2="";
+		String friend1="";
+		String friend2="";
 		if (state==0) {
-			String str="";
-			Query query = em.createQuery("Select C.Friendsrequests from Candidate C where id="+idReciever);
-			String AllResquets = (String) query.getSingleResult();
-			String[] array =AllResquets.split("\\|");
-			List<String> list = convertArrayToList(array); 
 			for (int i = 0; i < list.size(); i++) {
-				String[] array2 =list.get(i).split("\\;");
-				if(array2[0].equals(Integer.toString(idSender))) {
+				String[] arrays =list.get(i).split("\\;");
+				if(arrays[0].equals(Integer.toString(idSender))) {
 					list.remove(i);
 				}
 				else
 				str=str+list.get(i)+"|";
 			}
-			System.out.println(str);
-			
+			for (int i = 0; i < list2.size(); i++) {
+				String[] arrays2 =list2.get(i).split("\\;");
+				if(arrays2[0].equals(Integer.toString(idReciever))) {
+					list2.remove(i);
+				}
+				else
+				str2=str2+list2.get(i)+"|";
+			}
 			Query query1 = em.createQuery("update Candidate C set C.Friendsrequests='"+str+"' where C.id="+idReciever);
 			query1.executeUpdate();
+			Query query12 = em.createQuery("update Candidate C set C.Friendsrequests='"+str2+"' where C.id="+idSender);
+			query12.executeUpdate();
 			
 		}
+		else if(state==1) {
+			for (int i = 0; i < list.size(); i++) {
+				String[] arrays =list.get(i).split("\\;");
+				
+				if(arrays[0].equals(Integer.toString(idSender))) {
+					
+					list.remove(i);
+					System.out.println(friend1);
+				}
+				else
+				str=str+list.get(i)+"|";
+			}
+			friend1=idSender+";"+formatter.format(date)+"|";
+			for (int i = 0; i < list2.size(); i++) {
+				String[] arrays2 =list2.get(i).split("\\;");
+				if(arrays2[0].equals(Integer.toString(idReciever))) {
+					friend2=friend2+list2.get(i);
+					list2.remove(i);
+				}
+				else
+				str2=str2+list2.get(i)+"|";
+			}
+			friend2=idReciever+";"+formatter.format(date)+"|";
+			Query query11 = em.createQuery("update Candidate C set C.Friendsrequests='"+str+"' where C.id="+idReciever);
+			query11.executeUpdate();
+			Query query12 = em.createQuery("update Candidate C set C.Friendsrequests='"+str2+"' where C.id="+idSender);
+			query12.executeUpdate();
+			Query query3 = em.createQuery("update Candidate C set C.Friends='"+friend1+"' where C.id="+idReciever);
+			query3.executeUpdate();
+			Query query4 = em.createQuery("update Candidate C set C.Friends='"+friend2+"' where C.id="+idSender);
+			query4.executeUpdate();
+			
+			
+		}
+		
+		
+	}
+
+
+	@Override
+	public void RemoveFriend(int idCandidate, int idFriend) {
+		Query query = em.createQuery("Select C.Friends from Candidate C where id="+idCandidate);
+		Query query2 = em.createQuery("Select C.Friends from Candidate C where id="+idFriend);
+		String AllFriends = (String) query.getSingleResult();
+		String AllFriends2 = (String) query2.getSingleResult();
+		String[] array =AllFriends.split("\\|");
+		String[] array2 =AllFriends2.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<String> list2 = convertArrayToList(array2);
+		String str="";
+		String str2="";
+	
+		
+			for (int i = 0; i < list.size(); i++) {
+				String[] arrays =list.get(i).split("\\;");
+				if(arrays[0].equals(Integer.toString(idFriend))) {
+					list.remove(i);
+				}
+				else
+				str=str+list.get(i)+"|";
+			}
+			for (int i = 0; i < list2.size(); i++) {
+				String[] arrays2 =list2.get(i).split("\\;");
+				if(arrays2[0].equals(Integer.toString(idCandidate))) {
+					list2.remove(i);
+				}
+				else
+				str2=str2+list2.get(i)+"|";
+			}
+			Query query1 = em.createQuery("update Candidate C set C.Friends='"+str+"' where C.id="+idFriend);
+			query1.executeUpdate();
+			Query query12 = em.createQuery("update Candidate C set C.Friends='"+str2+"' where C.id="+idCandidate);
+			query12.executeUpdate();
 		
 	}
 
@@ -295,3 +386,4 @@ public class CandidateService implements CandidateInterfaceRemote {
 	
 
 }
+

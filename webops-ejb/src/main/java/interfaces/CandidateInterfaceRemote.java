@@ -27,5 +27,5 @@ public interface CandidateInterfaceRemote {
 	List<String> gelAllMysubscribers(int idCandidate);
 	public void sendFriendRequest(int idCandidate1,int idCandidate2);
 	public void TreatFriendRequest(int idCandidate1,int idCandidate2,int state);
-	
+	public void RemoveFriend(int idCandidate,int idFriend);
 }
