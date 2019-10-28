@@ -12,9 +12,7 @@ import entities.InterviewType;
 @Remote
 public interface InterviewManagementRemote {
 	public int AddInterview(int candidateID);//tested OK
-	public int AddInterviewType(InterviewType interviewType);//tested OK
-	
-	public void InterviewPropertiesAlgo(List<Integer> ids);//not implemented yet
+	public int AddInterviewType(InterviewType interviewType);//tested OK	
 	
 	public void UpdateInterview(int interviewID,Interview interview);//not implemented yet
 	public void UpdateInterviewType(int interviewTypeID,InterviewType interviewType);//tested OK

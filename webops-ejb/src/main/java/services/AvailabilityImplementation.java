@@ -64,7 +64,6 @@ public class AvailabilityImplementation implements AvailabilityRemote {
 		Set<AvailabilityEmploye> results = new HashSet<AvailabilityEmploye>();
 		results.addAll(query.getResultList());
 		return results;
-
 	}
 
 }

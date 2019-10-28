@@ -27,17 +27,14 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 	AvailabilityImplementation ai;
 	@Override
 	public int AddInterview(int candidateID) {	
-		List<Integer> ids=new ArrayList<Integer>();
+		
 		for(InterviewType it:ListAllInterviewType())
 		{
 			Interview i=new Interview();
-			em.persist(i);
-			ids.add(i.getId());
+			em.persist(i);			
 			AffectInterviewTypeToInterview(i.getId(),it.getId());
 			AffectInterviewToCandidate(i.getId(),2);
-		}
-		
-		InterviewPropertiesAlgo(ids);		
+		}						
 		return 1;
 	}
 
@@ -208,11 +205,7 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		it.getInterviews().remove(i);
 		
 	}
-	@Override
-	public void InterviewPropertiesAlgo(List<Integer> ids) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 }

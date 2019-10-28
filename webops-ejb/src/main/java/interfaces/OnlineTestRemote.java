@@ -32,7 +32,7 @@ public interface OnlineTestRemote {
 	public void setTestNoteByQuestion(int TestID,int QuestionID,Set<Integer>ResponcesID);// tested OK
 	
 	
-	public int AutoRefuseOnlineTest(int TestID);//tested OK
+//	public int AutoRefuseOnlineTest(int TestID);//tested OK
 	
 	
 	public Set<Question> ListQuestion();//tested OK
@@ -40,5 +40,7 @@ public interface OnlineTestRemote {
 	public Set<String> ListModuleOfQuestion();//tested OK
 	public Set<Responce> ListResponceByQuestion(int QuestionID);//tested OK
 	
-
+	public void RemoveTestOnline(int onlineTestID);
+	public void RemoveResponce(int responceID);
+	public void RemoveQuestion(int questionID);
 }

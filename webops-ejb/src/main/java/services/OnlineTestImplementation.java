@@ -73,12 +73,7 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 
 	}
 
-	@Override
-	public int AutoRefuseOnlineTest(int TestID) {
-		Query query = em.createQuery("UPDATE OnlineTest o SET o.state=:s WHERE o.date +5 < NOW()");
-		query.setParameter("s", StateTestOnline.InValid);
-		return query.executeUpdate();
-	}
+	
 
 	@Override
 	public Set<Question> ListQuestion() {
@@ -212,5 +207,25 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 		ot.getQuestions().remove(q);
 		q.getOnlineTests().remove(ot);
 
+	}
+
+	@Override
+	public void RemoveTestOnline(int onlineTestID) {
+		OnlineTest ot = em.find(OnlineTest.class, onlineTestID);
+		em.remove(ot);
+		
+	}
+
+	@Override
+	public void RemoveResponce(int responceID) {
+		Responce r = em.find(Responce.class, responceID);
+		em.remove(r);
+	}
+
+	@Override
+	public void RemoveQuestion(int questionID) {
+		Question q = em.find(Question.class, questionID);
+		em.remove(q);
+		
 	}
 }

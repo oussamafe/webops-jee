@@ -9,8 +9,8 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -27,41 +27,41 @@ public class AvailabilityResources {
 	AvailabilityImplementation AI;
 	
 	@POST
-	@Path("/AddAvailabilityCandidate/{candidateID}")
+	@Path("/AddAvailabilityCandidate")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response AddAvailabilityCandidate(@PathParam(value = "candidateID")int candidateID,AvailabilityCandidate ac) {
+	public Response AddAvailabilityCandidate(@QueryParam(value = "candidateID")int candidateID,AvailabilityCandidate ac) {
 		 AI.AddAvailabilityCandidate(candidateID,ac);
 		return Response.status(Status.CREATED).build();
 	}
 	@POST
-	@Path("/AddAvailabilityEmploye/{employeID}")
+	@Path("/AddAvailabilityEmploye")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response AddAvailabilityEmploye(@PathParam(value = "employeID")int employeID,AvailabilityEmploye ae) {
+	public Response AddAvailabilityEmploye(@QueryParam(value = "employeID")int employeID,AvailabilityEmploye ae) {
 		 AI.AddAvailabilityEmploye(employeID,ae);
 		return Response.status(Status.CREATED).build();
 	}
 
 	
 	@DELETE
-	@Path("/DeleteAvailability/{availabilityID}")
-	public Response DeleteAvailability(@PathParam(value = "availabilityID")int availabilityID) {
+	@Path("/DeleteAvailability")
+	public Response DeleteAvailability(@QueryParam(value = "availabilityID")int availabilityID) {
 		 AI.DeleteAvailability(availabilityID);
-		return Response.status(Status.CREATED).build();
+		return Response.status(Status.OK).entity("Availability removed").build();
 	}
 	
 	
 	@GET
-	@Path("/ListAvailabilityCandidate/{candidateID}")
+	@Path("/ListAvailabilityCandidate")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ListAvailabilityCandidate(@PathParam(value = "candidateID")int candidateID) {
+	public Response ListAvailabilityCandidate(@QueryParam(value = "candidateID")int candidateID) {
 		Set<AvailabilityCandidate> list = AI.ListAvailabilityCandidate(candidateID);
 		return Response.status(Status.OK).entity(list).build();
 	}
 	
 	@GET
-	@Path("/ListAvailabilityEmploye/{employeID}")
+	@Path("/ListAvailabilityEmploye")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ListAvailabilityEmploye(@PathParam(value = "employeID")int employeID) {
+	public Response ListAvailabilityEmploye(@QueryParam(value = "employeID")int employeID) {
 		Set<AvailabilityEmploye> list = AI.ListAvailabilityEmploye(employeID);
 		return Response.status(Status.OK).entity(list).build();
 	}
