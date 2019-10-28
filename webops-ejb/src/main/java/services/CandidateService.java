@@ -1,14 +1,15 @@
 package services;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,6 +22,7 @@ import entities.Company;
 import entities.Course;
 import entities.ProfessionalExperience;
 import interfaces.CandidateInterfaceRemote;
+
 @Stateless
 @LocalBean
 public class CandidateService implements CandidateInterfaceRemote {
@@ -142,10 +144,15 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	@Override
 	public void ToSubScribetoCandidate(int idCandidate, int idSub) {
-		Query query = em.createQuery("update Candidate C set C.SubCand=:id where C.id=:Candidateid");
+		Query query = em.createQuery("update Candidate C set C.SubCand=concat(C.SubCand,:id) where C.id=:Candidateid");
+		Query query2 = em.createQuery("update Candidate C set C.SubbedCand=concat(C.SubbedCand,:id) where C.id=:idSub");
+		
 		query.setParameter("id", idSub+"|");
 		query.setParameter("Candidateid", idCandidate);
 		query.executeUpdate();
+		query2.setParameter("id", idCandidate+"|");
+		query2.setParameter("idSub", idSub);
+		query2.executeUpdate();
 
 	}
 
@@ -159,8 +166,10 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	}
 	//pas encore tester le webservice correspondant
+	
+		
 	@Override
-	public List<String> getAllMyCandidateSub(int idCandidate) {
+	public List<String> getAllMyCandidateSubs(int idCandidate) {
 		Query query = em.createQuery("Select C.SubCand from Candidate C where id="+idCandidate);
 		String AllIdSub = (String) query.getSingleResult();
 		String[] array =AllIdSub.split("\\|");
@@ -175,7 +184,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 			System.out.println(ALLSubNames);
 			}
 		return ALLSubNames;
-		}
+	} 
 //pas encore tester le webservice correspondant
 
 	@Override
@@ -221,6 +230,68 @@ public class CandidateService implements CandidateInterfaceRemote {
 	        return listOfString.stream() 
 	            .map(function) 
 	            .collect(Collectors.toList()); 
-	    } 
+	    }
+//not tested as web service
+	@Override
+	public List<String> gelAllMysubscribers(int idCandidate) {
+		Query query = em.createQuery("Select C.SubbedCand from Candidate C where id="+idCandidate);
+		String AllIdSub = (String) query.getSingleResult();
+		String[] array =AllIdSub.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		List<String> ALLSubNames =new ArrayList<String>();
+		for (int i = 0; i < listOfInteger.size(); i++) {
+			
+			Query query2 = em.createQuery("Select C from Candidate C where C.id="+listOfInteger.get(i));
+			Candidate A=(Candidate) query2.getSingleResult();
+			ALLSubNames.add(A.getFirst_Name()+" " +A.getLast_Name());
+			System.out.println(ALLSubNames);
+			}
+		return ALLSubNames;
+	}
+
+
+	@Override
+	public void sendFriendRequest(int idSender, int idReciever) {
+		Date date = new Date();
+		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		Query query = em.createQuery("update Candidate C set C.Friendsrequests=concat(C.Friendsrequests,:Request) where C.id=:idReciever");
+		query.setParameter("idReciever", idReciever);
+		query.setParameter("Request", idSender+";"+formatter.format(date)+";0|");
+		query.executeUpdate();
+		Query query1 = em.createQuery("update Candidate C set C.Friendsrequests=concat(C.Friendsrequests,:Request) where C.id=:idSender");
+		query1.setParameter("idSender", idSender);
+		query1.setParameter("Request", idReciever+";"+formatter.format(date)+";1|");
+		query1.executeUpdate();
+	}
+
+
+	@Override
+	public void TreatFriendRequest(int idSender, int idReciever, int state) {
+		if (state==0) {
+			String str="";
+			Query query = em.createQuery("Select C.Friendsrequests from Candidate C where id="+idReciever);
+			String AllResquets = (String) query.getSingleResult();
+			String[] array =AllResquets.split("\\|");
+			List<String> list = convertArrayToList(array); 
+			for (int i = 0; i < list.size(); i++) {
+				String[] array2 =list.get(i).split("\\;");
+				if(array2[0].equals(Integer.toString(idSender))) {
+					list.remove(i);
+				}
+				else
+				str=str+list.get(i)+"|";
+			}
+			System.out.println(str);
+			
+			Query query1 = em.createQuery("update Candidate C set C.Friendsrequests='"+str+"' where C.id="+idReciever);
+			query1.executeUpdate();
+			
+		}
+		
+	}
+
+
+	
 
 }

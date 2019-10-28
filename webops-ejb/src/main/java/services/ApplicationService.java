@@ -2,14 +2,14 @@ package services;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.management.Query;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
 
 import entities.Application;
 import entities.ApplicationId;
-import entities.Candidate;
+
 import interfaces.ApplicationInterfaceRemote;
 @Stateless
 @LocalBean

@@ -22,6 +22,10 @@ public interface CandidateInterfaceRemote {
 	Set<ProfessionalExperience> getAllExpProdBycandidate(int CandidateId);
 	public void ToSubScribetoCandidate(int idCandidate,int idSubCan);
 	public void ToSubScribetoCompany(int idCandidate,int idSubComp);
-	List<String > getAllMyCandidateSub(int idCandidate);
+	List<String > getAllMyCandidateSubs(int idCandidate);
 	List<String > getAllMyCompanySub(int idCandidate);
+	List<String> gelAllMysubscribers(int idCandidate);
+	public void sendFriendRequest(int idCandidate1,int idCandidate2);
+	public void TreatFriendRequest(int idCandidate1,int idCandidate2,int state);
+	
 }

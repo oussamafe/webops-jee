@@ -30,8 +30,11 @@ public class Candidate extends User implements Serializable{
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
-	private String SubCand;
+	private String SubCand;//my subscriptions
 	private String SubCompany;
+	private String SubbedCand;//my subscribers
+	private String Friends;
+	private String Friendsrequests;
 	
 	
 
@@ -86,8 +89,33 @@ public class Candidate extends User implements Serializable{
 
 	//-------------------------------------------------------------------//
 	
+	
 	public String getSubCand() {
 		return SubCand;
+	}
+
+	public String getFriends() {
+		return Friends;
+	}
+
+	public void setFriends(String friends) {
+		Friends = friends;
+	}
+
+	public String getFriendsrequests() {
+		return Friendsrequests;
+	}
+
+	public void setFriendsrequests(String friendsrequests) {
+		Friendsrequests = friendsrequests;
+	}
+
+	public String getSubbedCand() {
+		return SubbedCand;
+	}
+
+	public void setSubbedCand(String subbedCand) {
+		SubbedCand = subbedCand;
 	}
 
 	public void setSubCand(String subCand) {
