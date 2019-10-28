@@ -165,6 +165,31 @@ public class CandidateService implements CandidateInterfaceRemote {
 		query.executeUpdate();
 
 	}
+
+	@Override
+	public void ToRemoveCandidateSub(int idCandidate, int idSub) {
+		Query query = em.createQuery("Select C.SubCand from Candidate C where id="+idCandidate);
+		String AllResquets = (String) query.getSingleResult();
+		String[] array =AllResquets.split("\\|");
+		List<String> list = convertArrayToList(array);
+		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		String str="";
+		for (int i = 0; i < listOfInteger.size(); i++) {
+			if(listOfInteger.get(i)==idSub) {
+			
+					list.remove(i);
+				}
+				else
+				str=str+list.get(i)+"|";
+			
+			}
+			Query query1 = em.createQuery("update Candidate C set C.SubCand='"+str+"' where C.id="+idCandidate);
+			query1.executeUpdate();
+			
+			
+		
+	}
+	
 	//pas encore tester le webservice correspondant
 	
 		
@@ -205,7 +230,23 @@ public class CandidateService implements CandidateInterfaceRemote {
 			}
 		return ALLSubNames;
 		}
-	
+	@Override
+	public List<String> gelAllMysubscribers(int idCandidate) {
+		Query query = em.createQuery("Select C.SubbedCand from Candidate C where id="+idCandidate);
+		String AllIdSub = (String) query.getSingleResult();
+		String[] array =AllIdSub.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		List<String> ALLSubNames =new ArrayList<String>();
+		for (int i = 0; i < listOfInteger.size(); i++) {
+			
+			Query query2 = em.createQuery("Select C from Candidate C where C.id="+listOfInteger.get(i));
+			Candidate A=(Candidate) query2.getSingleResult();
+			ALLSubNames.add(A.getFirst_Name()+" " +A.getLast_Name());
+			System.out.println(ALLSubNames);
+			}
+		return ALLSubNames;
+	}
 	
 	//Useful methode 
 	 public static <T> List<T> convertArrayToList(T array[]) 
@@ -233,23 +274,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 	            .collect(Collectors.toList()); 
 	    }
 	 //not tested as web service
-	@Override
-	public List<String> gelAllMysubscribers(int idCandidate) {
-		Query query = em.createQuery("Select C.SubbedCand from Candidate C where id="+idCandidate);
-		String AllIdSub = (String) query.getSingleResult();
-		String[] array =AllIdSub.split("\\|");
-		List<String> list = convertArrayToList(array); 
-		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
-		List<String> ALLSubNames =new ArrayList<String>();
-		for (int i = 0; i < listOfInteger.size(); i++) {
-			
-			Query query2 = em.createQuery("Select C from Candidate C where C.id="+listOfInteger.get(i));
-			Candidate A=(Candidate) query2.getSingleResult();
-			ALLSubNames.add(A.getFirst_Name()+" " +A.getLast_Name());
-			System.out.println(ALLSubNames);
-			}
-		return ALLSubNames;
-	}
+	
 
 
 	@Override
@@ -381,6 +406,8 @@ public class CandidateService implements CandidateInterfaceRemote {
 			query12.executeUpdate();
 		
 	}
+
+
 
 
 	

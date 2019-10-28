@@ -21,6 +21,7 @@ public interface CandidateInterfaceRemote {
 	public void affectProExpCandidate(int ProfExpId, int CandidateId);
 	Set<ProfessionalExperience> getAllExpProdBycandidate(int CandidateId);
 	public void ToSubScribetoCandidate(int idCandidate,int idSubCan);
+	public void ToRemoveCandidateSub(int idCandidate,int idSub);
 	public void ToSubScribetoCompany(int idCandidate,int idSubComp);
 	List<String > getAllMyCandidateSubs(int idCandidate);
 	List<String > getAllMyCompanySub(int idCandidate);
