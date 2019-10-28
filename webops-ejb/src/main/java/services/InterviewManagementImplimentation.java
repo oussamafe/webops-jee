@@ -1,7 +1,9 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.ejb.LocalBean;
@@ -9,7 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
+import services.AvailabilityImplementation;
 import entities.Candidate;
 import entities.Employe;
 import entities.Interview;
@@ -21,11 +23,22 @@ import interfaces.InterviewManagementRemote;
 public class InterviewManagementImplimentation implements InterviewManagementRemote{
 	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
-
+	
+	AvailabilityImplementation ai;
 	@Override
-	public int AddInterview(Interview interview) {
-		em.persist(interview);
-		return interview.getId();
+	public int AddInterview(int candidateID) {	
+		List<Integer> ids=new ArrayList<Integer>();
+		for(InterviewType it:ListAllInterviewType())
+		{
+			Interview i=new Interview();
+			em.persist(i);
+			ids.add(i.getId());
+			AffectInterviewTypeToInterview(i.getId(),it.getId());
+			AffectInterviewToCandidate(i.getId(),2);
+		}
+		
+		InterviewPropertiesAlgo(ids);		
+		return 1;
 	}
 
 	@Override
@@ -106,7 +119,7 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 
 	@Override
 	public Set<InterviewType> ListAllInterviewType() {
-		TypedQuery<InterviewType> query = em.createQuery("SELECT a FROM Interview a ", InterviewType.class);
+		TypedQuery<InterviewType> query = em.createQuery("SELECT a FROM InterviewType a ", InterviewType.class);
 		Set<InterviewType> results = new HashSet<InterviewType>();
 		results.addAll(query.getResultList());
 		return results;
@@ -122,6 +135,22 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 	@Override
 	public void DeleteInterview(int interviewID) {
 		Interview i=em.find(Interview.class,interviewID );
+		Candidate c=em.find(Candidate.class, i.getCandidatInterview().getId());		
+		InterviewType it=em.find(InterviewType.class,i.getInterviewType().getId());
+		
+		
+		try {
+			Employe e=em.find(Employe.class, i.getEmployeInterview().getId());
+			e.getInterviews().remove(i);
+		}catch(NullPointerException ex)
+		{
+			System.out.println("null");
+		}
+		
+		
+		c.getInterviews().remove(i);		
+		it.getInterviews().remove(i);
+	
 		em.remove(i);
 		
 	}
@@ -177,6 +206,11 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		Interview i=em.find(Interview.class,interviewID );
 		InterviewType it=em.find(InterviewType.class,interviewTypeID );
 		it.getInterviews().remove(i);
+		
+	}
+	@Override
+	public void InterviewPropertiesAlgo(List<Integer> ids) {
+		// TODO Auto-generated method stub
 		
 	}
 	
