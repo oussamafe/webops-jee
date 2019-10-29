@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,13 +26,22 @@ public class InterviewType implements Serializable {
 	private int id;
 	private String type;
 	private int hours_number;
-
+	@Enumerated(EnumType.STRING)
+	private Role roleOfEmploye ;
 	@JsonManagedReference(value="interviewType-movement")
 	@OneToMany(mappedBy = "interviewType", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Set<Interview> interviews = new HashSet<Interview>();
 
 	public String getType() {
 		return type;
+	}
+
+	public Role getRoleOfEmploye() {
+		return roleOfEmploye;
+	}
+
+	public void setRoleOfEmploye(Role roleOfEmploye) {
+		this.roleOfEmploye = roleOfEmploye;
 	}
 
 	public void setType(String type) {
