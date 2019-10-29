@@ -28,7 +28,7 @@ public interface CandidateInterfaceRemote {
 	public void ToRemoveCompanySub(int idCandidate,int idCompany);
 	List<String > getAllMyCandidateSubs(int idCandidate);
 	List<String > getAllMyCompanySub(int idCandidate);
-	List<String> gelAllMysubscribers(int idCandidate);
+	List<String> getAllMysubscribers(int idCandidate);
 	public void sendFriendRequest(int idCandidate1,int idCandidate2);
 	public void TreatFriendRequest(int idCandidate1,int idCandidate2,int state);
 	public void RemoveFriend(int idCandidate,int idFriend);

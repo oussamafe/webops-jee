@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,10 +31,15 @@ public class Candidate extends User implements Serializable{
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
+	
 	private String SubCand;//my subscriptions
+	
 	private String SubCompany;
+	
 	private String SubbedCand;//my subscribers
+	
 	private String Friends;
+	
 	private String Friendsrequests;
 	
 	

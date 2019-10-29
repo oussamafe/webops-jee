@@ -144,8 +144,8 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	@Override
 	public void ToSubScribetoCandidate(int idCandidate, int idSub) {
-		Query query = em.createQuery("update Candidate C set C.SubCand=concat(C.SubCand,:id) where C.id=:Candidateid");
-		Query query2 = em.createQuery("update Candidate C set C.SubbedCand=concat(C.SubbedCand,:id) where C.id=:idSub");
+		Query query = em.createQuery("update Candidate C set C.SubCand=CONCAT(IFNULL(C.SubCand,''),:id) where C.id=:Candidateid");
+		Query query2 = em.createQuery("update Candidate C set C.SubbedCand=CONCAT(IFNULL(C.SubbedCand,''),:id) where C.id=:idSub");
 		
 		query.setParameter("id", idSub+"|");
 		query.setParameter("Candidateid", idCandidate);
@@ -159,7 +159,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 	@Override
 	public void ToSubScribetoCompany(int idCandidate, int idSubComp) {
-		Query query = em.createQuery("update Candidate C set C.SubCompany=(C.SubCompany,:id) where C.id=:Candidateid");
+		Query query = em.createQuery("update Candidate C set C.SubCompany=concat(IFNULL(C.SubCompany,''),:id) where C.id=:Candidateid");
 		query.setParameter("id", idSubComp+"|");
 		query.setParameter("Candidateid", idCandidate);
 		query.executeUpdate();
@@ -178,27 +178,27 @@ public class CandidateService implements CandidateInterfaceRemote {
 		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
 		List<String> list2 = convertArrayToList(array2);
 		List<Integer> listOfInteger2 = convertStringListToIntList( list2,Integer::parseInt); 
+		
 		String str="";
 		String str2="";
 		for (int i = 0; i < listOfInteger.size(); i++) {
 			if(listOfInteger.get(i)==idSub) {
 				listOfInteger.remove(i);
-			}
-				
+			}else
+			
 				str=str+listOfInteger.get(i)+"|";
-				
 			
 			}
 			
-			for (int i = 0; i < listOfInteger2.size(); i++) {
-				if(listOfInteger2.get(i)==idCandidate) {
-					listOfInteger2.remove(i);
-				}
-					
+		for (int i = 0; i < listOfInteger2.size(); i++) {
+			if(listOfInteger2.get(i)==idCandidate) {
+				listOfInteger2.remove(i);
+			}
+			else
 				str2=str2+listOfInteger2.get(i)+"|";
-					
-				
-				}
+			
+			
+			}
 			Query query1 = em.createQuery("update Candidate C set C.SubCand='"+str+"' where C.id="+idCandidate);
 			query1.executeUpdate();
 			Query query22 = em.createQuery("update Candidate C set C.SubbedCand='"+str2+"' where C.id="+idSub);
@@ -207,26 +207,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 		
 	}
 	
-	//pas encore tester le webservice correspondant
 	
-		
-	@Override
-	public List<String> getAllMyCandidateSubs(int idCandidate) {
-		Query query = em.createQuery("Select C.SubCand from Candidate C where id="+idCandidate);
-		String AllIdSub = (String) query.getSingleResult();
-		String[] array =AllIdSub.split("\\|");
-		List<String> list = convertArrayToList(array); 
-		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
-		List<String> ALLSubNames =new ArrayList<String>();
-		for (int i = 0; i < listOfInteger.size(); i++) {
-			
-			Query query2 = em.createQuery("Select C from Candidate C where C.id="+listOfInteger.get(i));
-			Candidate A=(Candidate) query2.getSingleResult();
-			ALLSubNames.add(A.getFirst_Name()+" " +A.getLast_Name());
-			System.out.println(ALLSubNames);
-			}
-		return ALLSubNames;
-	} 
 	
 //pas encore tester le webservice correspondant
 
@@ -247,8 +228,28 @@ public class CandidateService implements CandidateInterfaceRemote {
 			}
 		return ALLSubNames;
 		}
+	//pas encore tester le webservice correspondant
+	
+	
+		@Override
+		public List<String> getAllMyCandidateSubs(int idCandidate) {
+			Query query = em.createQuery("Select C.SubCand from Candidate C where id="+idCandidate);
+			String AllIdSub = (String) query.getSingleResult();
+			String[] array =AllIdSub.split("\\|");
+			List<String> list = convertArrayToList(array); 
+			List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+			List<String> ALLSubNames =new ArrayList<String>();
+			for (int i = 0; i < listOfInteger.size(); i++) {
+				
+				Query query2 = em.createQuery("Select C from Candidate C where C.id="+listOfInteger.get(i));
+				Candidate A=(Candidate) query2.getSingleResult();
+				ALLSubNames.add(A.getFirst_Name()+" " +A.getLast_Name());
+				System.out.println(ALLSubNames);
+				}
+			return ALLSubNames;
+		} 
 	@Override
-	public List<String> gelAllMysubscribers(int idCandidate) {
+	public List<String> getAllMysubscribers(int idCandidate) {
 		Query query = em.createQuery("Select C.SubbedCand from Candidate C where id="+idCandidate);
 		String AllIdSub = (String) query.getSingleResult();
 		String[] array =AllIdSub.split("\\|");
@@ -298,11 +299,11 @@ public class CandidateService implements CandidateInterfaceRemote {
 	public void sendFriendRequest(int idSender, int idReciever) {
 		Date date = new Date();
 		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		Query query = em.createQuery("update Candidate C set C.Friendsrequests=concat(C.Friendsrequests,:Request) where C.id=:idReciever");
+		Query query = em.createQuery("update Candidate C set C.Friendsrequests=concat(IFNULL(C.Friendsrequests,''),:Request) where C.id=:idReciever");
 		query.setParameter("idReciever", idReciever);
 		query.setParameter("Request", idSender+";"+formatter.format(date)+";0|");
 		query.executeUpdate();
-		Query query1 = em.createQuery("update Candidate C set C.Friendsrequests=concat(C.Friendsrequests,:Request) where C.id=:idSender");
+		Query query1 = em.createQuery("update Candidate C set C.Friendsrequests=concat(IFNULL(C.Friendsrequests,''),:Request) where C.id=:idSender");
 		query1.setParameter("idSender", idSender);
 		query1.setParameter("Request", idReciever+";"+formatter.format(date)+";1|");
 		query1.executeUpdate();
@@ -432,14 +433,17 @@ public class CandidateService implements CandidateInterfaceRemote {
 		String[] array =AllResquets.split("\\|");
 		List<String> list = convertArrayToList(array);
 		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		System.out.println(listOfInteger);
 		String str="";
 		for (int i = 0; i < listOfInteger.size(); i++) {
+			System.out.println(listOfInteger.get(i));
 			if(listOfInteger.get(i)==idCompany) {
 				listOfInteger.remove(i);
-			}
+				
+			}else
 				
 				str=str+listOfInteger.get(i)+"|";
-			//	System.out.println(str);
+				System.out.println(str);
 			
 			}
 		Query query1 = em.createQuery("update Candidate C set C.SubCompany='"+str+"' where C.id="+idCandidate);
