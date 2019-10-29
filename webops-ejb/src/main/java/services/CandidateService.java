@@ -169,23 +169,40 @@ public class CandidateService implements CandidateInterfaceRemote {
 	@Override
 	public void ToRemoveCandidateSub(int idCandidate, int idSub) {
 		Query query = em.createQuery("Select C.SubCand from Candidate C where id="+idCandidate);
+		Query query2 = em.createQuery("Select C.SubbedCand from Candidate C where id="+idSub);
 		String AllResquets = (String) query.getSingleResult();
+		String AllResquets2 = (String) query2.getSingleResult();
 		String[] array =AllResquets.split("\\|");
+		String[] array2 =AllResquets2.split("\\|");
 		List<String> list = convertArrayToList(array);
 		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		List<String> list2 = convertArrayToList(array2);
+		List<Integer> listOfInteger2 = convertStringListToIntList( list2,Integer::parseInt); 
 		String str="";
+		String str2="";
 		for (int i = 0; i < listOfInteger.size(); i++) {
 			if(listOfInteger.get(i)==idSub) {
-			
-					list.remove(i);
-				}
-				else
-				str=str+list.get(i)+"|";
+				listOfInteger.remove(i);
+			}
+				
+				str=str+listOfInteger.get(i)+"|";
+				
 			
 			}
+			
+			for (int i = 0; i < listOfInteger2.size(); i++) {
+				if(listOfInteger2.get(i)==idCandidate) {
+					listOfInteger2.remove(i);
+				}
+					
+				str2=str2+listOfInteger2.get(i)+"|";
+					
+				
+				}
 			Query query1 = em.createQuery("update Candidate C set C.SubCand='"+str+"' where C.id="+idCandidate);
 			query1.executeUpdate();
-			
+			Query query22 = em.createQuery("update Candidate C set C.SubbedCand='"+str2+"' where C.id="+idSub);
+			query22.executeUpdate();
 			
 		
 	}
@@ -405,6 +422,43 @@ public class CandidateService implements CandidateInterfaceRemote {
 			Query query12 = em.createQuery("update Candidate C set C.Friends='"+str2+"' where C.id="+idCandidate);
 			query12.executeUpdate();
 		
+	}
+
+
+	@Override
+	public void ToRemoveCompanySub(int idCandidate, int idCompany) {
+		Query query = em.createQuery("Select C.SubCompany from Candidate C where id="+idCandidate);
+		String AllResquets = (String) query.getSingleResult();
+		String[] array =AllResquets.split("\\|");
+		List<String> list = convertArrayToList(array);
+		List<Integer> listOfInteger = convertStringListToIntList( list,Integer::parseInt); 
+		String str="";
+		for (int i = 0; i < listOfInteger.size(); i++) {
+			if(listOfInteger.get(i)==idCompany) {
+				listOfInteger.remove(i);
+			}
+				
+				str=str+listOfInteger.get(i)+"|";
+			//	System.out.println(str);
+			
+			}
+		Query query1 = em.createQuery("update Candidate C set C.SubCompany='"+str+"' where C.id="+idCandidate);
+			query1.executeUpdate();
+		
+	}
+
+
+	@Override
+	public List<String> getAllMyFriends(int Candidate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<String> getAllMyFriendRequest(int Candidate, int state) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

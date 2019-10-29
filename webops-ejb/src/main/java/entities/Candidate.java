@@ -222,6 +222,8 @@ public class Candidate extends User implements Serializable{
 	public Candidate(String first_Name, String last_Name, String email, String password) {
 		super(first_Name, last_Name, email, password);
 	}
+
+	
 	
 	
 
