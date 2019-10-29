@@ -400,7 +400,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 		List<String> list2 = convertArrayToList(array2);
 		String str="";
 		String str2="";
-	
+		
 		
 			for (int i = 0; i < list.size(); i++) {
 				String[] arrays =list.get(i).split("\\;");
@@ -453,16 +453,46 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 
 	@Override
-	public List<String> getAllMyFriends(int Candidate) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getAllMyFriends(int idCandidate) {
+		Query query = em.createQuery("Select C.Friends from Candidate C where id="+idCandidate);
+		String AllFriends = (String) query.getSingleResult();
+		String[] array =AllFriends.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<String> Friends =new ArrayList<String>();
+		for (int i = 0; i < list.size(); i++) {
+			String[] arrays =list.get(i).split("\\;");
+			Query query2 = em.createQuery("Select C from Candidate C where C.id="+arrays[i]);
+			Candidate A=(Candidate) query2.getSingleResult();
+			Friends.add(A.getFirst_Name()+" " +A.getLast_Name()+" ,Since :"+arrays[i+1]);
+			System.out.println(Friends);
+		}
+	
+		
+		return 	Friends;
 	}
 
 
 	@Override
 	public List<String> getAllMyFriendRequest(int Candidate, int state) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = em.createQuery("Select C.Friendsrequests from Candidate C where id="+ Candidate);
+		String AllFriends = (String) query.getSingleResult();
+		String[] array =AllFriends.split("\\|");
+		List<String> list = convertArrayToList(array); 
+		List<String> Friendsrequests =new ArrayList<String>();
+		for (int i = 0; i < list.size(); i++) {
+			String[] arrays =list.get(i).split("\\;");
+			if(arrays[2].equals(Integer.toString(state))) {
+			Query query2 = em.createQuery("Select C from Candidate C where C.id="+arrays[i]);
+			Candidate A=(Candidate) query2.getSingleResult();
+			Friendsrequests.add(A.getFirst_Name()+" " +A.getLast_Name()+", Date of the Request :"+arrays[i+1]);
+			System.out.println(Friendsrequests);
+			}
+			else 	return 	Friendsrequests;
+				
+		}
+	
+		
+		return 	Friendsrequests;
 	}
 
 

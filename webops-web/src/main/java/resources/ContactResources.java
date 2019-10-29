@@ -137,5 +137,22 @@ public class ContactResources {
 		
 	
 	}
-	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("AllMyFriends")
+	public Response getAllMyFriends( @QueryParam("idCan") int idCandidate)
+	{
+		List<String> E =candidateservice.getAllMyFriends(idCandidate);
+		
+		return Response.status(Status.ACCEPTED).entity(E).build();
+	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("AllMyFriendsRequests")
+	public Response getAllMyFriendsRequests( @QueryParam("idCan") int idCandidate)
+	{
+		List<String> E =candidateservice.getAllMyFriendRequest(idCandidate, 0);
+		
+		return Response.status(Status.ACCEPTED).entity(E).build();
+	}
 }
