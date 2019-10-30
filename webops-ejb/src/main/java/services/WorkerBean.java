@@ -1,6 +1,13 @@
 package services;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Singleton;
@@ -9,7 +16,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import entities.AvailabilityCandidate;
+import entities.AvailabilityEmploye;
+import entities.Candidate;
+import entities.Employe;
 import entities.Interview;
+import entities.Role;
 import entities.StateTestOnline;
 
 @Singleton
@@ -31,15 +43,253 @@ public class WorkerBean {
 				Interview.class);
 		Set<Interview> results = new HashSet<Interview>();
 		results.addAll(query.getResultList());
-		//results have the full list of interview that  should  affect a date and employer to proceed the interview 
-		//by the way these 2 days are made to give enough time to complete his unavailability date 
+		// results have the full list of interview that should affect a date and
+		// employer to proceed the interview
+		// by the way these 2 days are made to give enough time to complete his
+		// unavailability date
 
-		//now we will search for the closer free date from the two side the candidate side and the employer side 
-		//of course we taking in consideration  the role of employer that we searching for 
-		
+		// now we will search for the closer free date from the two side the candidate
+		// side and the employer side
+		// of course we taking in consideration the role of employer that we searching
+		// for
+
 		for (Interview i : results) {
-			System.out.println("id of interview : " + i.getId());
+
+			Candidate c = em.find(Candidate.class, i.getCandidatInterview().getId());
+
+			Set<AvailabilityCandidate> avaCan = GetCandidateAvailability(c);
+			Set<Employe> emps = GetEmployes(i.getInterviewType().getRoleOfEmploye());
+
+			if (avaCan.size() == 0) {
+				if (AffectInterviewByEmployeAvailability(emps, i) == false) {
+					List<Employe> l = new ArrayList<Employe>();
+					l.addAll(emps);
+					AddAvaibilityAndAffect(i, l.get(0));
+				}
+			} else {
+				if (AffectAnInterview(avaCan, emps, i) == false) {
+					if (AffectInterviewByEmployeAvailability(emps, i) == false) {
+						List<Employe> l = new ArrayList<Employe>();
+						l.addAll(emps);
+						AddAvaibilityAndAffect(i, l.get(0));
+					}
+				}
+			}
 		}
+		System.out.println("InterviewPropertiesAlgo complite job for today ");
+	}
+
+	/**
+	 * search for the first matching in avaibility between employe and candidate
+	 * 
+	 * @return true if interview affected false if no matching found
+	 */
+
+	private boolean AffectAnInterview(Set<AvailabilityCandidate> avaCan, Set<Employe> emps, Interview i) {
+
+		for (Employe e : emps) {
+			Set<AvailabilityEmploye> avaemp = GetEmployeAvailability(e);
+			if (avaemp.size() > 0) {
+				for (AvailabilityCandidate ac : avaCan) {
+					for (AvailabilityEmploye ae : avaemp) {
+						if (ac.getDate().getTime() == ae.getDate().getTime() && ac.getStart_hour() == ae.getStart_hour()
+								&& ac.getEnd_hour() == ae.getEnd_hour()) {
+							Affect(e, ae, i);
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param e         employer that will be affected
+	 * @param date      date of interview
+	 * @param interview
+	 * 
+	 *                  this methode will affect an interview
+	 */
+
+	private void Affect(Employe e, AvailabilityEmploye ae, Interview i) {
+		Interview ii = em.find(Interview.class, i.getId());
+		Employe ee = em.find(Employe.class, e.getId());
+		Candidate cc = em.find(Candidate.class, i.getCandidatInterview().getId());
+		ii.setDate(ae.getDate());
+		ii.setStartHour(ae.getStart_hour());
+		ii.setEmployeInterview(e);
+		ee.getInterviews().add(ii);
+
+		// change avaibility state to false
+		Query query = em
+				.createQuery("UPDATE AvailabilityCandidate o SET o.state=:s WHERE o.date=:d and o.candidate=:c");
+		query.setParameter("s", false);
+		query.setParameter("d", ae.getDate());
+		query.setParameter("c", cc);
+		query.executeUpdate();
+
+		Query query1 = em.createQuery(
+				"UPDATE AvailabilityEmploye o SET o.state=:s WHERE o.date=:d and o.employe=:e and o.start_hour=:sh");
+		query1.setParameter("s", false);
+		query1.setParameter("d", ae.getDate());
+		query1.setParameter("e", ee);
+		query1.setParameter("sh", ae.getStart_hour());
+		query1.executeUpdate();
+	}
+
+	/**
+	 * Search for the first availability to any employe and affect interview on it
+	 * 
+	 * @return true if interview affected and false if no avaibility found
+	 */
+
+	private boolean AffectInterviewByEmployeAvailability(Set<Employe> emps, Interview i) {
+
+		for (Employe e : emps) {
+			Set<AvailabilityEmploye> avaemp = GetEmployeAvailability(e);
+			if (avaemp.size() > 0) {
+				for (AvailabilityEmploye ae : avaemp) {
+					if (ae.getState() == true) {
+						Affect(e, ae, i);
+					}
+				}
+
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * add an other available day and effect interview on it
+	 */
+
+	private void AddAvaibilityAndAffect(Interview i, Employe e) {
+		
+		
+		Employe ee = em.find(Employe.class, e.getId());
+		TypedQuery<AvailabilityEmploye> query = em.createQuery(
+				"SELECT a FROM AvailabilityEmploye a where a.employe=:r ORDER BY a.date DESC LIMIT 1", AvailabilityEmploye.class);
+		query.setParameter("r", e);
+		query.setParameter("s", true);
+		AvailabilityEmploye ave=query.getSingleResult();
+		
+		
+		Date dt = ave.getDate();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, 1);
+		dt = c.getTime();
+		
+		
+		LocalDate localDate = dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+
+		if(localDate.getDayOfWeek().compareTo(DayOfWeek.SUNDAY)==0)			
+		{
+			AvailabilityEmploye ae1=new AvailabilityEmploye();			
+			AvailabilityEmploye ae2=new AvailabilityEmploye();
+			AvailabilityEmploye ae3=new AvailabilityEmploye();
+			
+			ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(false);
+			
+			ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(false);
+			
+			ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);			ae3.setState(false);
+			
+			em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
+			
+			ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
+			
+			Date dt1 = ae1.getDate();
+			Calendar calen = Calendar.getInstance(); 
+			calen.setTime(dt1); 
+			calen.add(Calendar.DATE, 1);
+			dt1 = calen.getTime();
+			
+			AvailabilityEmploye ae11=new AvailabilityEmploye();		AvailabilityEmploye ae22=new AvailabilityEmploye();		AvailabilityEmploye ae33=new AvailabilityEmploye();
+			
+			ae11.setDate(dt1);			ae11.setEmploye(ee);			ae11.setStart_hour(8);			ae11.setEnd_hour(10);			ae11.setState(true);
+			
+			ae22.setDate(dt1);			ae22.setEmploye(ee);			ae22.setStart_hour(10);			ae22.setEnd_hour(12);			ae22.setState(true);
+			
+			ae33.setDate(dt1);			ae33.setEmploye(ee);			ae33.setStart_hour(2);			ae33.setEnd_hour(4);			ae33.setState(true);
+			
+			ee.getAvailabilityEmploye().add(ae11);	ee.getAvailabilityEmploye().add(ae22);	ee.getAvailabilityEmploye().add(ae33);
+			Affect(ee, ae11, i);
+		}
+		else
+		{
+			if(localDate.getDayOfWeek().compareTo(DayOfWeek.FRIDAY)==0  ||  localDate.getDayOfWeek().compareTo(DayOfWeek.SATURDAY)==0)		
+			{
+				AvailabilityEmploye ae1=new AvailabilityEmploye();			
+				AvailabilityEmploye ae2=new AvailabilityEmploye();				
+				
+				ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(true);
+				
+				ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(true);								
+				
+				em.persist(ae1);			em.persist(ae2);			
+				
+				ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	
+				Affect(ee, ae1, i);
+			}
+			else
+			{
+				AvailabilityEmploye ae1=new AvailabilityEmploye();			
+				AvailabilityEmploye ae2=new AvailabilityEmploye();
+				AvailabilityEmploye ae3=new AvailabilityEmploye();
+				
+				ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(true);
+				
+				ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(true);
+				
+				ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);			ae3.setState(true);
+				
+				em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
+				
+				ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
+				Affect(ee, ae1, i);
+			}
+		}
+		
+		
+		
+		
+		
+	}
+
+	
+	
+	private Set<Employe> GetEmployes(Role roleOfEmploye) {
+		TypedQuery<Employe> emps = em.createQuery("SELECT a FROM Employe a where a.role=:r", Employe.class);
+		emps.setParameter("r", roleOfEmploye);
+		Set<Employe> employes = new HashSet<Employe>();
+		employes.addAll(emps.getResultList());
+		return employes;
+	}
+
+	private Set<AvailabilityCandidate> GetCandidateAvailability(Candidate c) {
+		TypedQuery<AvailabilityCandidate> ac = em.createQuery(
+				"SELECT a FROM AvailabilityCandidate a where a.candidate=:r and a.state=:s",
+				AvailabilityCandidate.class);
+		ac.setParameter("r", c);
+		ac.setParameter("s", true);
+		Set<AvailabilityCandidate> ava = new HashSet<AvailabilityCandidate>();
+		ava.addAll(ac.getResultList());
+		return ava;
+	}
+
+	private Set<AvailabilityEmploye> GetEmployeAvailability(Employe e) {
+		TypedQuery<AvailabilityEmploye> ac = em.createQuery(
+				"SELECT a FROM AvailabilityEmploye a where a.employe=:r and a.state=:s", AvailabilityEmploye.class);
+		ac.setParameter("r", e);
+		ac.setParameter("s", true);
+		Set<AvailabilityEmploye> ava = new HashSet<AvailabilityEmploye>();
+		ava.addAll(ac.getResultList());
+		return ava;
 	}
 
 	/**

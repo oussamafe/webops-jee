@@ -25,8 +25,18 @@ public class Interview implements Serializable{
 	
 	@Temporal (TemporalType.DATE)
 	private Date date;
+	private int startHour;
 	
-	
+	public int getStartHour() {
+		return startHour;
+	}
+
+
+	public void setStartHour(int startHour) {
+		this.startHour = startHour;
+	}
+
+
 	@JsonBackReference(value="employeInterview-movement")
 	@ManyToOne
 	private Employe employeInterview;

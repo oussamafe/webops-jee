@@ -30,7 +30,19 @@ public class Availability implements Serializable{
 	private Date date;
 	private int start_hour;
 	private int end_hour;
+	private boolean state;
 	
+	
+	public boolean getState() {
+		return state;
+	}
+
+
+	public void setState(boolean state) {
+		this.state = state;
+	}
+
+
 	public Availability() {
 		super();
 	}
