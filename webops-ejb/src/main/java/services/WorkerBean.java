@@ -168,97 +168,12 @@ public class WorkerBean {
 
 	private void AddAvaibilityAndAffect(Interview i, Employe e) {
 		
+		int id=AddNewEmpAvailability(e);
 		
-		Employe ee = em.find(Employe.class, e.getId());
-		TypedQuery<AvailabilityEmploye> query = em.createQuery(
-				"SELECT a FROM AvailabilityEmploye a where a.employe=:r ORDER BY a.date DESC LIMIT 1", AvailabilityEmploye.class);
-		query.setParameter("r", e);
-		query.setParameter("s", true);
-		AvailabilityEmploye ave=query.getSingleResult();
+		AvailabilityEmploye ae=em.find(AvailabilityEmploye.class, id);
 		
-		
-		Date dt = ave.getDate();
-		Calendar c = Calendar.getInstance(); 
-		c.setTime(dt); 
-		c.add(Calendar.DATE, 1);
-		dt = c.getTime();
-		
-		
-		LocalDate localDate = dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		
-
-		if(localDate.getDayOfWeek().compareTo(DayOfWeek.SUNDAY)==0)			
-		{
-			AvailabilityEmploye ae1=new AvailabilityEmploye();			
-			AvailabilityEmploye ae2=new AvailabilityEmploye();
-			AvailabilityEmploye ae3=new AvailabilityEmploye();
-			
-			ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(false);
-			
-			ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(false);
-			
-			ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);			ae3.setState(false);
-			
-			em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
-			
-			ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
-			
-			Date dt1 = ae1.getDate();
-			Calendar calen = Calendar.getInstance(); 
-			calen.setTime(dt1); 
-			calen.add(Calendar.DATE, 1);
-			dt1 = calen.getTime();
-			
-			AvailabilityEmploye ae11=new AvailabilityEmploye();		AvailabilityEmploye ae22=new AvailabilityEmploye();		AvailabilityEmploye ae33=new AvailabilityEmploye();
-			
-			ae11.setDate(dt1);			ae11.setEmploye(ee);			ae11.setStart_hour(8);			ae11.setEnd_hour(10);			ae11.setState(true);
-			
-			ae22.setDate(dt1);			ae22.setEmploye(ee);			ae22.setStart_hour(10);			ae22.setEnd_hour(12);			ae22.setState(true);
-			
-			ae33.setDate(dt1);			ae33.setEmploye(ee);			ae33.setStart_hour(2);			ae33.setEnd_hour(4);			ae33.setState(true);
-			
-			ee.getAvailabilityEmploye().add(ae11);	ee.getAvailabilityEmploye().add(ae22);	ee.getAvailabilityEmploye().add(ae33);
-			Affect(ee, ae11, i);
-		}
-		else
-		{
-			if(localDate.getDayOfWeek().compareTo(DayOfWeek.FRIDAY)==0  ||  localDate.getDayOfWeek().compareTo(DayOfWeek.SATURDAY)==0)		
-			{
-				AvailabilityEmploye ae1=new AvailabilityEmploye();			
-				AvailabilityEmploye ae2=new AvailabilityEmploye();				
-				
-				ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(true);
-				
-				ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(true);								
-				
-				em.persist(ae1);			em.persist(ae2);			
-				
-				ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	
-				Affect(ee, ae1, i);
-			}
-			else
-			{
-				AvailabilityEmploye ae1=new AvailabilityEmploye();			
-				AvailabilityEmploye ae2=new AvailabilityEmploye();
-				AvailabilityEmploye ae3=new AvailabilityEmploye();
-				
-				ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(true);
-				
-				ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(true);
-				
-				ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);			ae3.setState(true);
-				
-				em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
-				
-				ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
-				Affect(ee, ae1, i);
-			}
-		}
-		
-		
-		
-		
-		
+		Affect(e, ae, i);
+	
 	}
 
 	
@@ -303,5 +218,158 @@ public class WorkerBean {
 		query.executeUpdate();
 		System.out.println("AutoRefuseOnlineTest complite job for today ");
 	}
+	
+	/**
+	 * remove employe and candidate availability of last day
+	 * 
+	 * 
+	 */
+	public void AutoRemoveAvailability()
+	{
+		
+		Date dt1 = new Date();      
+		Calendar calen = Calendar.getInstance(); 
+		calen.setTime(dt1); 
+		calen.add(Calendar.DATE, -1);
+		dt1 = calen.getTime();
+		
+		TypedQuery<AvailabilityEmploye> ae = em.createQuery(
+				"SELECT a FROM AvailabilityEmploye a where  a.date=:s", AvailabilityEmploye.class);
+		ae.setParameter("s", dt1);
+		Set<AvailabilityEmploye> ave = new HashSet<AvailabilityEmploye>();
+		ave.addAll(ae.getResultList());
+		
+		
+		TypedQuery<AvailabilityCandidate> ac = em.createQuery(
+				"SELECT a FROM AvailabilityCandidate a where  a.date=:s", AvailabilityCandidate.class);
+		ac.setParameter("s", dt1);
+		Set<AvailabilityCandidate> avc = new HashSet<AvailabilityCandidate>();
+		avc.addAll(ac.getResultList());
+		
+		for(AvailabilityEmploye e:ave)
+		{
+			em.remove(e);
+		}
+		for(AvailabilityCandidate c:avc)
+		{
+			em.remove(c);
+		}
+		
+		
+	}
+/**
+ * add an availability day for all employe
+ */
+	
+	public void AddAvailabilityDayForAllEmp()
+	{
+		TypedQuery<Employe> emps = em.createQuery("SELECT a FROM Employe a ", Employe.class);		
+		Set<Employe> employes = new HashSet<Employe>();
+		employes.addAll(emps.getResultList());
+		
+		for(Employe e:employes)
+		{
+			AddNewEmpAvailability(e);
+		}
+	}
+	
+	
+	/**
+	 * add availability day for and specific employe
+	 * @param   employer
+	 * @return	id of an availability  if need it 
+	 */
+	private int AddNewEmpAvailability(Employe e)
+	{
+		Employe ee = em.find(Employe.class, e.getId());
+		TypedQuery<AvailabilityEmploye> query = em.createQuery(
+				"SELECT a FROM AvailabilityEmploye a where a.employe=:r ORDER BY a.date DESC LIMIT 1", AvailabilityEmploye.class);
+		query.setParameter("r", e);		
+		AvailabilityEmploye ave=query.getSingleResult();
+		
+		
+		Date dt = ave.getDate();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, 1);
+		dt = c.getTime();
+		
+		
+		LocalDate localDate = dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
 
+		if(localDate.getDayOfWeek().compareTo(DayOfWeek.SUNDAY)==0)			
+		{
+			AvailabilityEmploye ae1=new AvailabilityEmploye();			
+			AvailabilityEmploye ae2=new AvailabilityEmploye();
+			AvailabilityEmploye ae3=new AvailabilityEmploye();
+			
+			ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(false);
+			
+			ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(false);
+			
+			ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);			ae3.setState(false);
+			
+			em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
+			
+			ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
+			
+			Date dt1 = ae1.getDate();
+			Calendar calen = Calendar.getInstance(); 
+			calen.setTime(dt1); 
+			calen.add(Calendar.DATE, 1);
+			dt1 = calen.getTime();
+			
+			AvailabilityEmploye ae11=new AvailabilityEmploye();		AvailabilityEmploye ae22=new AvailabilityEmploye();		AvailabilityEmploye ae33=new AvailabilityEmploye();
+			
+			ae11.setDate(dt1);			ae11.setEmploye(ee);			ae11.setStart_hour(8);			ae11.setEnd_hour(10);			ae11.setState(true);
+			
+			ae22.setDate(dt1);			ae22.setEmploye(ee);			ae22.setStart_hour(10);			ae22.setEnd_hour(12);			ae22.setState(true);
+			
+			ae33.setDate(dt1);			ae33.setEmploye(ee);			ae33.setStart_hour(2);			ae33.setEnd_hour(4);			ae33.setState(true);
+			
+			ee.getAvailabilityEmploye().add(ae11);	ee.getAvailabilityEmploye().add(ae22);	ee.getAvailabilityEmploye().add(ae33);
+			return ae11.getId();
+		}
+		else
+		{
+			if(localDate.getDayOfWeek().compareTo(DayOfWeek.FRIDAY)==0  ||  localDate.getDayOfWeek().compareTo(DayOfWeek.SATURDAY)==0)		
+			{
+				AvailabilityEmploye ae1=new AvailabilityEmploye();			
+				AvailabilityEmploye ae2=new AvailabilityEmploye();				
+				AvailabilityEmploye ae3=new AvailabilityEmploye();
+				
+				ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(true);
+				
+				ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(true);								
+				
+				ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);				ae3.setState(false);
+				
+				em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
+				
+				ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
+				return ae1.getId();
+			}
+			else
+			{
+				
+				AvailabilityEmploye ae1=new AvailabilityEmploye();			
+				AvailabilityEmploye ae2=new AvailabilityEmploye();
+				AvailabilityEmploye ae3=new AvailabilityEmploye();
+				
+				ae1.setDate(dt);			ae1.setEmploye(ee);			ae1.setStart_hour(8);			ae1.setEnd_hour(10);			ae1.setState(true);
+				
+				ae2.setDate(dt);			ae2.setEmploye(ee);			ae2.setStart_hour(10);			ae2.setEnd_hour(12);			ae2.setState(true);
+				
+				ae3.setDate(dt);			ae3.setEmploye(ee);			ae3.setStart_hour(2);			ae3.setEnd_hour(4);			ae3.setState(true);
+				
+				em.persist(ae1);			em.persist(ae2);			em.persist(ae3);
+				
+				ee.getAvailabilityEmploye().add(ae1);	ee.getAvailabilityEmploye().add(ae2);	ee.getAvailabilityEmploye().add(ae3);
+				return ae1.getId();
+			}
+		}
+	}
+	
+	
 }

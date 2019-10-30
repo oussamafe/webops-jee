@@ -46,7 +46,7 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 	public void UpdateInterview(int interviewID, Interview interview) {
 		Interview i=em.find(Interview.class,interviewID );
 		i.setDate(interview.getDate());
-		
+		i.setStartHour(interview.getStartHour());
 		RemoveInterviewfromCandidate(interviewID, i.getCandidatInterview().getId());
 		RemoveInterviewfromEmploye(interviewID, i.getEmployeInterview().getId());
 		RemoveInterviewfromInterviewType(interviewID, i.getInterviewType().getId());
@@ -62,6 +62,7 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		InterviewType it=em.find(InterviewType.class,interviewTypeID );		
 		it.setHours_number(interviewType.getHours_number());
 		it.setType(interviewType.getType());
+		it.setRoleOfEmploye(interviewType.getRoleOfEmploye());
 		
 	}
 

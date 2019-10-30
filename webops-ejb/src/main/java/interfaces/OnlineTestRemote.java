@@ -28,12 +28,9 @@ public interface OnlineTestRemote {
 	
 	public int EstimatedTimeForTest(int TestID);//tested OK
 	public StateTestOnline GetOnlinetestResult(int TestID);//tested OK
-	public void setTestResult(int TestID);//75% accepted :D  tested OK
+	public void setTestResult(int TestID);//75% accepted :D  tested OK//still need to add availability for candidate if accepted in test
 	public void setTestNoteByQuestion(int TestID,int QuestionID,Set<Integer>ResponcesID);// tested OK
-	
-	
-//	public int AutoRefuseOnlineTest(int TestID);//tested OK
-	
+		
 	
 	public Set<Question> ListQuestion();//tested OK
 	public Set<Question> ListQuestionByModule(String module);//tested OK

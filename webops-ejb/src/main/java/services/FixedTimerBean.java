@@ -13,8 +13,8 @@ public class FixedTimerBean {
     
     @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
     public void EveryFiveSecondesTasks() throws InterruptedException {
-        workerBean.doTimerWork();       
-        workerBean.InterviewPropertiesAlgo();
+     //   workerBean.doTimerWork();       
+    //    workerBean.InterviewPropertiesAlgo();
     }
     
     
@@ -24,8 +24,10 @@ public class FixedTimerBean {
     @Schedule(second = "1", minute = "1", hour = "*", persistent = false)
     public void EveryDayTasks() throws InterruptedException {
        
-        workerBean.AutoRefuseOnlineTest();
-       
+        //workerBean.AutoRefuseOnlineTest();
+        //workerBean.AutoRemoveAvailability();
+        //workerBean.InterviewPropertiesAlgo();
+    	//workerBean.AddAvailabilityDayForAllEmp()
     }
     
     

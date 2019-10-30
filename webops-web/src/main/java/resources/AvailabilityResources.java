@@ -25,7 +25,7 @@ public class AvailabilityResources {
 	
 	@Inject
 	AvailabilityImplementation AI;
-	
+	/*
 	@POST
 	@Path("/AddAvailabilityCandidate")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -49,11 +49,30 @@ public class AvailabilityResources {
 		return Response.status(Status.OK).entity("Availability removed").build();
 	}
 	
+	*/
+	
+	@POST
+	@Path("/InitialiseCandidateAvailability")
+	//@Consumes(MediaType.APPLICATION_JSON)
+	public Response InitialiseCandidateAvailability(@QueryParam(value = "cid")int candidateID) {
+		 AI.InitialiseCandidateAvailability(candidateID);
+		return Response.status(Status.CREATED).build();
+	}
+	
+	@POST
+	@Path("/InitialiseEmployeAvailability")
+	//@Consumes(MediaType.APPLICATION_JSON)
+	public Response InitialiseEmployeAvailability(@QueryParam(value = "eid")int EmployeID) {
+		 AI.InitialiseEmployeAvailability(EmployeID);
+		return Response.status(Status.CREATED).build();
+	}
+	
+	
 	
 	@GET
 	@Path("/ListAvailabilityCandidate")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ListAvailabilityCandidate(@QueryParam(value = "candidateID")int candidateID) {
+	public Response ListAvailabilityCandidate(@QueryParam(value = "cid")int candidateID) {
 		Set<AvailabilityCandidate> list = AI.ListAvailabilityCandidate(candidateID);
 		return Response.status(Status.OK).entity(list).build();
 	}
@@ -61,7 +80,7 @@ public class AvailabilityResources {
 	@GET
 	@Path("/ListAvailabilityEmploye")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ListAvailabilityEmploye(@QueryParam(value = "employeID")int employeID) {
+	public Response ListAvailabilityEmploye(@QueryParam(value = "eid")int employeID) {
 		Set<AvailabilityEmploye> list = AI.ListAvailabilityEmploye(employeID);
 		return Response.status(Status.OK).entity(list).build();
 	}
