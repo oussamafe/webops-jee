@@ -71,9 +71,9 @@ public class CandidateResources {
 	@GET
 	@Path("RechercheCantact")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response RechercheCantact(@QueryParam("skill") String skill)
+	public Response RechercheCantact(@QueryParam("Search") String str)
 	{
-		return Response.status(Status.ACCEPTED).entity(candidateservice.SearchCandidateSkills(skill)).build();
+		return Response.status(Status.ACCEPTED).entity(candidateservice.SearchCandidateSkills(str)).build();
 	}
 	@GET
 	@Path("RechercheCompany")

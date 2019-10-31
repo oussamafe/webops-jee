@@ -498,12 +498,12 @@ public class CandidateService implements CandidateInterfaceRemote {
 
 
 	@Override
-	public List<Candidate> SearchCandidateSkills(String skill) {
+	public List<Candidate> SearchCandidateSkills(String str) {
 		TypedQuery<Candidate> query= em.createQuery(
-				"select  C from Candidate C where C.first_Name=:skill", 
+				"select  C from Candidate C where C.first_Name LIKE :str or C.last_Name LIKE :str o", 
 				Candidate.class);
-				query.setParameter("skill", skill);
-				return query.getResultList();
+		query.setParameter("str", "%"+str+"%");
+		return query.getResultList();
 
 	}
 

@@ -36,8 +36,8 @@ public interface CandidateInterfaceRemote {
 	public void RemoveFriend(int idCandidate,int idFriend);
 	List<String>getAllMyFriends(int Candidate);
 	List<String> getAllMyFriendRequest(int Candidate,int state);
-	List<Candidate> SearchCandidateSkills( String skill);
+	List<Candidate> SearchCandidateSkills( String str);
 	List<Company> SearchCompanyByNameField(String str);
-	List<JobOffer> SearchJobOfferMultipe(String Name);
+	List<JobOffer> SearchJobOfferMultipe(String str);
 	
 }
