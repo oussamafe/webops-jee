@@ -27,7 +27,6 @@ public class Candidate extends User implements Serializable{
 	private String StudyLevel;
 	private String ProfilIntro ;
 	private String Activities ;
-	private String skills;
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
@@ -42,6 +41,8 @@ public class Candidate extends User implements Serializable{
 	
 	private String Friendsrequests;
 	
+	@ManyToMany(cascade = CascadeType.ALL ,fetch=FetchType.EAGER)
+	private Set<Skill> Skills;
 	
 
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
@@ -63,7 +64,7 @@ public class Candidate extends User implements Serializable{
 	@OneToOne(mappedBy = "candidate")
 	private AvailabilityCandidate avalibilityCandidate;
 	
-	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL },fetch=FetchType.EAGER)
 	private List<Interview> interviews = new ArrayList<>();
 
 	@OneToOne(mappedBy = "candidatTest")	
@@ -197,12 +198,17 @@ public class Candidate extends User implements Serializable{
 		Activities = activities;
 	}
 
-	public String getSkills() {
-		return skills;
+	
+	public Set<Skill> getSkills() {
+		return Skills;
 	}
 
-	public void setSkills(String skills) {
-		this.skills = skills;
+	public void setSkills(Set<Skill> skills) {
+		Skills = skills;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public int getPhoneNumber() {

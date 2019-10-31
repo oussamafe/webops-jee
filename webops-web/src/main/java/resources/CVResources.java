@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import entities.Candidate;
 import entities.Course;
 import entities.ProfessionalExperience;
+import entities.Skill;
 import services.CVService;
 import services.CandidateService;
 
@@ -37,7 +38,7 @@ public class CVResources {
 	@Path("Course")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response AddCourse(Course C,@QueryParam("id") int idCandidate)
-	{	
+	{	   
 		int idCourse = CVServices.addCourse(C);
 		candidateservice.affectCourseCandidate(idCourse, idCandidate);
 		if(idCourse != 0)
@@ -47,6 +48,19 @@ public class CVResources {
 		return Response.status(Status.NOT_ACCEPTABLE).entity("Course add Failed :( ").build();
 	}
 
+	@POST
+	@Path("Skill")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response AddSkill(Skill  S,@QueryParam("id") int idCandidate)
+	{	   
+		int idSkill = CVServices.addSkills(S);
+		CVServices.affectCandidateSkill(idCandidate, idSkill);
+		if(idSkill != 0)
+		{	
+			return Response.status(Status.CREATED).entity("Skill added Successfully").build();
+		}
+		return Response.status(Status.NOT_ACCEPTABLE).entity("Course add Failed :( ").build();
+	}
 	@POST
 	@Path("ProfessionalExperience")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -121,5 +135,13 @@ public class CVResources {
 		return Response.status(Status.ACCEPTED).entity(E).build();
 	}
 	
-
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("AllSkills")
+	public Response getAllSkills()
+	{
+		
+		
+		return Response.status(Status.ACCEPTED).entity(CVServices.getAllSkills()).build();
+	}
 }

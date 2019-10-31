@@ -6,7 +6,9 @@ import java.util.function.IntConsumer;
 
 import javax.ejb.Remote;
 import entities.Candidate;
+import entities.Company;
 import entities.Course;
+import entities.JobOffer;
 import entities.ProfessionalExperience;
 
 
@@ -34,5 +36,8 @@ public interface CandidateInterfaceRemote {
 	public void RemoveFriend(int idCandidate,int idFriend);
 	List<String>getAllMyFriends(int Candidate);
 	List<String> getAllMyFriendRequest(int Candidate,int state);
+	List<Candidate> SearchCandidateSkills( String skill);
+	List<Company> SearchCompanyByNameField(String str);
+	List<JobOffer> SearchJobOfferMultipe(String Name);
 	
 }

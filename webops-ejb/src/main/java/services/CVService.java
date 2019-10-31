@@ -1,16 +1,21 @@
 package services;
 
-import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Set;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.enterprise.context.RequestScoped;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import entities.Candidate;
 import entities.Course;
 import entities.ProfessionalExperience;
+import entities.Skill;
+import entities.User;
 import interfaces.CurriculumVitaeInterface;
 @Stateless
 @LocalBean
@@ -66,6 +71,47 @@ public class CVService implements CurriculumVitaeInterface {
 		Prof.setPlace(P.getPlace());
 
 	}
+
+	@Override
+	public int addSkills(Skill S) {
+		em.persist(S);
+		
+		return S.getId();
+		
+	}
+
+	@Override
+	public void affectCandidateSkill(int idCandidate, int idskill) {
+		Query query= em.createNativeQuery
+				("INSERT INTO user_skill (Skills_id, Candidates_id) VALUES("+idskill+"," +idCandidate+")");
+		query.executeUpdate();
+
+		
+	}
+	
+
+	@Override
+	public void desaffecterCandidateSkill(int idCandidate, int idskill) {
+	/*	Skill skill = em.find(Skill.class, idskill);
+		
+		int candidatesnb = skill.getCandidates().size();
+		for(int index = 0; index < candidatesnb; index++){
+			if(skill.getCandidates().get(index).getId() == idCandidate){
+				skill.getCandidates().remove(index);
+				break;//a revoir
+			}
+		}*/
+		
+		//em.merge(dep);
+	}
+
+	@Override
+	public List<Skill> getAllSkills() {
+		TypedQuery<Skill> query = em.createQuery("select S from Skill S", Skill.class);
+		List<Skill> S=query.getResultList()	;
+		return S;
+	}
+
 
 	
 

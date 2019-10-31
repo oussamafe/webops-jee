@@ -20,6 +20,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import entities.Candidate;
 import entities.Company;
 import entities.Course;
+import entities.JobOffer;
 import entities.ProfessionalExperience;
 import interfaces.CandidateInterfaceRemote;
 
@@ -493,6 +494,38 @@ public class CandidateService implements CandidateInterfaceRemote {
 	
 		
 		return 	Friendsrequests;
+	}
+
+
+	@Override
+	public List<Candidate> SearchCandidateSkills(String skill) {
+		TypedQuery<Candidate> query= em.createQuery(
+				"select  C from Candidate C where C.first_Name=:skill", 
+				Candidate.class);
+				query.setParameter("skill", skill);
+				return query.getResultList();
+
+	}
+
+
+	@Override
+	public List<Company> SearchCompanyByNameField(String str) {
+		TypedQuery<Company> query= em.createQuery(
+				"select  C from Company C where C.name Like :str or C.field LIKE :str", 
+				Company.class);
+		query.setParameter("str", "%"+str+"%");
+				return query.getResultList();
+	}
+
+
+	@Override
+	public List<JobOffer> SearchJobOfferMultipe(String str) {
+		TypedQuery<JobOffer> query= em.createQuery(
+				"select  C from JobOffer C where C.type LIKE :str or C.location LIKE :str", 
+				JobOffer.class);
+				query.setParameter("str", "%"+str+"%");
+				
+		return query.getResultList();
 	}
 
 

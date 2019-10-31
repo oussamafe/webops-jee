@@ -1,10 +1,12 @@
 package interfaces;
 
+import java.util.List;
+
 import javax.ejb.Remote;
 
-import entities.Candidate;
 import entities.Course;
 import entities.ProfessionalExperience;
+import entities.Skill;
 
 @Remote
 public interface CurriculumVitaeInterface {
@@ -14,6 +16,8 @@ public interface CurriculumVitaeInterface {
 	public void RemoveExpPro(int ProExpId,int idCandidate) ;
 	public void updatecourse(Course C);
 	public void updateExpPro(ProfessionalExperience P);
-
-	
+	public int addSkills(Skill S);
+	public void affectCandidateSkill(int idCandidate, int skill);
+	public void desaffecterCandidateSkill(int idCandidate, int skill);
+	public List<Skill>getAllSkills();
 }
