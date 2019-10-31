@@ -3,7 +3,6 @@ package resources;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -33,9 +32,9 @@ public class AuthenticationEndPoint {
 
 	@Inject
 	LoginServiceImpl loginService;
-	
+
 	final ObjectMapper mapper = new ObjectMapper();
-	
+
 	@Context
 	private UriInfo uriInfo;
 
@@ -43,25 +42,28 @@ public class AuthenticationEndPoint {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password) {
-		
+
 		try {
 			User u = authenticate(username, password);
-			if(u != null)
-			{
-				String role = null;
-				if(u instanceof Candidate)
-				{
-					role = "Candidate";
+			if (u != null) {
+				if (!u.isActive())
+					return Response.status(Response.Status.NOT_ACCEPTABLE)
+							.entity("Your account is inactive , Please check your Email and confirm your Account !")
+							.build();
+				else {
+					String role = null;
+					if (u instanceof Candidate) {
+						role = "Candidate";
+					} else if (u instanceof Employe) {
+						Employe emp = (Employe) u;
+						role = emp.getRole().toString();
+						System.out.println(role);
+					}
+					String token = issueToken(Integer.toString(u.getId()), role);
+					System.out.println("token : "+token);
+					return Response.ok(token).build();
 				}
-				else if(u instanceof Employe)
-				{
-					Employe emp = (Employe) u ;
-					role = emp.getRole().toString();
-					System.out.println(role);
-				}
-				String token = issueToken(Integer.toString(u.getId()) , role);
-				return Response.ok(token).build();
-				
+
 			}
 			return Response.status(Response.Status.FORBIDDEN).build();
 		} catch (Exception e) {
@@ -74,35 +76,33 @@ public class AuthenticationEndPoint {
 		return u;
 	}
 
-	private String issueToken(String username , String role ) {
+	private String issueToken(String username, String role) {
 		String keyString = "simplekey";
 		Key key = new SecretKeySpec(keyString.getBytes(), 0, keyString.getBytes().length, "DES");
 		System.out.println("the key is : " + key.hashCode());
 		System.out.println("uriInfo.getAbsolutePath().toString() : " + uriInfo.getAbsolutePath().toString());
 		System.out.println("Expiration date: " + toDate(LocalDateTime.now().plusMinutes(15L)));
-		String jwtToken = Jwts.builder().setSubject(username).claim("Role", role).setIssuer(uriInfo.getAbsolutePath().toString())
-				.setIssuedAt(new Date()).setExpiration(toDate(LocalDateTime.now().plusMinutes(15L)))
-				.signWith(SignatureAlgorithm.HS512, key).compact();
+		String jwtToken = Jwts.builder().setSubject(username).claim("Role", role)
+				.setIssuer(uriInfo.getAbsolutePath().toString()).setIssuedAt(new Date())
+				.setExpiration(toDate(LocalDateTime.now().plusMinutes(15L))).signWith(SignatureAlgorithm.HS512, key)
+				.compact();
 		System.out.println("the returned token is : " + jwtToken);
-		System.out.println(decodeToken(jwtToken,key));
+		System.out.println(decodeToken(jwtToken, key));
 		return jwtToken;
 	}
-	
+
 	private Date toDate(LocalDateTime localDateTime) {
 		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
-	
-	public Claims decodeToken(String token , Key key) {
-		try {	
-		Claims jwsMap = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
-		return mapper.convertValue(jwsMap, Claims.class);
-		}
-		catch(Exception e)
-		{
+
+	public Claims decodeToken(String token, Key key) {
+		try {
+			Claims jwsMap = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+			return mapper.convertValue(jwsMap, Claims.class);
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 	}
-	 
 
 }

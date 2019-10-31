@@ -1,58 +1,59 @@
 package entities;
+
 import java.io.Serializable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
-
-
-
 @Entity
-@DiscriminatorValue(value="Candidate")
-public class Candidate extends User implements Serializable{
+@DiscriminatorValue(value = "Candidate")
+public class Candidate extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String StudyLevel;
-	private String ProfilIntro ;
-	private String Activities ;
+	private String ProfilIntro;
+	private String Activities;
 	private String skills;
-	private int PhoneNumber ;
-	private String Certifications ;
+	private int PhoneNumber;
+	private String Certifications;
 	private String Experiences;
 
-	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "Candidate", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Set<Course> Courses;
-	
+
+	@ManyToMany(mappedBy = "savedOffersCandidate", cascade = CascadeType.ALL)
+	private Set<JobOffer> savedOffers;
 
 	@ManyToOne
 	private Post post;
 
+	@ManyToMany(mappedBy = "followers", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Company> company;
+
+	@OneToMany(mappedBy = "Candidate", fetch = FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
-	
-	@OneToMany (mappedBy = "candidate")
-	private List<Application> job_candidate;
-	
-	
-	//---------------------  add by oussema mahjoub ---------------------//
+
+	@OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+	private Set<Application> job_candidate;
+
+	// --------------------- add by oussema mahjoub ---------------------//
 	@OneToOne(mappedBy = "candidate")
 	private AvailabilityCandidate avalibilityCandidate;
-	
-	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
-	private List<Interview> interviews = new ArrayList<>();
 
-	@OneToOne(mappedBy = "candidatTest")	
-	private OnlineTest onlineTest;		
-	
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	private Set<Interview> interviews;
+
+	@OneToOne(mappedBy = "candidatTest")
+	private OnlineTest onlineTest;
+
 	public AvailabilityCandidate getAvalibilityCandidate() {
 		return avalibilityCandidate;
 	}
@@ -61,11 +62,11 @@ public class Candidate extends User implements Serializable{
 		this.avalibilityCandidate = avalibilityCandidate;
 	}
 
-	public List<Interview> getInterviews() {
+	public Set<Interview> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(List<Interview> interviews) {
+	public void setInterviews(Set<Interview> interviews) {
 		this.interviews = interviews;
 	}
 
@@ -77,25 +78,19 @@ public class Candidate extends User implements Serializable{
 		this.onlineTest = onlineTest;
 	}
 
-	//-------------------------------------------------------------------//
-	
-	
-	
-	public List<Application> getJob_candidate() {
+	// -------------------------------------------------------------------//
+
+	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}
 
-	public void setJob_candidate(List<Application> job_candidate) {
+	public void setJob_candidate(Set<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
-	
 
-	
 	public String getStudyLevel() {
 		return StudyLevel;
 	}
-
-	
 
 	public void setStudyLevel(String studyLevel) {
 		StudyLevel = studyLevel;
@@ -108,8 +103,6 @@ public class Candidate extends User implements Serializable{
 	public void setCourses(Set<Course> courses) {
 		Courses = courses;
 	}
-	
-	
 
 	public Set<ProfessionalExperience> getProfessionalExperiences() {
 		return ProfessionalExperiences;
@@ -174,7 +167,21 @@ public class Candidate extends User implements Serializable{
 	public Candidate(String first_Name, String last_Name, String email, String password) {
 		super(first_Name, last_Name, email, password);
 	}
-	
-	
+
+	public Set<Company> getCompany() {
+		return company;
+	}
+
+	public void setCompany(Set<Company> company) {
+		this.company = company;
+	}
+
+	public Set<JobOffer> getSavedOffers() {
+		return savedOffers;
+	}
+
+	public void setSavedOffers(Set<JobOffer> savedOffers) {
+		this.savedOffers = savedOffers;
+	}
 
 }

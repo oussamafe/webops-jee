@@ -21,8 +21,7 @@ public class LoginServiceImpl implements UserInterfaceRemote {
 		TypedQuery<User> query = em.createQuery("select e from User e where e.email=:email", User.class);
 		query.setParameter("email", username);
 		User u = query.getSingleResult();
-		boolean log = BCrypt.checkpw(password, u.getPassword());
-		if(log)
+		if(BCrypt.checkpw(password, u.getPassword()))
 		{
 			return u;
 		}

@@ -1,8 +1,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,11 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -27,6 +23,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @DiscriminatorValue(value="Employee")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
+//@JsonIgnoreProperties({"password","confirmationToken","availabilityEmploye","interviews","jobsSubmitted"})
 public class Employe extends User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -34,6 +31,9 @@ public class Employe extends User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Role role ;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="submittedBy" , fetch = FetchType.EAGER )
+	
+	private Set<JobOffer> jobsSubmitted;
 	
 	//------------------------add by oussema mahjoub--------------//
 	@OneToOne(mappedBy = "employe")
@@ -41,6 +41,8 @@ public class Employe extends User implements Serializable{
 	
 	@OneToMany(fetch = FetchType.EAGER , mappedBy="employeInterview", cascade = {CascadeType.ALL})
 	private Set<Interview> interviews;
+	
+	
 	
 	public AvailabilityEmploye getAvailabilityEmploye() {
 		return availabilityEmploye;
@@ -65,7 +67,7 @@ public class Employe extends User implements Serializable{
 
 	//@JsonBackReference
 	@ManyToOne
-	@JsonIgnoreProperties("employes")
+	@JsonIgnoreProperties({"employes","nbEmployees","image","followers"})
 	Company company;
 	
 	public Employe(Role role) {
@@ -102,6 +104,16 @@ public class Employe extends User implements Serializable{
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+
+	public Set<JobOffer> getJobsSubmitted() {
+		return jobsSubmitted;
+	}
+
+	public void setJobsSubmitted(Set<JobOffer> jobsSubmitted) {
+		this.jobsSubmitted = jobsSubmitted;
+	}
 		
+	
+	
 	
 }

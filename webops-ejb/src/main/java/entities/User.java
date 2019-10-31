@@ -34,6 +34,10 @@ public class User implements Serializable{
 	
 	private boolean active;
 	
+	private String confirmationToken;
+	
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -70,11 +74,13 @@ public class User implements Serializable{
 		this.last_Name = last_Name;
 		this.email = email;
 		this.password = password;
+		this.active = false;
 	}
 	
 	
 	public User() {
 		super();
+		this.active=false;
 	}
 	
 	
@@ -84,6 +90,20 @@ public class User implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	public String getConfirmationToken() {
+		return confirmationToken;
+	}
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", first_Name=" + first_Name + ", last_Name=" + last_Name + ", email=" + email
+				+ ", password=" + password + ", active=" + active + ", confirmationToken=" + confirmationToken + "]";
+	}
+	
+	
+	
 	
 	
 	

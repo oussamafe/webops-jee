@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.List;
+
 import javax.ejb.Remote;
 
 import entities.Company;
@@ -7,6 +9,7 @@ import entities.Company;
 @Remote
 public interface CompanyInterfaceRemote {
 
-	public int registerCompany(Company company);
+	public Company registerCompany(Company company);
 	public int removeComany(int idC);
+	public List<Company> getAllCompanies();
 }
