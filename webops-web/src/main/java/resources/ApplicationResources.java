@@ -23,7 +23,7 @@ public class ApplicationResources {
 	ApplicationService APService;
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	//@Consumes(MediaType.APPLICATION_JSON)
 	public Response addApp(Application A,@QueryParam("idC") int idCandidate, @QueryParam("idJ")int idJobOffer)
 	{
 		APService.addApplication(A, idCandidate, idJobOffer);

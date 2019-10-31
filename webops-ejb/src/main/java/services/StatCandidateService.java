@@ -1,5 +1,8 @@
 package services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -55,10 +58,29 @@ public class StatCandidateService implements StatCandidateRemote {
 
 	@Override
 	public Long nbrApplicationAllSite() {
+
 		TypedQuery<Long> query = em.createQuery("select count(*) from Application", Long.class);
-		Long nbr=query.getSingleResult();
-		return nbr;
+		
+	
+		Long AllnbrApp=query.getSingleResult();
+		System.out.println(AllnbrApp);
+		return AllnbrApp;
 	}
+
+	@Override
+	public Long nbrApplicationAllSitethisMonth() {
+		Date date = new Date();
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+		
+		TypedQuery<Long> query2 = em.createQuery("select count(*) from Application A where Month(A.depositDate)=Month(:date)", Long.class);
+		query2.setParameter("date", formatter.format(date));
+		
+		Long nbrAppThismonthLong=query2.getSingleResult();
+		System.out.println(nbrAppThismonthLong);
+		System.out.println(formatter.format(date));
+		return nbrAppThismonthLong;
+	}
+
 
 	@Override
 	public Long NbrApplicationWaitingReplybyCandidate(int idCandidate) {

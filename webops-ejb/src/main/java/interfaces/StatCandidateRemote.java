@@ -11,5 +11,6 @@ public interface StatCandidateRemote {
 	public Long NbrApplicationWaitingReplybyCandidate(int idCandidate);
 	public Long nbrALlCandidate();
 	public Long nbrApplicationAllSite();
+	public Long nbrApplicationAllSitethisMonth();
 	
 }

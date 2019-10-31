@@ -521,7 +521,7 @@ public class CandidateService implements CandidateInterfaceRemote {
 	@Override
 	public List<JobOffer> SearchJobOfferMultipe(String str) {
 		TypedQuery<JobOffer> query= em.createQuery(
-				"select  C from JobOffer C where C.type LIKE :str or C.location LIKE :str", 
+				"select  C from JobOffer C where C.type LIKE :str or C.location LIKE :str or C.description LIKE :str", 
 				JobOffer.class);
 				query.setParameter("str", "%"+str+"%");
 				

@@ -1,5 +1,8 @@
 package services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -19,11 +22,12 @@ public class ApplicationService implements ApplicationInterfaceRemote {
 	
 	@Override
 	public void addApplication(Application A, int idCandidate, int idJobOffer) 
-	{
+	{	Date date = new Date();
 		ApplicationId PK = new ApplicationId();
 		PK.setIdCandidate(idCandidate);
 		PK.setIdJobOffer(idJobOffer);
 		A.setId(PK);
+		A.setDepositDate(date);
 		em.persist(A);
 	
 	}
