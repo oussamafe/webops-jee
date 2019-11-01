@@ -11,10 +11,13 @@ public class FixedTimerBean {
     private WorkerBean workerBean;
  
     
-    @Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
+    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
     public void EveryFiveSecondesTasks() throws InterruptedException {
-     //   workerBean.doTimerWork();       
-    //    workerBean.InterviewPropertiesAlgo();
+     //   workerBean.doTimerWork();  
+    //	 workerBean.AutoRefuseOnlineTest();   //tested OK
+        workerBean.InterviewPropertiesAlgo();//tested OK
+   // 	 workerBean.AutoRemoveAvailability();        //tested OK
+   // 	workerBean.AddAvailabilityDayForAllEmp();    //tested OK
     }
     
     

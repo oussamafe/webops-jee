@@ -25,6 +25,11 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 
 	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
+
+	
+	
+	AvailabilityImplementation ai;
+	
 	private Integer id;
 
 	@Override
@@ -169,7 +174,11 @@ public class OnlineTestImplementation implements OnlineTestRemote {
 		if (ot.getNote() < 15)
 			ot.setState(StateTestOnline.InValid);
 		else
-			ot.setState(StateTestOnline.Valid);
+			{
+				ot.setState(StateTestOnline.Valid);
+				
+				ai.InitialiseCandidateAvailability(ot.getCandidatTest().getId());
+			}
 	}
 
 	/**
