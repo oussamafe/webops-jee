@@ -23,6 +23,7 @@ import entities.Employe;
 import entities.Interview;
 import entities.Role;
 import entities.StateTestOnline;
+import utilities.MailClass;
 
 @Singleton
 public class WorkerBean {
@@ -62,6 +63,16 @@ public class WorkerBean {
 			Set<Employe> emps = GetEmployes(i.getInterviewType().getRoleOfEmploye());
 			if (emps.size() == 0) {
 				System.out.println("no employe found  send mail  to add one ");
+				TypedQuery<Employe> ad = em.createQuery("SELECT a FROM Employe a where a.role=:r", Employe.class);
+				ad.setParameter("r", Role.Administrator);
+				query.setFirstResult(0);
+				query.setMaxResults(1);
+				Employe admin = ad.getSingleResult(); 	
+				String desc="after trying to affect and an interview { id =["+i.getId()+"] } with type "+i.getInterviewType().getType()+"  for candidate id=["+i.getCandidatInterview().getId()+"] \n "
+						+ "named by \n FirstName : "+i.getCandidatInterview().getFirst_Name()+"\nLastName  "+i.getCandidatInterview().getLast_Name()+"\n"
+								+ "we have problem that  there is no employe with role "+i.getInterviewType().getRoleOfEmploye()+" exist "+" ";
+				new MailClass(admin.getEmail(), "Auto_Affecting_Interview", desc);
+				
 			} else {
 				if (avaCan.size() == 0) {// if candiate have no avaibility  will affect by employer avibility
 					System.out.println("use this  2 ");
