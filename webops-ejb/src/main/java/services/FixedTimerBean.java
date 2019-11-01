@@ -15,9 +15,12 @@ public class FixedTimerBean {
     public void EveryFiveSecondesTasks() throws InterruptedException {
      //   workerBean.doTimerWork();  
     //	 workerBean.AutoRefuseOnlineTest();   //tested OK
-        workerBean.InterviewPropertiesAlgo();//tested OK
+    //    workerBean.InterviewPropertiesAlgo();//tested OK
    // 	 workerBean.AutoRemoveAvailability();        //tested OK
    // 	workerBean.AddAvailabilityDayForAllEmp();    //tested OK
+    	
+    	//workerBean.autodeleteInterview(); //not implemented yet
+    	//workerBean.autodeleteOnlinetest();//not implemented yet
     }
     
     
