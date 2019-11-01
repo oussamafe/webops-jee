@@ -6,10 +6,13 @@ import javax.ejb.Remote;
 @Remote
 public interface OnlineTestStatisticalRemote {
 
-	public int AcceptedTestPerYear(int year);//yet
-	public int RejectedTestPerYear(int year);//yet
-	public int AcceptedTestPerMonth(int year,int month);//yet
-	public int RejectedTestPerMonth(int year,int month);//yet
+	public int NbTestPerYear(int year);//yet
+	public int NbTestPerMonth(int year,int month);//yet
 	
-	public int PercentOfExistanceQuestionInTests();
+	public float AcceptedTestPerYear(int year);//yet
+	public float RejectedTestPerYear(int year);//yet
+	public float AcceptedTestPerMonth(int year,int month);//yet
+	public float RejectedTestPerMonth(int year,int month);//yet
+	
+	public float PercentOfExistanceQuestionInTests();
 }
