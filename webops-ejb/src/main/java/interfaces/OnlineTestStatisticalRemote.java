@@ -1,6 +1,8 @@
 package interfaces;
 
+
 import javax.ejb.Remote;
+
 
 
 @Remote
@@ -14,5 +16,6 @@ public interface OnlineTestStatisticalRemote {
 	public float AcceptedTestPerMonth(int year,int month);//yet
 	public float RejectedTestPerMonth(int year,int month);//yet
 	
-	public float PercentOfExistanceQuestionInTests();
+	public  int NbQuestionPerModule(String Module);
+	
 }

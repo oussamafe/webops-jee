@@ -1,7 +1,5 @@
 package resources;
 
-import java.util.Set;
-
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
