@@ -47,6 +47,10 @@ public class Company  implements Serializable{
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company_offers")
 	private Set<JobOffer> comapnyJobs;
 	
+	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
+	private Set<Events> events;
+	
+	
 	public Set<JobOffer> getComapnyJobs() {
 		return comapnyJobs;
 	}
@@ -128,6 +132,14 @@ public class Company  implements Serializable{
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Set<Events> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Events> events) {
+		this.events = events;
 	}
 
 	

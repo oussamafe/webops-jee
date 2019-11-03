@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -29,8 +30,6 @@ public class JobOffer implements Serializable {
 	private String description;
 
 	private String job_title;
-
-	private String[] skills;
 
 	private String type;
 
@@ -48,12 +47,15 @@ public class JobOffer implements Serializable {
 
 	private boolean available;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Set<Candidate> savedOffersCandidate;
 	
+	@ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+	private Set<Skill> Skills;
 	
 	@ManyToOne
-	@JsonIgnoreProperties({ "company" })
+	@JsonIgnoreProperties({ "company" , "interviews" , "password" , "jobsSubmitted" , "availabilityEmploye" , "confirmationToken" , "active"})
 	Employe submittedBy;
 
 	@ManyToOne
@@ -162,14 +164,6 @@ public class JobOffer implements Serializable {
 		this.submittedBy = submittedBy;
 	}
 
-	public String[] getSkills() {
-		return skills;
-	}
-
-	public void setSkills(String[] skills) {
-		this.skills = skills;
-	}
-
 	public boolean isAvailable() {
 		return available;
 	}
@@ -186,4 +180,31 @@ public class JobOffer implements Serializable {
 		this.depositDate = depositDate;
 	}
 
+	public Set<Candidate> getSavedOffersCandidate() {
+		return savedOffersCandidate;
+	}
+
+	public void setSavedOffersCandidate(Set<Candidate> savedOffersCandidate) {
+		this.savedOffersCandidate = savedOffersCandidate;
+	}
+
+	public Set<Skill> getSkills() {
+		return Skills;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		Skills = skills;
+	}
+
+	@Override
+	public String toString() {
+		return "JobOffer [id=" + id + ", description=" + description + ", job_title=" + job_title + ", type=" + type
+				+ ", level=" + level + ", location=" + location + ", approved=" + approved + ", approvalDetails="
+				+ approvalDetails + ", approvalDate=" + approvalDate + ", depositDate=" + depositDate + ", available="
+				+ available + ", savedOffersCandidate=" + savedOffersCandidate + ", Skills=" + Skills + ", submittedBy="
+				+ submittedBy + ", company_offers=" + company_offers + ", job_offer=" + job_offer + "]";
+	}
+
+	
+	
 }

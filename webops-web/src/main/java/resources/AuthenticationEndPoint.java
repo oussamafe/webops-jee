@@ -4,6 +4,8 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
@@ -13,7 +15,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -39,7 +43,7 @@ public class AuthenticationEndPoint {
 	private UriInfo uriInfo;
 
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password) {
 
@@ -60,14 +64,18 @@ public class AuthenticationEndPoint {
 						System.out.println(role);
 					}
 					String token = issueToken(Integer.toString(u.getId()), role);
-					System.out.println("token : "+token);
-					return Response.ok(token).build();
+					String refresh_token = issueRefreshToken(Integer.toString(u.getId()), role);
+					loginService.setRefreshToken(u.getId(), refresh_token);
+					Map<String,String> tokens = new HashMap<String, String>();
+					tokens.put("access_token", token);
+					tokens.put("refresh_token",refresh_token);
+					return Response.ok(tokens).build();
 				}
 
 			}
 			return Response.status(Response.Status.FORBIDDEN).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.FORBIDDEN).build();
+			return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
 		}
 	}
 
@@ -79,15 +87,20 @@ public class AuthenticationEndPoint {
 	private String issueToken(String username, String role) {
 		String keyString = "simplekey";
 		Key key = new SecretKeySpec(keyString.getBytes(), 0, keyString.getBytes().length, "DES");
-		System.out.println("the key is : " + key.hashCode());
-		System.out.println("uriInfo.getAbsolutePath().toString() : " + uriInfo.getAbsolutePath().toString());
-		System.out.println("Expiration date: " + toDate(LocalDateTime.now().plusMinutes(15L)));
 		String jwtToken = Jwts.builder().setSubject(username).claim("Role", role)
 				.setIssuer(uriInfo.getAbsolutePath().toString()).setIssuedAt(new Date())
-				.setExpiration(toDate(LocalDateTime.now().plusMinutes(15L))).signWith(SignatureAlgorithm.HS512, key)
+				.setExpiration(toDate(LocalDateTime.now().plusMinutes(60L))).signWith(SignatureAlgorithm.HS512, key)
 				.compact();
-		System.out.println("the returned token is : " + jwtToken);
-		System.out.println(decodeToken(jwtToken, key));
+		return jwtToken;
+	}
+
+	private String issueRefreshToken(String username, String role) {
+		String keyString = "simplekey";
+		Key key = new SecretKeySpec(keyString.getBytes(), 0, keyString.getBytes().length, "DES");
+		String jwtToken = Jwts.builder().setSubject(username).claim("Role", role)
+				.setIssuer(uriInfo.getAbsolutePath().toString()).setIssuedAt(new Date())
+				.setExpiration(toDate(LocalDateTime.now().plusMonths(2L))).signWith(SignatureAlgorithm.HS512, key)
+				.compact();
 		return jwtToken;
 	}
 
@@ -105,4 +118,20 @@ public class AuthenticationEndPoint {
 		}
 	}
 
+	@POST
+	@Path("refresh")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response refreshToken(@FormParam("refresh_token") String token)
+	{
+		String keyString = "simplekey";
+		Key key = new SecretKeySpec(keyString.getBytes(), 0, keyString.getBytes().length, "DES");
+		Claims claim = decodeToken(token,key);
+		String role = claim.get("Role", String.class);
+		int idU = Integer.valueOf(claim.getSubject());
+		if(loginService.checkRefreshToken(idU, token))
+			
+			return Response.ok(issueToken(String.valueOf(idU),role)).build();
+					
+		return Response.status(Response.Status.FORBIDDEN).build();
+	}
 }

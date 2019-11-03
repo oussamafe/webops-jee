@@ -40,8 +40,9 @@ public class JobOffersResources {
 		String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
 		LoggedInUser logUser = new LoggedInUser();
 		int idA = logUser.getLoggedinUser(authorizationHeader);
-		int idJob = jobOffersService.addJobOffer(idA, jobOffer);
-		if (idJob != 0) {
+		JobOffer job = jobOffersService.addJobOffer(idA, jobOffer);
+		if (job != null) {
+			jobOffersService.indexJobOffer(job);
 			return Response.status(Status.CREATED).entity("Job Offer added Successfully !").build();
 		}
 		return Response.status(Status.NOT_ACCEPTABLE).entity("Error !").build();

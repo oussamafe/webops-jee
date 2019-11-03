@@ -29,9 +29,9 @@ public class Post implements Serializable{
 	@Temporal (TemporalType.DATE)
 	private Date dateP;
 	
-	@OneToMany(mappedBy="post", cascade=CascadeType.REMOVE)
+	/*@OneToMany(mappedBy="post", cascade=CascadeType.REMOVE)
 	private List<Candidate> candidate;
-	
+	*/
 	public Date getDateP() {
 		return dateP;
 	}
@@ -49,16 +49,16 @@ public class Post implements Serializable{
 		this.id_post = id_post;
 		this.content = content;
 		this.dateP = dateP;
-		this.candidate = candidate;
+		//this.candidate = candidate;
 	}
 
-	public List<Candidate> getCandidate() {
+	/*public List<Candidate> getCandidate() {
 		return candidate;
 	}
 
 	public void setCandidate(List<Candidate> candidate) {
 		this.candidate = candidate;
-	}
+	}*/
 
 	public int getId_post() {
 		return id_post;

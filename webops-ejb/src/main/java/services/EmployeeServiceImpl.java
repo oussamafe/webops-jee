@@ -210,7 +210,7 @@ public class EmployeeServiceImpl implements EmployeeServiceRemote {
 				.build();
 		TransportClient client = new PreBuiltTransportClient(settings)
 				.addTransportAddress(new TransportAddress(new InetSocketAddress("127.0.0.1", 9300)));
-		IndexResponse response = client.prepareIndex("companies", "_doc", String.valueOf(company.getId()))
+		IndexResponse response = client.prepareIndex("companies", "company", String.valueOf(company.getId()))
 				.setSource(new Gson().toJson(company), XContentType.JSON).get();
 		client.close();
 		return response.getResult().toString();
