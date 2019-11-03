@@ -25,6 +25,12 @@ import entities.Question;
 import entities.Responce;
 import entities.StateTestOnline;
 import services.OnlineTestImplementation;
+import utilites.Roles;
+import utilites.RolesAllowed;
+
+
+
+
 
 @RequestScoped
 @Path("OnlineTestResources")
@@ -32,6 +38,7 @@ public class OnlineTestResources {
 	@Inject
 	OnlineTestImplementation OTI;
 
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@POST
 	@Path("/AddOnlineTest")
 	@Consumes(MediaType.APPLICATION_JSON)

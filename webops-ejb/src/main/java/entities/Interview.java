@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +29,20 @@ public class Interview implements Serializable{
 	private Date date;
 	private int startHour;
 	
+	@Enumerated(EnumType.STRING)
+	private StateTestOnline state;
+	
+	
+	public StateTestOnline getState() {
+		return state;
+	}
+
+
+	public void setState(StateTestOnline state) {
+		this.state = state;
+	}
+
+
 	public int getStartHour() {
 		return startHour;
 	}

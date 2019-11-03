@@ -14,6 +14,9 @@ public interface InterviewManagementRemote {
 	public int AddInterview(int candidateID);//tested OK
 	public int AddInterviewType(InterviewType interviewType);//tested OK	
 	
+	public void SetValidInterview(int interviewID);//tested OK
+	public void SetInValidInterview(int interviewID);//tested OK
+	
 	public void UpdateInterview(int interviewID,Interview interview);//tested OK
 	public void UpdateInterviewType(int interviewTypeID,InterviewType interviewType);//tested OK
 	

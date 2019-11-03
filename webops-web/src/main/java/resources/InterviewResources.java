@@ -56,6 +56,22 @@ public class InterviewResources {
 		IMI.UpdateInterview(interviewID, interview);
 		return Response.status(Status.OK).build();
 	}
+	
+	@PUT
+	@Path("/SetInValidInterview")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response SetInValidInterview(@QueryParam(value = "iid") int interviewID) {
+		IMI.SetInValidInterview(interviewID);
+		return Response.status(Status.OK).build();
+	}
+	
+	@PUT
+	@Path("/SetValidInterview")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response SetValidInterview(@QueryParam(value = "iid") int interviewID) {
+		IMI.SetValidInterview(interviewID);
+		return Response.status(Status.OK).build();
+	}
 
 	@PUT
 	@Path("/UpdateInterviewType")

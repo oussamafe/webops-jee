@@ -20,7 +20,7 @@ public class FixedTimerBean {
    // 	 workerBean.AutoRemoveAvailability();        //tested OK
    // 	workerBean.AddAvailabilityDayForAllEmp();    //tested OK
     	
-    	workerBean.AutoDeleteInterview(); //not implemented yet // every year
+    //	workerBean.AutoDeleteInterview(); //not implemented yet // every year
     //	workerBean.AutoDeleteOnlineTest();//tested OK
     }
     

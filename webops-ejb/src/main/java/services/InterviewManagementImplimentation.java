@@ -14,6 +14,7 @@ import entities.Candidate;
 import entities.Employe;
 import entities.Interview;
 import entities.InterviewType;
+import entities.StateTestOnline;
 import interfaces.InterviewManagementRemote;
 
 @Stateless
@@ -29,6 +30,7 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		for(InterviewType it:ListAllInterviewType())
 		{
 			Interview i=new Interview();
+			i.setState(StateTestOnline.WaitForIt);
 			em.persist(i);			
 			AffectInterviewTypeToInterview(i.getId(),it.getId());
 			AffectInterviewToCandidate(i.getId(),2);
@@ -42,6 +44,17 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		return interviewType.getId();
 	}
 
+	@Override
+	public void SetValidInterview(int interviewID ) {
+		Interview i=em.find(Interview.class,interviewID );
+		i.setState(StateTestOnline.Valid);
+	}
+	@Override
+	public void SetInValidInterview(int interviewID ) {
+		Interview i=em.find(Interview.class,interviewID );
+		i.setState(StateTestOnline.InValid);
+	}
+	
 	@Override
 	public void UpdateInterview(int interviewID, Interview interview) {
 		Interview i=em.find(Interview.class,interviewID );
