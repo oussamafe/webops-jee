@@ -21,6 +21,8 @@ import entities.AvailabilityEmploye;
 import entities.Candidate;
 import entities.Employe;
 import entities.Interview;
+import entities.InterviewType;
+import entities.OnlineTest;
 import entities.Role;
 import entities.StateTestOnline;
 import utilities.MailClass;
@@ -431,4 +433,50 @@ public class WorkerBean {
 		}
 	}
 
+	
+	public void AutoDeleteInterview()
+	{
+		TypedQuery<Interview> interview = em.createQuery("SELECT a FROM Interview a where EXTRACT(YEAR FROM a.date)< EXTRACT(YEAR FROM NOW())-1", Interview.class);		
+		Set<Interview> interviews = new HashSet<Interview>();
+		interviews.addAll(interview.getResultList());
+		
+		for(Interview i:interviews)
+		{
+			DeleteInterview(i.getId());
+		}
+		
+	}
+	private void DeleteInterview(int interviewID) {
+		Interview i=em.find(Interview.class,interviewID );
+		Candidate c=em.find(Candidate.class, i.getCandidatInterview().getId());		
+		InterviewType it=em.find(InterviewType.class,i.getInterviewType().getId());
+		
+		
+		try {
+			Employe e=em.find(Employe.class, i.getEmployeInterview().getId());
+			e.getInterviews().remove(i);
+		}catch(NullPointerException ex)
+		{
+			System.out.println("null");
+		}
+		
+		
+		c.getInterviews().remove(i);		
+		it.getInterviews().remove(i);
+	
+		em.remove(i);
+		
+	}
+	public void AutoDeleteOnlineTest()
+	{
+		TypedQuery<OnlineTest> onlineTest = em.createQuery("SELECT a FROM OnlineTest a where EXTRACT(YEAR FROM a.date)< EXTRACT(YEAR FROM NOW())-1", OnlineTest.class);		
+		Set<OnlineTest> onlineTests = new HashSet<OnlineTest>();
+		onlineTests.addAll(onlineTest.getResultList());
+		
+		for(OnlineTest i:onlineTests)
+		{
+			em.remove(i);
+		}
+		
+	}
 }

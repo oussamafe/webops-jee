@@ -13,14 +13,15 @@ public class FixedTimerBean {
     
     @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
     public void EveryFiveSecondesTasks() throws InterruptedException {
-     //   workerBean.doTimerWork();  
+     //   workerBean.doTimerWork(); 
+    	
     //	 workerBean.AutoRefuseOnlineTest();   //tested OK
     //    workerBean.InterviewPropertiesAlgo();//tested OK
    // 	 workerBean.AutoRemoveAvailability();        //tested OK
    // 	workerBean.AddAvailabilityDayForAllEmp();    //tested OK
     	
-    	//workerBean.autodeleteInterview(); //not implemented yet
-    	//workerBean.autodeleteOnlinetest();//not implemented yet
+    	workerBean.AutoDeleteInterview(); //not implemented yet // every year
+    //	workerBean.AutoDeleteOnlineTest();//tested OK
     }
     
     
@@ -35,6 +36,11 @@ public class FixedTimerBean {
         //workerBean.InterviewPropertiesAlgo();
     	//workerBean.AddAvailabilityDayForAllEmp()
     }
-    
+    @Schedule(second = "1", minute = "1", hour = "*", persistent = false)
+    public void EveryYearTasks() throws InterruptedException {
+       
+    	//workerBean.AutoDeleteInterview(); 
+    	//workerBean.AutoDeleteOnlineTest();
+    }
     
 }
