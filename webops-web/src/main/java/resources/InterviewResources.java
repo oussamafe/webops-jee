@@ -24,6 +24,8 @@ import javax.ws.rs.core.Response.Status;
 import entities.Interview;
 import entities.InterviewType;
 import services.InterviewManagementImplimentation;
+import utilites.Roles;
+import utilites.RolesAllowed;
 
 @RequestScoped
 @Path("InterviewResources")
@@ -32,6 +34,7 @@ public class InterviewResources {
 	@Inject
 	InterviewManagementImplimentation IMI;
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@POST
 	@Path("/AddInterview")
 	// @Consumes(MediaType.APPLICATION_JSON)
@@ -41,6 +44,7 @@ public class InterviewResources {
 		return Response.status(Status.CREATED).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@POST
 	@Path("/AddInterviewType")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -49,6 +53,7 @@ public class InterviewResources {
 		return Response.status(Status.CREATED).entity(x).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/UpdateInterview")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -56,7 +61,8 @@ public class InterviewResources {
 		IMI.UpdateInterview(interviewID, interview);
 		return Response.status(Status.OK).build();
 	}
-	
+
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/SetInValidInterview")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -64,7 +70,8 @@ public class InterviewResources {
 		IMI.SetInValidInterview(interviewID);
 		return Response.status(Status.OK).build();
 	}
-	
+
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/SetValidInterview")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -73,15 +80,16 @@ public class InterviewResources {
 		return Response.status(Status.OK).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/UpdateInterviewType")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response UpdateInterviewType(@QueryParam(value = "itid") int interviewTypeID,
-			InterviewType interviewType) {
+	public Response UpdateInterviewType(@QueryParam(value = "itid") int interviewTypeID, InterviewType interviewType) {
 		IMI.UpdateInterviewType(interviewTypeID, interviewType);
 		return Response.status(Status.OK).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListAllInterview")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -90,6 +98,7 @@ public class InterviewResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListInterviewByCandidate")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -98,6 +107,7 @@ public class InterviewResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListInterviewByEmploye")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -106,25 +116,27 @@ public class InterviewResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListInterviewPerDate")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ListInterviewPerDate(@QueryParam("date") String date) {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Set<Interview> list=new HashSet<Interview>();
-		 Date datee;
+		Set<Interview> list = new HashSet<Interview>();
+		Date datee;
 		try {
 			datee = df.parse(date);
-			System.out.println("date ==== "+datee);
-		 list = IMI.ListInterviewPerDate(datee);
+			System.out.println("date ==== " + datee);
+			list = IMI.ListInterviewPerDate(datee);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListInterviewByType")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -133,6 +145,7 @@ public class InterviewResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListAllInterviewType")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -141,6 +154,7 @@ public class InterviewResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@DELETE
 	@Path("/DeleteInterviewType")
 	public Response DeleteInterviewType(@QueryParam(value = "itid") int interviewTypeID) {
@@ -148,6 +162,7 @@ public class InterviewResources {
 		return Response.status(Status.CREATED).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@DELETE
 	@Path("/DeleteInterview")
 	public Response DeleteInterview(@QueryParam(value = "iid") int interviewID) {
@@ -155,24 +170,29 @@ public class InterviewResources {
 		return Response.status(Status.CREATED).build();
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/AffectInterviewToEmploye")
-	public Response AffectInterviewToEmploye(@QueryParam(value = "iid") int interviewID,@QueryParam(value = "eid") int employeID) {
+	public Response AffectInterviewToEmploye(@QueryParam(value = "iid") int interviewID,
+			@QueryParam(value = "eid") int employeID) {
 		IMI.AffectInterviewToEmploye(interviewID, employeID);
 
 		return Response.status(Status.OK).build();
 
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/AffectInterviewToCandidate")
-	public Response AffectInterviewToCandidate(@QueryParam("iid") int interviewID,@QueryParam(value = "cid") int candidateID) {
+	public Response AffectInterviewToCandidate(@QueryParam("iid") int interviewID,
+			@QueryParam(value = "cid") int candidateID) {
 		IMI.AffectInterviewToCandidate(interviewID, candidateID);
 
 		return Response.status(Status.OK).build();
 
 	}
 
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@PUT
 	@Path("/AffectInterviewTypeToInterview")
 	public Response AffectInterviewTypeToInterview(@QueryParam("iid") int interviewID,

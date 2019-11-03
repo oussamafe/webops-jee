@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response.Status;
 import entities.AvailabilityCandidate;
 import entities.AvailabilityEmploye;
 import services.AvailabilityImplementation;
+import utilites.Roles;
+import utilites.RolesAllowed;
 
 @RequestScoped
 @Path("AvailabilityResources")
@@ -49,6 +51,7 @@ public class AvailabilityResources {
 	
 	*/
 	
+	@RolesAllowed(Permissions = {Roles.NoRights})//just for test it will auto execute
 	@POST
 	@Path("/InitialiseCandidateAvailability")
 	//@Consumes(MediaType.APPLICATION_JSON)
@@ -56,7 +59,7 @@ public class AvailabilityResources {
 		 AI.InitialiseCandidateAvailability(candidateID);
 		return Response.status(Status.CREATED).build();
 	}
-	
+	@RolesAllowed(Permissions = {Roles.NoRights})//just for test it will auto execute
 	@POST
 	@Path("/InitialiseEmployeAvailability")
 	//@Consumes(MediaType.APPLICATION_JSON)
@@ -66,7 +69,7 @@ public class AvailabilityResources {
 	}
 	
 	
-	
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.CANDIDATE })
 	@GET
 	@Path("/ListAvailabilityCandidate")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +78,7 @@ public class AvailabilityResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 	
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@GET
 	@Path("/ListAvailabilityEmploye")
 	@Produces(MediaType.APPLICATION_JSON)

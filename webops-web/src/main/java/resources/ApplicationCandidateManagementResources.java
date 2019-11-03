@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response.Status;
 import entities.Application;
 import entities.ApplicationId;
 import services.ApplicationCandidateManagementImplementation;
+import utilites.Roles;
+import utilites.RolesAllowed;
 
 @RequestScoped
 @Path("ApplicationResources")
@@ -52,6 +54,8 @@ public class ApplicationCandidateManagementResources {
 }
 	*/
 	
+	
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@GET
 	@Path("/ApplicationStillWait")
 	@Produces(MediaType.APPLICATION_JSON)	
@@ -60,7 +64,7 @@ public class ApplicationCandidateManagementResources {
        return Response.status(Status.OK).entity(list).build();
 	}
 	
-	
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@GET
 	@Path("/ApplicationAccepted")
 	@Produces(MediaType.APPLICATION_JSON)	
@@ -71,7 +75,7 @@ public class ApplicationCandidateManagementResources {
 	}
 	
 	
-	
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@GET
 	@Path("/ApplicationRejected")
 	@Produces(MediaType.APPLICATION_JSON)	
@@ -81,6 +85,7 @@ public class ApplicationCandidateManagementResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 	
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@PUT
 	@Path("/acceptApplication")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -89,6 +94,7 @@ public class ApplicationCandidateManagementResources {
 		return ACMI.AcceptApplication(id);
 	}
 	
+	@RolesAllowed(Permissions = {Roles.Administrator , Roles.Human_Resources , Roles.Project_Manager})
 	@PUT
 	@Path("/RejectApplication")
 	@Consumes(MediaType.APPLICATION_JSON)
