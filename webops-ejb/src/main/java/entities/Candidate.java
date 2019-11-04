@@ -15,7 +15,12 @@ import javax.persistence.OneToOne;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+=======
 import com.fasterxml.jackson.annotation.JsonTypeName;
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 =======
 import javax.persistence.FetchType; 
@@ -44,6 +49,14 @@ public class Candidate extends User implements Serializable{
 =======
 <<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 >>>>>>> webops-ejb/src/main/java/entities/Candidate.java
+	
+	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
+	//@JsonIgnoreProperties("Courses")
+	private Set<Course> Courses;
+	
+	
+=======
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	private String SubCand;//my subscriptions
 	
@@ -105,6 +118,39 @@ public class Candidate extends User implements Serializable{
 	@OneToOne(mappedBy = "candidate")
 	private AvailabilityCandidate avalibilityCandidate;
 	
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
+	@JsonManagedReference(value="candidatInterview-movement")
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL } , fetch = FetchType.EAGER)
+	private Set<Interview> interviews;
+
+	@OneToOne(mappedBy = "candidatTest")	
+	private OnlineTest onlineTest;
+	
+	//-------------- add by iheb ------------------//
+	
+	//@JsonManagedReference(value="candidate-post")
+	@OneToMany(mappedBy="candidate", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Post> lstPub;
+	
+	@OneToMany(mappedBy="candidate", cascade=CascadeType.ALL, fetch = FetchType.EAGER)	
+	private Set<Comment> lstCom;
+	
+	public Set<Post> getLstPub() {
+		return lstPub;
+	}
+
+	public void setLstPub(Set<Post> lstPub) {
+		this.lstPub = lstPub;
+	}
+
+	public Set<Comment> getLstCom() {
+		return lstCom;
+	}
+
+	public void setLstCom(Set<Comment> lstCom) {
+		this.lstCom = lstCom;
+	}
+=======
 	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL },fetch=FetchType.EAGER)
 <<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 =======
@@ -127,6 +173,7 @@ public class Candidate extends User implements Serializable{
 
 	@OneToOne(mappedBy = "candidatTest")	
 	private OnlineTest onlineTest;		
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 	public AvailabilityCandidate getAvalibilityCandidate() {
 		return avalibilityCandidate;
@@ -136,11 +183,11 @@ public class Candidate extends User implements Serializable{
 		this.avalibilityCandidate = avalibilityCandidate;
 	}
 
-	public List<Interview> getInterviews() {
+	public Set<Interview> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(List<Interview> interviews) {
+	public void setInterviews(Set<Interview> interviews) {
 		this.interviews = interviews;
 	}
 
@@ -191,6 +238,8 @@ public class Candidate extends User implements Serializable{
 		SubCand = subCand;
 	}
 	
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
+=======
 	public String getSubCompany() {
 		return SubCompany;
 	}
@@ -206,6 +255,7 @@ public class Candidate extends User implements Serializable{
 >>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 >>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}
