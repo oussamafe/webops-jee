@@ -3,20 +3,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.FetchType; 
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 
 @Entity
 @DiscriminatorValue(value="Candidate")
@@ -30,6 +28,7 @@ public class Candidate extends User implements Serializable{
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	private String SubCand;//my subscriptions
 	
@@ -44,15 +43,21 @@ public class Candidate extends User implements Serializable{
 	@ManyToMany(cascade = CascadeType.ALL ,fetch=FetchType.EAGER)
 	private Set<Skill> Skills;
 	
+=======
+
+	@ManyToOne
+	private Post post;
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	//@JsonIgnoreProperties("Courses")
 	private Set<Course> Courses;
-	
-	
+
+
 	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
@@ -65,11 +70,25 @@ public class Candidate extends User implements Serializable{
 	private AvailabilityCandidate avalibilityCandidate;
 	
 	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL },fetch=FetchType.EAGER)
+=======
+
+	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
+			fetch=FetchType.EAGER)
+	private Set<Application> job_candidate;
+
+
+
+	//---------------------  add by oussema mahjoub ---------------------//
+	@OneToOne(mappedBy = "candidate")
+	private AvailabilityCandidate avalibilityCandidate;
+
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 	private List<Interview> interviews = new ArrayList<>();
 
 	@OneToOne(mappedBy = "candidatTest")	
 	private OnlineTest onlineTest;		
-	
+
 	public AvailabilityCandidate getAvalibilityCandidate() {
 		return avalibilityCandidate;
 	}
@@ -95,6 +114,7 @@ public class Candidate extends User implements Serializable{
 	}
 
 	//-------------------------------------------------------------------//
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	
 	public String getSubCand() {
@@ -120,6 +140,10 @@ public class Candidate extends User implements Serializable{
 	public void setSubCompany(String subCompany) {
 		SubCompany = subCompany;
 	}
+=======
+
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 	public Set<Application> getJob_candidate() {
 		return job_candidate;
@@ -128,13 +152,13 @@ public class Candidate extends User implements Serializable{
 	public void setJob_candidate(Set<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
-	
-	
+
+
 	public String getStudyLevel() {
 		return StudyLevel;
 	}
 
-	
+
 
 	public void setStudyLevel(String studyLevel) {
 		StudyLevel = studyLevel;
@@ -147,8 +171,8 @@ public class Candidate extends User implements Serializable{
 	public void setCourses(Set<Course> courses) {
 		Courses = courses;
 	}
-	
-	
+
+
 
 	public Set<ProfessionalExperience> getProfessionalExperiences() {
 		return ProfessionalExperiences;
@@ -219,8 +243,12 @@ public class Candidate extends User implements Serializable{
 		super(first_Name, last_Name, email, password);
 	}
 
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	
 	
+=======
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 }

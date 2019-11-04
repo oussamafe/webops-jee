@@ -5,11 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.Entity; 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -22,9 +18,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Application implements Serializable {
 	
+<<<<<<< webops-ejb/src/main/java/entities/Application.java
 	private static final long serialVersionUID = 1L;
 
 	
+=======
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+>>>>>>> webops-ejb/src/main/java/entities/Application.java
 	@EmbeddedId
 	ApplicationId id;
 	

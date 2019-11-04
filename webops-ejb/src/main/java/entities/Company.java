@@ -1,7 +1,11 @@
 package entities;
 
 
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
 import java.io.Serializable;
+=======
+import java.io.Serializable; 
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,6 +36,7 @@ public class Company  implements Serializable{
 	private String name;
 	private String field;
 	private int nbEmployees;
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
 	private String image;
 	@Column(unique = true)
 	private String email;
@@ -40,6 +45,21 @@ public class Company  implements Serializable{
 	@JsonIgnoreProperties({"password","active","confirmationToken","company","job_candidate","avalibilityCandidate","interviews","onlineTest","profilIntro","activities","phoneNumber","studyLevel","experiences","courses","certifications","professionalExperiences","skills","email"})
 	private Set<Candidate> followers ;	
 	//@JsonManagedReference
+=======
+	
+	@Column(columnDefinition = "integer default 5")
+	private int nbroffres=5;
+	
+	public int getNbroffres() {
+		return nbroffres;
+	}
+	public void setNbroffres(int nbroffres) {
+		this.nbroffres = nbroffres;
+	}
+	
+
+	@JsonManagedReference
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
 	@JsonIgnoreProperties({"id","password","confirmationToken","availabilityEmploye","company","interviews"})
 	private Set<Employe> employes;

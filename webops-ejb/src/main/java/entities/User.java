@@ -1,19 +1,28 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
+<<<<<<< webops-ejb/src/main/java/entities/User.java
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+=======
+import javax.persistence.CascadeType; 
+import javax.persistence.DiscriminatorColumn; 
+>>>>>>> webops-ejb/src/main/java/entities/User.java
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type")
+@DiscriminatorColumn(name="type") 
 public class User implements Serializable{
 
 
@@ -33,6 +42,27 @@ public class User implements Serializable{
 	private String password;
 	
 	private boolean active;
+
+	public List<Reclamation> getReclaime() {
+		return reclaime;
+	}
+	public void setReclaime(List<Reclamation> reclaime) {
+		this.reclaime = reclaime;
+	}
+	public Set<Panier> getPanier() {
+		return panier;
+	}
+	public void setPanier(Set<Panier> panier) {
+		this.panier = panier;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	@OneToMany (mappedBy = "user", cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
+	private List<Reclamation> reclaime;
+	
+	@OneToMany(fetch = FetchType.EAGER , mappedBy="userpanier", cascade = {CascadeType.ALL})
+	private Set<Panier> panier;
 	
 	public int getId() {
 		return id;
@@ -83,6 +113,11 @@ public class User implements Serializable{
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", first_Name=" + first_Name + ", last_Name=" + last_Name + ", email=" + email
+				+ ", password=" + password + ", active=" + active + ", reclaime=" + reclaime + "]";
 	}
 	
 	
