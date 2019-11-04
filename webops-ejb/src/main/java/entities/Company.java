@@ -1,9 +1,7 @@
 package entities;
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable; 
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -35,12 +32,19 @@ public class Company  implements Serializable{
 	private String field;
 	private int nbEmployees;
 	
-	@Column(unique = true)
-	private String email;
-
-	//@JsonManagedReference
-	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
+	@Column(columnDefinition = "integer default 5")
+	private int nbroffres=5;
 	
+	public int getNbroffres() {
+		return nbroffres;
+	}
+	public void setNbroffres(int nbroffres) {
+		this.nbroffres = nbroffres;
+	}
+	
+
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
 	private Set<Employe> employes;
 	
 	public Company(String name, String field, int nbEmployees) {
@@ -94,15 +98,6 @@ public class Company  implements Serializable{
 		this.employes = employes;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	
 
 
 }

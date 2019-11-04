@@ -1,7 +1,6 @@
 package services;
 
-import java.sql.SQLException;
-
+ 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
