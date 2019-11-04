@@ -30,7 +30,6 @@ public class JobOffer implements Serializable {
 
 	private String job_title;
 
-	//private String[] skills;
 
 	private String type;
 
@@ -54,6 +53,14 @@ public class JobOffer implements Serializable {
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<Skill> Skills;
 	
+	public Set<Skill> getSkills() {
+		return Skills;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		Skills = skills;
+	}
+
 	@ManyToOne
 	@JsonIgnoreProperties({ "company" })
 	Employe submittedBy;

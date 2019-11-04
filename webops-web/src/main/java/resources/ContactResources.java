@@ -3,8 +3,10 @@ package resources;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -15,14 +17,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import entities.Candidate;
 import entities.Course;
+import entities.Friend;
 import services.CandidateService;
+import services.FriendshipService;
 
 @RequestScoped
 @Path("Contacts")
 public class ContactResources {
 	@Inject
 	CandidateService candidateservice;
+	
+	@EJB 
+	FriendshipService friendshipservice;
 	
 	//Subscriptions and Subscribers Web Services
 	
@@ -97,21 +105,23 @@ public class ContactResources {
 	}
 	//Friends Managements
 	
-	@PUT
+	@POST
 	@Path("SendFriendRequest")
 	public Response SendFriendRequest(@QueryParam("idSender") int idSender,@QueryParam("idReciever") int idReciever)
-	{
-		candidateservice.sendFriendRequest(idSender, idReciever);
+	{	Friend F=new Friend();
+		friendshipservice.sendFriendRequest(F, idSender, idReciever,idSender);
+		friendshipservice.sendFriendRequest(F, idReciever, idSender,idSender);
 		return Response.status(Status.CREATED).entity("Request was sent successfully..! ").build();
 		
 	
 	}
 	
-	@PUT
+	@DELETE
 	@Path("TraiteFriendRequest/Refuse")
 	public Response RefuseFriendRequest(@QueryParam("idSender") int idSender,@QueryParam("idReciever") int idReciever)
 	{
-		candidateservice.TreatFriendRequest(idSender, idReciever, 0);
+		friendshipservice.RejectFriendRequest(idSender, idReciever);
+		friendshipservice.RejectFriendRequest(idReciever, idSender);
 		return Response.status(Status.CREATED).entity("Request was Refused successfully..! ").build();
 		
 	
@@ -122,7 +132,8 @@ public class ContactResources {
 	@Path("TraiteFriendRequest/Accept")
 	public Response AcceptFriendRequest(@QueryParam("idSender") int idSender,@QueryParam("idReciever") int idReciever)
 	{
-		candidateservice.TreatFriendRequest(idSender, idReciever, 1);
+		friendshipservice.AcceptFriendRequest(idSender, idReciever);
+		friendshipservice.AcceptFriendRequest(idReciever, idSender);
 		return Response.status(Status.CREATED).entity("Request was accepted successfully..! ").build();
 		
 	
@@ -132,7 +143,10 @@ public class ContactResources {
 	@Path("RemoveFriend")
 	public Response RemoveFriendRequest(@QueryParam("idCandidate") int idCandidate,@QueryParam("idFriend") int idFriend)
 	{
-		candidateservice.RemoveFriend(idCandidate, idFriend);
+		friendshipservice.RemoveFriend(idCandidate, idFriend);
+		
+		friendshipservice.RemoveFriend(idFriend, idCandidate);
+		
 		return Response.status(Status.CREATED).entity("Friend was removed successfully..! ").build();
 		
 	
@@ -142,7 +156,7 @@ public class ContactResources {
 	@Path("AllMyFriends")
 	public Response getAllMyFriends( @QueryParam("idCan") int idCandidate)
 	{
-		List<String> E =candidateservice.getAllMyFriends(idCandidate);
+		List<Candidate> E =friendshipservice.getAllMyFriends(idCandidate);
 		
 		return Response.status(Status.ACCEPTED).entity(E).build();
 	}
@@ -151,7 +165,7 @@ public class ContactResources {
 	@Path("AllMyFriendsRequests")
 	public Response getAllMyFriendsRequests( @QueryParam("idCan") int idCandidate)
 	{
-		List<String> E =candidateservice.getAllMyFriendRequest(idCandidate, 0);
+List<Candidate> E =friendshipservice.getAllMyFriendRequest(idCandidate);
 		
 		return Response.status(Status.ACCEPTED).entity(E).build();
 	}

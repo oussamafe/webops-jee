@@ -35,7 +35,11 @@
 	</licenses>
 
 	<dependencies>
-
+<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4.3</version>
+			</dependency>
 		<!-- Declare the APIs we depend on and need for compilation. All of them 
 			are provided by JBoss WildFly -->
 

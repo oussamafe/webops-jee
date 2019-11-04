@@ -31,11 +31,6 @@ public interface CandidateInterfaceRemote {
 	List<String > getAllMyCandidateSubs(int idCandidate);
 	List<String > getAllMyCompanySub(int idCandidate);
 	List<String> getAllMysubscribers(int idCandidate);
-	public void sendFriendRequest(int idCandidate1,int idCandidate2);
-	public void TreatFriendRequest(int idCandidate1,int idCandidate2,int state);
-	public void RemoveFriend(int idCandidate,int idFriend);
-	List<String>getAllMyFriends(int Candidate);
-	List<String> getAllMyFriendRequest(int Candidate,int state);
 	List<Candidate> SearchCandidateSkills( String str);
 	List<Company> SearchCompanyByNameField(String str);
 	List<JobOffer> SearchJobOfferMultipe(String str);

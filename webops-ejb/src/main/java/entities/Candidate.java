@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,10 +37,10 @@ public class Candidate extends User implements Serializable{
 	
 	private String SubbedCand;//my subscribers
 	
-	private String Friends;
 	
-	private String Friendsrequests;
-	
+	@OneToMany (mappedBy = "Friend", cascade=CascadeType.ALL)
+	private Set<Friend> Friends;
+
 	@ManyToMany(cascade = CascadeType.ALL ,fetch=FetchType.EAGER)
 	private Set<Skill> Skills;
 	
@@ -99,22 +99,6 @@ public class Candidate extends User implements Serializable{
 	
 	public String getSubCand() {
 		return SubCand;
-	}
-
-	public String getFriends() {
-		return Friends;
-	}
-
-	public void setFriends(String friends) {
-		Friends = friends;
-	}
-
-	public String getFriendsrequests() {
-		return Friendsrequests;
-	}
-
-	public void setFriendsrequests(String friendsrequests) {
-		Friendsrequests = friendsrequests;
 	}
 
 	public String getSubbedCand() {
