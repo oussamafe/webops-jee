@@ -1,6 +1,5 @@
 package entities;
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -9,11 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
@@ -29,30 +30,58 @@ public class Candidate extends User implements Serializable{
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
-
+	
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
+	//@JsonIgnoreProperties("Courses")
 	private Set<Course> Courses;
 	
-
-	@ManyToOne
-	private Post post;
-
+	
+	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
+			fetch=FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
-	@OneToMany (mappedBy = "candidate")
-	private List<Application> job_candidate;
+	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
+			fetch=FetchType.EAGER)
+	private Set<Application> job_candidate;
 	
+
 	
 	//---------------------  add by oussema mahjoub ---------------------//
 	@OneToOne(mappedBy = "candidate")
 	private AvailabilityCandidate avalibilityCandidate;
 	
-	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
-	private List<Interview> interviews = new ArrayList<>();
+	@JsonManagedReference(value="candidatInterview-movement")
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL } , fetch = FetchType.EAGER)
+	private Set<Interview> interviews;
 
 	@OneToOne(mappedBy = "candidatTest")	
-	private OnlineTest onlineTest;		
+	private OnlineTest onlineTest;
 	
+	//-------------- add by iheb ------------------//
+	
+	//@JsonManagedReference(value="candidate-post")
+	@OneToMany(mappedBy="candidate", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Post> lstPub;
+	
+	@OneToMany(mappedBy="candidate", cascade=CascadeType.ALL, fetch = FetchType.EAGER)	
+	private Set<Comment> lstCom;
+	
+	public Set<Post> getLstPub() {
+		return lstPub;
+	}
+
+	public void setLstPub(Set<Post> lstPub) {
+		this.lstPub = lstPub;
+	}
+
+	public Set<Comment> getLstCom() {
+		return lstCom;
+	}
+
+	public void setLstCom(Set<Comment> lstCom) {
+		this.lstCom = lstCom;
+	}
+
 	public AvailabilityCandidate getAvalibilityCandidate() {
 		return avalibilityCandidate;
 	}
@@ -61,11 +90,11 @@ public class Candidate extends User implements Serializable{
 		this.avalibilityCandidate = avalibilityCandidate;
 	}
 
-	public List<Interview> getInterviews() {
+	public Set<Interview> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(List<Interview> interviews) {
+	public void setInterviews(Set<Interview> interviews) {
 		this.interviews = interviews;
 	}
 
@@ -81,15 +110,14 @@ public class Candidate extends User implements Serializable{
 	
 	
 	
-	public List<Application> getJob_candidate() {
+	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}
 
-	public void setJob_candidate(List<Application> job_candidate) {
+	public void setJob_candidate(Set<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
 	
-
 	
 	public String getStudyLevel() {
 		return StudyLevel;
