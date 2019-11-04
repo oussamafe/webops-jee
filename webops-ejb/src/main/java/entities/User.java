@@ -64,6 +64,11 @@ public class User implements Serializable{
 	@OneToMany(fetch = FetchType.EAGER , mappedBy="userpanier", cascade = {CascadeType.ALL})
 	private Set<Panier> panier;
 	
+	private String confirmationToken;
+	
+	@Column(columnDefinition="LONGTEXT")
+	private String refresh_token;
+	
 	public int getId() {
 		return id;
 	}
@@ -100,11 +105,13 @@ public class User implements Serializable{
 		this.last_Name = last_Name;
 		this.email = email;
 		this.password = password;
+		this.active = false;
 	}
 	
 	
 	public User() {
 		super();
+		this.active=false;
 	}
 	
 	
@@ -114,11 +121,36 @@ public class User implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+<<<<<<< webops-ejb/src/main/java/entities/User.java
+	public String getConfirmationToken() {
+		return confirmationToken;
+	}
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
+	
+	public String getRefresh_token() {
+		return refresh_token;
+	}
+	public void setRefresh_token(String refresh_token) {
+		this.refresh_token = refresh_token;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", first_Name=" + first_Name + ", last_Name=" + last_Name + ", email=" + email
+				+ ", password=" + password + ", active=" + active + ", confirmationToken=" + confirmationToken
+				+ ", refresh_token=" + refresh_token + "]";
+	}
+	
+	
+	
+=======
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", first_Name=" + first_Name + ", last_Name=" + last_Name + ", email=" + email
 				+ ", password=" + password + ", active=" + active + ", reclaime=" + reclaime + "]";
 	}
+>>>>>>> webops-ejb/src/main/java/entities/User.java
 	
 	
 	

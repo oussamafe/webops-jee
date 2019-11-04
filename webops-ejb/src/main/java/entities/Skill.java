@@ -28,6 +28,11 @@ public class Skill implements Serializable{
 
 	@ManyToMany(mappedBy="Skills",cascade = CascadeType.ALL ,fetch=FetchType.EAGER)
 	private Set<JobOffer> JobOffers;
+	
+	@ManyToMany(mappedBy="skills",cascade = CascadeType.ALL ,fetch=FetchType.EAGER)
+	private Set<Events> event;
+	
+	
 	@JsonIgnore
 	public Set<Candidate> getCandidates() {
 		return Candidates;
@@ -50,6 +55,13 @@ public class Skill implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	public Set<JobOffer> getJobOffers() {
+		return JobOffers;
+	}
+	public void setJobOffers(Set<JobOffer> jobOffers) {
+		JobOffers = jobOffers;
+	}
+	
 	
 	
 }
