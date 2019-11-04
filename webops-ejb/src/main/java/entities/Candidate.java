@@ -3,10 +3,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -17,28 +18,68 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
+=======
+import javax.persistence.FetchType; 
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 @Entity
 @DiscriminatorValue(value="Candidate")
+
 public class Candidate extends User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private String StudyLevel;
 	private String ProfilIntro ;
 	private String Activities ;
-	private String skills;
 	private int PhoneNumber ;
 	private String Certifications ;
 	private String Experiences;
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
 	//@JsonIgnoreProperties("Courses")
 	private Set<Course> Courses;
 	
 	
+=======
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
+	
+	private String SubCand;//my subscriptions
+	
+	private String SubCompany;
+	
+	private String SubbedCand;//my subscribers
+	
+	
+	@OneToMany (mappedBy = "Friend", cascade=CascadeType.ALL)
+	private Set<Friend> Friends;
+
+	@ManyToMany(cascade = CascadeType.ALL ,fetch=FetchType.EAGER)
+	private Set<Skill> Skills;
+	
+=======
+
+	@ManyToOne
+	private Post post;
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
+
+	@OneToMany(mappedBy="Candidate",cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
+	//@JsonIgnoreProperties("Courses")
+	private Set<Course> Courses;
+
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 	@OneToMany(mappedBy="Candidate", cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
 	private Set<ProfessionalExperience> ProfessionalExperiences;
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
 			fetch=FetchType.EAGER)
@@ -50,6 +91,7 @@ public class Candidate extends User implements Serializable{
 	@OneToOne(mappedBy = "candidate")
 	private AvailabilityCandidate avalibilityCandidate;
 	
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	@JsonManagedReference(value="candidatInterview-movement")
 	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL } , fetch = FetchType.EAGER)
 	private Set<Interview> interviews;
@@ -81,6 +123,27 @@ public class Candidate extends User implements Serializable{
 	public void setLstCom(Set<Comment> lstCom) {
 		this.lstCom = lstCom;
 	}
+=======
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL },fetch=FetchType.EAGER)
+=======
+
+	@OneToMany (mappedBy = "candidate",cascade = {CascadeType.ALL}, 
+			fetch=FetchType.EAGER)
+	private Set<Application> job_candidate;
+
+
+
+	//---------------------  add by oussema mahjoub ---------------------//
+	@OneToOne(mappedBy = "candidate")
+	private AvailabilityCandidate avalibilityCandidate;
+
+	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
+	private List<Interview> interviews = new ArrayList<>();
+
+	@OneToOne(mappedBy = "candidatTest")	
+	private OnlineTest onlineTest;		
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 	public AvailabilityCandidate getAvalibilityCandidate() {
 		return avalibilityCandidate;
@@ -107,9 +170,40 @@ public class Candidate extends User implements Serializable{
 	}
 
 	//-------------------------------------------------------------------//
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	
+	public String getSubCand() {
+		return SubCand;
+	}
+
+	public String getSubbedCand() {
+		return SubbedCand;
+	}
+
+	public void setSubbedCand(String subbedCand) {
+		SubbedCand = subbedCand;
+	}
+
+	public void setSubCand(String subCand) {
+		SubCand = subCand;
+	}
 	
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
+=======
+	public String getSubCompany() {
+		return SubCompany;
+	}
+
+	public void setSubCompany(String subCompany) {
+		SubCompany = subCompany;
+	}
+=======
+
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 	public Set<Application> getJob_candidate() {
 		return job_candidate;
 	}
@@ -117,13 +211,18 @@ public class Candidate extends User implements Serializable{
 	public void setJob_candidate(Set<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	
+=======
+
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 	public String getStudyLevel() {
 		return StudyLevel;
 	}
 
-	
+
 
 	public void setStudyLevel(String studyLevel) {
 		StudyLevel = studyLevel;
@@ -136,8 +235,8 @@ public class Candidate extends User implements Serializable{
 	public void setCourses(Set<Course> courses) {
 		Courses = courses;
 	}
-	
-	
+
+
 
 	public Set<ProfessionalExperience> getProfessionalExperiences() {
 		return ProfessionalExperiences;
@@ -171,12 +270,17 @@ public class Candidate extends User implements Serializable{
 		Activities = activities;
 	}
 
-	public String getSkills() {
-		return skills;
+	
+	public Set<Skill> getSkills() {
+		return Skills;
 	}
 
-	public void setSkills(String skills) {
-		this.skills = skills;
+	public void setSkills(Set<Skill> skills) {
+		Skills = skills;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public int getPhoneNumber() {
@@ -202,7 +306,13 @@ public class Candidate extends User implements Serializable{
 	public Candidate(String first_Name, String last_Name, String email, String password) {
 		super(first_Name, last_Name, email, password);
 	}
+
+<<<<<<< webops-ejb/src/main/java/entities/Candidate.java
 	
 	
+	
+=======
+
+>>>>>>> webops-ejb/src/main/java/entities/Candidate.java
 
 }
