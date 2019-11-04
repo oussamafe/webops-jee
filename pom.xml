@@ -64,6 +64,7 @@
 
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
@@ -157,6 +158,43 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jaxrs</artifactId>
+				<version>2.3.1.GA</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.scannotation</groupId>
+				<artifactId>scannotation</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+			<!-- JAXB provider -->
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jaxb-provider</artifactId>
+				<version>2.3.1.GA</version>
+				
+			</dependency>
+			<!-- Multipart support -->
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-multipart-provider</artifactId>
+				<version>2.3.1.GA</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- For better I/O control -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+
 
 		</dependencies>
 	</dependencyManagement>

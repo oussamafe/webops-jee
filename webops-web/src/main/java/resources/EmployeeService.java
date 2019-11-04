@@ -1,5 +1,6 @@
 package resources;
 
+<<<<<<< webops-web/src/main/java/resources/EmployeeService.java
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.ejb.EJB;
+=======
+>>>>>>> webops-web/src/main/java/resources/EmployeeService.java
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,8 +19,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+<<<<<<< webops-web/src/main/java/resources/EmployeeService.java
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+=======
+>>>>>>> webops-web/src/main/java/resources/EmployeeService.java
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -27,17 +33,22 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import entities.Company;
 import entities.Employe;
+<<<<<<< webops-web/src/main/java/resources/EmployeeService.java
 import entities.Role;
 import services.CompanyServiceImpl;
 import services.EmployeeServiceImpl;
 import utilites.LoggedInUser;
 import utilites.Roles;
 import utilites.RolesAllowed;
+=======
+import services.EmployeeServiceImpl;
+>>>>>>> webops-web/src/main/java/resources/EmployeeService.java
 
 @RequestScoped
 @Path("employee")
 public class EmployeeService {
 
+<<<<<<< webops-web/src/main/java/resources/EmployeeService.java
 	private static final String UPLOAD_FOLDER = "C:/Users/Oussama Fezzani/git/webops/webops-ejb/src/main/resources/images/";
 	
 	@EJB
@@ -56,9 +67,22 @@ public class EmployeeService {
 		System.out.println("resources : "+emp.toString());
 		if (emp.getRole().equals(Role.Administrator)) {
 			empService.registerAdmin(emp);
+=======
+	@Inject
+	EmployeeServiceImpl empService;
+	
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response registerEmployee(Employe emp)
+	{
+		int idEmp = empService.addEmployee(emp);
+		if(idEmp != 0)
+		{
+>>>>>>> webops-web/src/main/java/resources/EmployeeService.java
 			return Response.status(Status.CREATED).entity("Registration Successful").build();
 		}
-		return Response.status(Status.NOT_ACCEPTABLE).entity("Registration Failed !").build();
+		return Response.status(Status.NOT_ACCEPTABLE).entity("Registration Failed ! Email already exists ").build();
 	}
 
 	@GET
@@ -72,7 +96,9 @@ public class EmployeeService {
 	}
 
 	@POST
+	@Path("company")
 	@Consumes(MediaType.APPLICATION_JSON)
+<<<<<<< webops-web/src/main/java/resources/EmployeeService.java
 	@Path("register/{idC}")
 	public Response registerEmployee(Employe employe, @PathParam("idC") int idC) {
 		int idE = empService.registerEmployee(employe, idC);
@@ -218,8 +244,38 @@ public class EmployeeService {
 		}
 		empService.addImageCompany(idE, uid + ".jpg");
 		return Response.status(200).entity("Success").build();
+=======
+	public Response registerCompany(Company company)
+	{
+		int idCompany = empService.addCompany(company);
+		return Response.status(Status.CREATED).entity("Registration Successful").build();
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response showAllUsers()
+	{
+		return Response.status(Status.ACCEPTED).entity(empService.showCompanies()).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{idC}/{idE}")
+	public Response addEmpToCompany(@PathParam("idC") int idC , @PathParam("idE") int idE)
+	{
+		empService.addEmployeeToCompany(idE, idC);
+		return Response.status(Status.ACCEPTED).entity("Success").build();
+>>>>>>> webops-web/src/main/java/resources/EmployeeService.java
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("emp/{idC}")
+	public Response showCompanyEmployees(@PathParam("idC") int idC)
+	{
+		
+		return Response.status(Status.ACCEPTED).entity(empService.showCompanyEmployees(idC)).build();
+	}
 	
 	private void saveToFile(InputStream inStream, String target) throws IOException {
 		OutputStream out = null;

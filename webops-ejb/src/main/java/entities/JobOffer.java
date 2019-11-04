@@ -1,20 +1,29 @@
 package entities;
 
 import java.io.Serializable;
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
+=======
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+=======
+import java.util.List; 
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.Id; 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
 import com.fasterxml.jackson.annotation.JsonIgnore;
+=======
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -31,6 +40,10 @@ public class JobOffer implements Serializable {
 
 	private String job_title;
 
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
+=======
+
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 	private String type;
 
 	private String level;
@@ -47,13 +60,33 @@ public class JobOffer implements Serializable {
 
 	private boolean available;
 
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
 	@ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Candidate> savedOffersCandidate;
 	
 	@ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
 	private Set<Skill> Skills;
+=======
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<Candidate> savedOffersCandidate;
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<Skill> Skills;
+	
+	public Set<Skill> getSkills() {
+		return Skills;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		Skills = skills;
+	}
+
+	@ManyToOne
+	@JsonIgnoreProperties({ "company" })
+	Employe submittedBy;
+
 	@ManyToOne
 	@JsonIgnoreProperties({ "company" , "interviews" , "password" , "jobsSubmitted" , "availabilityEmploye" , "confirmationToken" , "active"})
 	Employe submittedBy;
@@ -164,6 +197,11 @@ public class JobOffer implements Serializable {
 		this.submittedBy = submittedBy;
 	}
 
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
+=======
+	
+
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 	public boolean isAvailable() {
 		return available;
 	}
@@ -180,6 +218,7 @@ public class JobOffer implements Serializable {
 		this.depositDate = depositDate;
 	}
 
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
 	public Set<Candidate> getSavedOffersCandidate() {
 		return savedOffersCandidate;
 	}
@@ -207,4 +246,6 @@ public class JobOffer implements Serializable {
 
 	
 	
+=======
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 }

@@ -1,5 +1,6 @@
 package services;
 
+<<<<<<< webops-ejb/src/main/java/services/CompanyServiceImpl.java
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+=======
+ 
+>>>>>>> webops-ejb/src/main/java/services/CompanyServiceImpl.java
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

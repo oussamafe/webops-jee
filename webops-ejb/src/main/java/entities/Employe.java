@@ -13,9 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+<<<<<<< webops-ejb/src/main/java/entities/Employe.java
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+=======
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+>>>>>>> webops-ejb/src/main/java/entities/Employe.java
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -31,10 +36,14 @@ public class Employe extends User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Role role ;
 	
+<<<<<<< webops-ejb/src/main/java/entities/Employe.java
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="submittedBy" , fetch = FetchType.EAGER )
 	
 	private Set<JobOffer> jobsSubmitted;
 	
+=======
+	/*
+>>>>>>> webops-ejb/src/main/java/entities/Employe.java
 	//------------------------add by oussema mahjoub--------------//
 	@OneToOne(mappedBy = "employe")
 	private AvailabilityEmploye availabilityEmploye;	
@@ -62,12 +71,15 @@ public class Employe extends User implements Serializable{
 	//-----------------------------------------------------------//
 	
 	
-	
+	*/
 	
 
-	//@JsonBackReference
+	@JsonBackReference
 	@ManyToOne
+<<<<<<< webops-ejb/src/main/java/entities/Employe.java
 	@JsonIgnoreProperties({"employes","nbEmployees","image","followers"})
+=======
+>>>>>>> webops-ejb/src/main/java/entities/Employe.java
 	Company company;
 	
 	public Employe(Role role) {
@@ -96,7 +108,6 @@ public class Employe extends User implements Serializable{
 		this.role = role;
 	}
 
-	@JsonGetter
 	public Company getCompany() {
 		return company;
 	}
