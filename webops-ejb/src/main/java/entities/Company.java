@@ -3,8 +3,11 @@ package entities;
 
 <<<<<<< webops-ejb/src/main/java/entities/Company.java
 import java.io.Serializable;
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+=======
 =======
 import java.io.Serializable; 
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 >>>>>>> webops-ejb/src/main/java/entities/Company.java
 import java.util.Set;
 
@@ -37,6 +40,9 @@ public class Company  implements Serializable{
 	private String field;
 	private int nbEmployees;
 <<<<<<< webops-ejb/src/main/java/entities/Company.java
+=======
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 	private String image;
 	@Column(unique = true)
 	private String email;
@@ -45,6 +51,8 @@ public class Company  implements Serializable{
 	@JsonIgnoreProperties({"password","active","confirmationToken","company","job_candidate","avalibilityCandidate","interviews","onlineTest","profilIntro","activities","phoneNumber","studyLevel","experiences","courses","certifications","professionalExperiences","skills","email"})
 	private Set<Candidate> followers ;	
 	//@JsonManagedReference
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+=======
 =======
 	
 	@Column(columnDefinition = "integer default 5")
@@ -60,6 +68,7 @@ public class Company  implements Serializable{
 
 	@JsonManagedReference
 >>>>>>> webops-ejb/src/main/java/entities/Company.java
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
 	@JsonIgnoreProperties({"id","password","confirmationToken","availabilityEmploye","company","interviews"})
 	private Set<Employe> employes;
@@ -67,6 +76,13 @@ public class Company  implements Serializable{
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company_offers")
 	private Set<JobOffer> comapnyJobs;
 	
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
+	private Set<Events> events;
+	
+	
+=======
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 	public Set<JobOffer> getComapnyJobs() {
 		return comapnyJobs;
 	}
@@ -150,6 +166,17 @@ public class Company  implements Serializable{
 		this.image = image;
 	}
 
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+	public Set<Events> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Events> events) {
+		this.events = events;
+	}
+
+=======
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 	
 
 

@@ -3,7 +3,11 @@ package entities;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+<<<<<<< webops-ejb/src/main/java/entities/ApplicationId.java
+import javax.persistence.Embeddable;
+=======
 import javax.persistence.Embeddable; 
+>>>>>>> webops-ejb/src/main/java/entities/ApplicationId.java
 
 @Embeddable
 public class ApplicationId implements Serializable{

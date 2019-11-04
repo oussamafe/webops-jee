@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 public class Post {
 	@Id
+<<<<<<< webops-ejb/src/main/java/entities/Post.java
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String description;
@@ -41,6 +42,21 @@ public class Post {
 
 	public Post() {
 		super();
+=======
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id_post ;
+	
+	private String content;
+	
+	@Temporal (TemporalType.DATE)
+	private Date dateP;
+	
+	/*@OneToMany(mappedBy="post", cascade=CascadeType.REMOVE)
+	private List<Candidate> candidate;
+	*/
+	public Date getDateP() {
+		return dateP;
+>>>>>>> webops-ejb/src/main/java/entities/Post.java
 	}
 
 	public Set<Comment> getLstComm() {
@@ -60,13 +76,21 @@ public class Post {
 
 	public Post(String description, Date dateCreation) {
 		super();
+<<<<<<< webops-ejb/src/main/java/entities/Post.java
 		this.description = description;
 		this.dateCreation = dateCreation;
+=======
+		this.id_post = id_post;
+		this.content = content;
+		this.dateP = dateP;
+		//this.candidate = candidate;
+>>>>>>> webops-ejb/src/main/java/entities/Post.java
 	}
 	public Post(String description) {
 		super();
 		this.description = description;
 
+<<<<<<< webops-ejb/src/main/java/entities/Post.java
 	}
 
 	public Long getId() {
@@ -80,6 +104,15 @@ public class Post {
 	public String getDescription() {
 		return description;
 	}
+=======
+	/*public List<Candidate> getCandidate() {
+		return candidate;
+	}
+
+	public void setCandidate(List<Candidate> candidate) {
+		this.candidate = candidate;
+	}*/
+>>>>>>> webops-ejb/src/main/java/entities/Post.java
 
 	public void setDescription(String description) {
 		this.description = description;
