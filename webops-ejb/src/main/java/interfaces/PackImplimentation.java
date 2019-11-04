@@ -13,5 +13,7 @@ public interface PackImplimentation {
 		public List<Packs> ReadPack();
 		public void UpdatePack(Packs P);
 		public void DeletePack(int id);
+		
+		public void AffectPackToCompany(int idcompany,int idpack);
 
 }

@@ -1,5 +1,4 @@
 package services;
-
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -7,7 +6,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import entities.Packs;
+import entities.Company;
+import entities.Packs; 
 import interfaces.PackImplimentation;
 
 @Stateless
@@ -46,6 +46,16 @@ public class PackServiceImpl implements PackImplimentation {
 		Packs packs = em.find(Packs.class, id);
 
 		  em.remove(packs);
+	}
+
+	@Override
+	public void AffectPackToCompany(int idcompany, int idpack) {
+		// TODO Auto-generated method stub
+		Packs packs = em.find(Packs.class,idpack); 
+		Company company=em.find(Company.class, idcompany);
+		company.setNbroffres(company.getNbroffres()+packs.getNbrOffre());
+		em.merge(company);
+		
 	}
 
 }

@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import entities.Reclamation;
+import entities.Reclamation; 
 import services.ReclamationServiceImpl;
 
 @RequestScoped
@@ -25,9 +25,11 @@ public class ReclamationService {
 	ReclamationServiceImpl claims;
 	
 	@POST
+	@Path("{user_id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response ReclamationCreation(Reclamation R)
-	{claims.CreateClaim(R);
+	public Response ReclamationCreation(Reclamation R,@PathParam("user_id")int id)
+	{
+		claims.CreateClaim(R,id);
 		return Response.status(Status.CREATED).entity("Pack created Successful").build();
 	
 	}
@@ -54,5 +56,13 @@ public class ReclamationService {
 	{claims.DeleteClaim(id);
 		
 		return Response.status(Status.ACCEPTED).entity("deleted").build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response ShowReclamationByUser(@PathParam("id")int id)
+	{	List<Reclamation> list=claims.SuivieClaim(id);
+		return Response.status(Status.ACCEPTED).entity("Suivie Done "+list).build();
 	}
 }

@@ -12,3 +12,4 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 	@PersistenceContext(unitName = "webops-ejb")
 	EntityManager em;
 }
+
