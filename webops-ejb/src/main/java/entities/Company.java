@@ -1,7 +1,11 @@
 package entities;
 
 
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+import java.io.Serializable;
+=======
 import java.io.Serializable; 
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,9 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 //import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -31,6 +36,16 @@ public class Company  implements Serializable{
 	private String name;
 	private String field;
 	private int nbEmployees;
+<<<<<<< webops-ejb/src/main/java/entities/Company.java
+	private String image;
+	@Column(unique = true)
+	private String email;
+
+	@ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"password","active","confirmationToken","company","job_candidate","avalibilityCandidate","interviews","onlineTest","profilIntro","activities","phoneNumber","studyLevel","experiences","courses","certifications","professionalExperiences","skills","email"})
+	private Set<Candidate> followers ;	
+	//@JsonManagedReference
+=======
 	
 	@Column(columnDefinition = "integer default 5")
 	private int nbroffres=5;
@@ -44,9 +59,22 @@ public class Company  implements Serializable{
 	
 
 	@JsonManagedReference
+>>>>>>> webops-ejb/src/main/java/entities/Company.java
 	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company")
+	@JsonIgnoreProperties({"id","password","confirmationToken","availabilityEmploye","company","interviews"})
 	private Set<Employe> employes;
 	
+	@OneToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.ALL},mappedBy="company_offers")
+	private Set<JobOffer> comapnyJobs;
+	
+	public Set<JobOffer> getComapnyJobs() {
+		return comapnyJobs;
+	}
+
+	public void setComapnyJobs(Set<JobOffer> comapnyJobs) {
+		this.comapnyJobs = comapnyJobs;
+	}
+
 	public Company(String name, String field, int nbEmployees) {
 		super();
 		this.name = name;
@@ -98,6 +126,31 @@ public class Company  implements Serializable{
 		this.employes = employes;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Set<Candidate> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(Set<Candidate> followers) {
+		this.followers = followers;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	
 
 
 }

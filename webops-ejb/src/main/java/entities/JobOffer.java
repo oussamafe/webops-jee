@@ -1,49 +1,88 @@
 package entities;
 
 import java.io.Serializable;
+<<<<<<< webops-ejb/src/main/java/entities/JobOffer.java
+import java.util.Date;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+=======
 import java.util.List; 
+>>>>>>> webops-ejb/src/main/java/entities/JobOffer.java
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id; 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity
-public class JobOffer implements Serializable{
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Entity
+@JsonIgnoreProperties({ "company_offers", "job_offer" })
+public class JobOffer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id ;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
 	private String description;
-	
+
 	private String job_title;
-	
-	private String skills;
-	
+
+
 	private String type;
-	
+
 	private String level;
-	
+
 	private String location;
+
+	private boolean approved;
+
+	private String approvalDetails;
+
+	private Date approvalDate;
+
+	private Date depositDate;
+
+	private boolean available;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<Candidate> savedOffersCandidate;
 	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<Skill> Skills;
+	
+	public Set<Skill> getSkills() {
+		return Skills;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		Skills = skills;
+	}
+
+	@ManyToOne
+	@JsonIgnoreProperties({ "company" })
+	Employe submittedBy;
+
 	@ManyToOne
 	private Company company_offers;
-	
-	@OneToMany (mappedBy = "jobOffer")
-	private List<Application> job_offer;
-	
-	
-	public List<Application> getJob_offer() {
+
+	@OneToMany(mappedBy = "jobOffer", fetch = FetchType.EAGER)
+	private Set<Application> job_offer;
+
+	public JobOffer() {
+		super();
+	}
+
+	public Set<Application> getJob_offer() {
 		return job_offer;
 	}
 
-	public void setJob_offer(List<Application> job_offer) {
+	public void setJob_offer(Set<Application> job_offer) {
 		this.job_offer = job_offer;
 	}
 
@@ -69,14 +108,6 @@ public class JobOffer implements Serializable{
 
 	public void setJob_title(String job_title) {
 		this.job_title = job_title;
-	}
-
-	public String getSkills() {
-		return skills;
-	}
-
-	public void setSkills(String skills) {
-		this.skills = skills;
 	}
 
 	public String getType() {
@@ -111,13 +142,54 @@ public class JobOffer implements Serializable{
 		this.company_offers = company_offers;
 	}
 
+	public boolean isApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+
+	public String getApprovalDetails() {
+		return approvalDetails;
+	}
+
+	public void setApprovalDetails(String approvalDetails) {
+		this.approvalDetails = approvalDetails;
+	}
+
+	public Date getApprovalDate() {
+		return approvalDate;
+	}
+
+	public void setApprovalDate(Date approvalDate) {
+		this.approvalDate = approvalDate;
+	}
+
+	public Employe getSubmittedBy() {
+		return submittedBy;
+	}
+
+	public void setSubmittedBy(Employe submittedBy) {
+		this.submittedBy = submittedBy;
+	}
+
 	
 
-	public JobOffer() {
-		super();
+	public boolean isAvailable() {
+		return available;
 	}
-	
-	
-	
-	
+
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+
+	public Date getDepositDate() {
+		return depositDate;
+	}
+
+	public void setDepositDate(Date depositDate) {
+		this.depositDate = depositDate;
+	}
+
 }
