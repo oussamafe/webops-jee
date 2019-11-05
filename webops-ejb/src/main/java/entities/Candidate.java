@@ -2,7 +2,6 @@ package entities;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,8 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
@@ -40,48 +37,35 @@ public class Candidate extends User implements Serializable{
 	@ManyToOne
 	private Post post;
 
-	// add bby oussema mahjoub
-	@OneToMany(mappedBy = "Candidate", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-	//--
 	private Set<ProfessionalExperience> ProfessionalExperiences;
 	
-	
-	// add bby oussema mahjoub
-	@JsonManagedReference(value="candidate-movement")
-	//--
 	@OneToMany (mappedBy = "candidate")
-	private Set<Application> job_candidate;
+	private List<Application> job_candidate;
 	
 	
 	//---------------------  add by oussema mahjoub ---------------------//
-	@JsonManagedReference(value="avalibilityCandidate-movement")
-	@OneToMany(mappedBy = "candidate", cascade = { CascadeType.ALL })
-	private Set<AvailabilityCandidate> avalibilityCandidate = new HashSet<AvailabilityCandidate>();
+	@OneToOne(mappedBy = "candidate")
+	private AvailabilityCandidate avalibilityCandidate;
 	
-	@JsonManagedReference(value="candidatInterview-movement")
 	@OneToMany(mappedBy = "candidatInterview", cascade = { CascadeType.ALL })
-	private Set<Interview> interviews = new HashSet<Interview>();
+	private List<Interview> interviews = new ArrayList<>();
 
 	@OneToOne(mappedBy = "candidatTest")	
 	private OnlineTest onlineTest;		
 	
-	
+	public AvailabilityCandidate getAvalibilityCandidate() {
+		return avalibilityCandidate;
+	}
 
-	public void setAvalibilityCandidate(Set<AvailabilityCandidate> avalibilityCandidate) {
+	public void setAvalibilityCandidate(AvailabilityCandidate avalibilityCandidate) {
 		this.avalibilityCandidate = avalibilityCandidate;
 	}
 
-	public Set<AvailabilityCandidate> getAvailabilityCandidate() {
-		return avalibilityCandidate;
-	}
-	
-	
-
-	public Set<Interview> getInterviews() {
+	public List<Interview> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(Set<Interview> interviews) {
+	public void setInterviews(List<Interview> interviews) {
 		this.interviews = interviews;
 	}
 
@@ -97,11 +81,11 @@ public class Candidate extends User implements Serializable{
 	
 	
 	
-	public Set<Application> getJob_candidate() {
+	public List<Application> getJob_candidate() {
 		return job_candidate;
 	}
 
-	public void setJob_candidate(Set<Application> job_candidate) {
+	public void setJob_candidate(List<Application> job_candidate) {
 		this.job_candidate = job_candidate;
 	}
 	

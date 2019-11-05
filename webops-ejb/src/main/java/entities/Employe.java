@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -37,19 +36,17 @@ public class Employe extends User implements Serializable{
 	
 	
 	//------------------------add by oussema mahjoub--------------//
-	@JsonManagedReference(value="availabilityEmploye-movement")
-	@OneToMany(mappedBy = "employe", cascade = { CascadeType.ALL })
-	private Set<AvailabilityEmploye> availabilityEmploye;
-		
-	@JsonManagedReference(value="employeInterview-movement")
+		@OneToOne(mappedBy = "employe")
+	private AvailabilityEmploye availabilityEmploye;	
+	
 	@OneToMany(fetch = FetchType.EAGER , mappedBy="employeInterview", cascade = {CascadeType.ALL})
 	private Set<Interview> interviews;
 	
-	public Set<AvailabilityEmploye> getAvailabilityEmploye() {
+	public AvailabilityEmploye getAvailabilityEmploye() {
 		return availabilityEmploye;
 	}
 
-	public void setAvailabilityEmploye(Set<AvailabilityEmploye> availabilityEmploye) {
+	public void setAvailabilityEmploye(AvailabilityEmploye availabilityEmploye) {
 		this.availabilityEmploye = availabilityEmploye;
 	}
 
