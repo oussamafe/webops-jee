@@ -1,19 +1,19 @@
 package entities;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
-public class AvailabilityCandidate extends Availability {
+public class AvailabilityCandidate extends Availability  {
 
-	private static final long serialVersionUID = 1L;
-
-	@JsonBackReference(value="avalibilityCandidate-movement")
-	@ManyToOne
+	
+private static final long serialVersionUID = 1L;
+	
+	@OneToOne
 	private Candidate candidate;
-
+	
 	public AvailabilityCandidate() {
 		super();
 	}
@@ -25,5 +25,5 @@ public class AvailabilityCandidate extends Availability {
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
 	}
-
+	
 }
