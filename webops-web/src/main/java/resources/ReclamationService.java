@@ -1,7 +1,6 @@
 package resources;
 
-import java.util.List;
-
+import java.util.List; 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -23,46 +22,55 @@ import services.ReclamationServiceImpl;
 public class ReclamationService {
 	@Inject
 	ReclamationServiceImpl claims;
-	
-	@POST
-	@Path("{user_id}")
+
+	@POST 
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response ReclamationCreation(Reclamation R,@PathParam("user_id")int id)
-	{
-		claims.CreateClaim(R,id);
-		return Response.status(Status.CREATED).entity("Pack created Successful").build();
-	
+	public Response ReclamationUserToUser(Reclamation R)
+	{ 
+		if(R.getClaimtype().toString().equals("Service_Technique")) {
+			claims.ClaimUserToAdmin(R);
+			return Response.status(Status.CREATED).entity("Reclamation Envoyer en Success a l'admin \n"+R).build();}
+		else if(R.getClaimtype().toString().equals("Company"))
+		{
+			if (R.getCompany()==null)
+			{return Response.status(Status.BAD_REQUEST).entity("Veuillez choisir une company").build();}
+			claims.ClaimUserToAdmin(R);
+
+			return Response.status(Status.CREATED).entity("Reclamation Envoyer en Success au Company \n"+R).build();}
+		else
+			return Response.status(Status.NOT_ACCEPTABLE).entity("Veuillez preciser un Type 'Service_Technique' ou 'Company'").build();
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response ShowAllReclamation()
 	{List<Reclamation> list=claims.ReadClaim();
-		return Response.status(Status.ACCEPTED).entity(list).build();
+	return Response.status(Status.ACCEPTED).entity(list).build();
 	}
-	
-	@PUT
+
+	@PUT 
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateReclamation(Reclamation R) {
+
 		claims.UpdateClaim(R); 
-	return Response.status(Status.ACCEPTED).entity("updated: "+R).build();
+		return Response.status(Status.ACCEPTED).entity("updated: "+R).build();
 	}
-	
+
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response DeleteReclamation(@PathParam("id")int id)
 	{claims.DeleteClaim(id);
-		
-		return Response.status(Status.ACCEPTED).entity("deleted").build();
+
+	return Response.status(Status.ACCEPTED).entity("deleted").build();
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response ShowReclamationByUser(@PathParam("id")int id)
-	{	List<Reclamation> list=claims.SuivieClaim(id);
-		return Response.status(Status.ACCEPTED).entity("Suivie Done "+list).build();
+	{	List<Reclamation> list=claims.SuivieClaim(id); 
+	return Response.status(Status.ACCEPTED).entity("Suivie Done \n "+list).build();
 	}
 }

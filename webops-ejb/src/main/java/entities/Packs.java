@@ -1,16 +1,11 @@
 package entities;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.CascadeType;
+import java.io.Serializable; 
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Entity; 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Id; 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -32,9 +27,7 @@ public class Packs implements Serializable {
 	private String description;
 	private int nbrOffre;
 	
-	@OneToMany (mappedBy = "packs", cascade = {CascadeType.ALL},fetch=FetchType.EAGER)
-	private List<Panier> panier;
-	
+ 
 	public int getNbrOffre() {
 		return nbrOffre;
 	}
@@ -68,6 +61,5 @@ public class Packs implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	//id libelle, description, tarif, duree
+	 
 }

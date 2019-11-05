@@ -37,6 +37,7 @@ public class PackServiceImpl implements PackImplimentation {
 		packs.setDescription(pack.getDescription()); 
 		packs.setLibelle(pack.getLibelle()); 
 		packs.setPrix(pack.getPrix()); 
+		packs.setNbrOffre(pack.getNbrOffre());
 		em.merge(packs);
 	}
 
