@@ -98,15 +98,23 @@ public class InterviewResources {
 		return Response.status(Status.OK).entity(list).build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
+	
+	
+	
+	
+	
+	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager})
 	@GET
 	@Path("/ListInterviewByCandidate")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response ListInterviewByCandidate(@QueryParam("id") int candidateID) {
+	public Response ListInterviewByCandidate(@QueryParam("cid") int candidateID) {
 		Set<Interview> list = IMI.ListInterviewByCandidate(candidateID);
 		return Response.status(Status.OK).entity(list).build();
 	}
 
+	
+	
+	
 	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager })
 	@GET
 	@Path("/ListInterviewByEmploye")

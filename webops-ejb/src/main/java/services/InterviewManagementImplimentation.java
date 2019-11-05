@@ -87,6 +87,11 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		return results;
 	}
 
+	
+	
+	
+	
+	
 	@Override
 	public Set<Interview> ListInterviewByCandidate(int candidateID) {
 		Candidate c=em.find(Candidate.class,candidateID );	
@@ -97,6 +102,13 @@ public class InterviewManagementImplimentation implements InterviewManagementRem
 		return results;
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public Set<Interview> ListInterviewByEmploye(int employeID) {
 		Employe e=em.find(Employe.class,employeID );

@@ -28,7 +28,7 @@ public class FixedTimerBean {
     /**
      * everyday
      */
-    @Schedule(second = "1", minute = "1", hour = "*", persistent = false)
+    @Schedule(second = "0", minute = "0", hour = "0",dayOfMonth="*",dayOfWeek="*",month="*",year="*", persistent = false)
     public void EveryDayTasks() throws InterruptedException {
        
         //workerBean.AutoRefuseOnlineTest();
@@ -36,7 +36,9 @@ public class FixedTimerBean {
         //workerBean.InterviewPropertiesAlgo();
     	//workerBean.AddAvailabilityDayForAllEmp()
     }
-    @Schedule(second = "1", minute = "1", hour = "*", persistent = false)
+    
+    
+    @Schedule(second = "0", minute = "0", hour = "0",dayOfMonth="1",month="1",year="*" ,persistent = false)
     public void EveryYearTasks() throws InterruptedException {
        
     	//workerBean.AutoDeleteInterview(); 

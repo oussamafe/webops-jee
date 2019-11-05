@@ -20,8 +20,7 @@ public class OnlineTestStatisticalResources {
 	@Inject
 	OnlineTestStatisticalImplementation OTSI;
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+	
 	@GET
 	@Path("/AcceptedTestPerYear")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -30,8 +29,7 @@ public class OnlineTestStatisticalResources {
 		return Response.status(Status.OK).entity("percent of Accepted Test for " + year + " =  " + x + "%").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+	
 	@GET
 	@Path("/RejectedTestPerYear")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -40,8 +38,7 @@ public class OnlineTestStatisticalResources {
 		return Response.status(Status.OK).entity("percent of Rejected Test for " + year + " =  " + x + "%").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+	
 	@GET
 	@Path("/NbTestPerYear")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -50,8 +47,7 @@ public class OnlineTestStatisticalResources {
 		return Response.status(Status.OK).entity("Number of Test for " + year + " =  " + x + "").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+		
 	@GET
 	@Path("/NbTestPerMonth")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -61,8 +57,7 @@ public class OnlineTestStatisticalResources {
 				.entity("Number  of Test for " + year + " and month " + month + " =  " + x + "").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+	
 	@GET
 	@Path("/AcceptedTestPerMonth")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -72,8 +67,6 @@ public class OnlineTestStatisticalResources {
 				.entity("percent of Accepted Test for " + year + "and month " + month + " =  " + x + "%").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
 	@GET
 	@Path("/RejectedTestPerMonth")
 	@Produces(MediaType.TEXT_PLAIN)

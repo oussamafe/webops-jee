@@ -21,8 +21,7 @@ public class InterviewStatisticalResources {
 	@Inject
 	InterviewStatisticalImpl ISI;
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+
 	@GET
 	@Path("/AcceptedInterviewPerYear")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -31,8 +30,6 @@ public class InterviewStatisticalResources {
 		return Response.status(Status.OK).entity("percent of Accepted Test for " + year + " =  " + x + "%").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
 	@GET
 	@Path("/RejectedInterviewPerYear")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -41,8 +38,7 @@ public class InterviewStatisticalResources {
 		return Response.status(Status.OK).entity("percent of Rejected Test for " + year + " =  " + x + "%").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+	
 	@GET
 	@Path("/NbInterviewPerYear")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -51,8 +47,7 @@ public class InterviewStatisticalResources {
 		return Response.status(Status.OK).entity("Number of Test for " + year + " =  " + x + "").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+	 
 	@GET
 	@Path("/NbInterviewPerMonth")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -62,8 +57,7 @@ public class InterviewStatisticalResources {
 				.entity("Number  of Test for " + year + " and month " + month + " =  " + x + "").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+ 
 	@GET
 	@Path("/AcceptedInterviewPerMonth")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -73,8 +67,7 @@ public class InterviewStatisticalResources {
 				.entity("percent of Accepted Test for " + year + "and month " + month + " =  " + x + "%").build();
 	}
 
-	@RolesAllowed(Permissions = { Roles.Administrator, Roles.Human_Resources, Roles.Project_Manager, Roles.CANDIDATE,
-			Roles.Team_Leader })
+ 
 	@GET
 	@Path("/RejectedInterviewPerMonth")
 	@Produces(MediaType.TEXT_PLAIN)
